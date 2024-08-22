@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Persons",
+  "name": "Welcome to persons",
+  "homepage": "https://shurlik.github.io/persons/",
   "icons": [
     {
       "src": "favicon.ico",
