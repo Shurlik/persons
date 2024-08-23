@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/persons/static/css/main.ac21fbc0.css",
-    "main.js": "/persons/static/js/main.79ecfe26.js",
+    "main.js": "/persons/static/js/main.0550a561.js",
     "static/media/cartoon-office-girl.png": "/persons/static/media/cartoon-office-girl.8f253b0095c26cbb4c7c.png",
     "static/media/cartoon-office-boy.png": "/persons/static/media/cartoon-office-boy.fde640b21e5f9b353085.png",
     "index.html": "/persons/index.html",
     "main.ac21fbc0.css.map": "/persons/static/css/main.ac21fbc0.css.map",
-    "main.79ecfe26.js.map": "/persons/static/js/main.79ecfe26.js.map"
+    "main.0550a561.js.map": "/persons/static/js/main.0550a561.js.map"
   },
   "entrypoints": [
     "static/css/main.ac21fbc0.css",
-    "static/js/main.79ecfe26.js"
+    "static/js/main.0550a561.js"
   ]
 }
