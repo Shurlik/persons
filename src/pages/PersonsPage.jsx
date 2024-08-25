@@ -28,15 +28,8 @@ const Persons = () => {
 			.filter(([_, isSelected]) => isSelected)
 			.map(([id, _]) => id);
 
-		const profiles = [];
-		selectedIds.forEach((i) => {
-			const f = data.find(d => d.id === i);
-			profiles.push(f.fields);
-		});
-
 		try {
-			const res = await askGpt(requestText, profiles);
-			console.log({res});
+			const res = await askGpt(requestText, selectedIds);
 			setResultText(res);
 		} catch (e) {
 			console.log('error: ', e);
@@ -53,10 +46,11 @@ const Persons = () => {
 			sx={{
 				height: '100vh',
 				overflow: 'auto',
-				padding: '2rem'
+				padding: '2rem',
+				// width: '100%'
 			}}
 		>
-			<Box
+			{isLoading ? <Loader/> : <Box
 				sx={{
 					margin: '0 auto',
 					display: 'grid',
@@ -74,7 +68,7 @@ const Persons = () => {
 						onSelectChange={handleSelectChange}
 					/>
 				))}
-			</Box>
+			</Box>}
 			<Box sx={{mt: 2, mb: 4}}>
 				<TextField
 					fullWidth

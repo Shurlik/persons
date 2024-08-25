@@ -6,7 +6,7 @@ import Navigation from "../components/Navigation";
 const MainLayout = () => {
 	return (
 
-		<Box sx={{display: 'flex', flex: 1, height: '100%'}}>
+		<Box sx={{display: 'flex', height: '100%'}}>
 			<Navigation/>
 			<Outlet/>
 		</Box>

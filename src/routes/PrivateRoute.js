@@ -1,18 +1,20 @@
 import React from "react";
-import {Navigate} from "react-router-dom";
-import {getTokens} from "../services/storage";
-import {jwtDecode} from "jwt-decode";
+import {Navigate, useLocation} from "react-router-dom";
+import {useAuth} from "../contexts/AuthContext";
+
 
 const PrivateRoute = ({component: Component, authenticated, ...rest}) => {
-	let isAuthenticated = false;
-	const data = getTokens();
-	if (data?.token && new Date().getTime() / 1000 < jwtDecode(data.token).exp) {
-		isAuthenticated = true;
+	const { user, loading } = useAuth();
+	const location = useLocation();
+
+	if (loading) {
+		return <div>Loading...</div>; // Можно заменить на компонент загрузки
 	}
 
-	return isAuthenticated ? <Component {...rest} /> : <Navigate
-		to='/login'
-		replace
-	/>;
+	if (!user) {
+		return <Navigate to="/login" state={{ from: location }} replace />;
+	}
+
+	return <Component {...rest} />;
 };
 export default PrivateRoute;

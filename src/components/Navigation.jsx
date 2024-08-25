@@ -6,7 +6,6 @@ const Navigation = () => {
 	return (
 		<Box
 			sx={{
-				width: '20%',
 				backgroundColor: "#231E39",
 				padding: '30px 0'
 			}}

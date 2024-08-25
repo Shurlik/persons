@@ -1,28 +1,49 @@
 import React from 'react';
-import { Box, Typography, Checkbox } from "@mui/material";
+import {Box, Checkbox, Typography} from "@mui/material";
 import officeBoy from '../assets/images/cartoon-office-boy.png';
 import officeGirl from '../assets/images/cartoon-office-girl.png';
+import { useNavigate} from "react-router-dom";
 
-const PersonCard = ({ person, isSelected, onSelectChange }) => {
-	const { fields, id } = person;
+const PersonCard = ({person, isSelected, onSelectChange}) => {
+	const {fields, id} = person;
+	const navigate = useNavigate();
 
-	const DetailItem = ({ label, value }) => (
-		<Box sx={{ mb: 1.5 }}>
-			<Typography fontSize='.85rem' fontWeight='bold' component="span">{label}: </Typography>
-			<Typography fontSize='.85rem' component="span">{value}</Typography>
+	const DetailItem = ({label, value}) => (
+		<Box sx={{mb: 1.5}}>
+			<Typography
+				fontSize='.85rem'
+				fontWeight='bold'
+				component='span'
+			>{label}: </Typography>
+			<Typography
+				fontSize='.85rem'
+				component='span'
+			>{value}</Typography>
 		</Box>
 	);
 
-	const SectionTitle = ({ title }) => (
-		<Typography variant="h6" fontWeight="bold" mt={1} mb={.5} color="#C400D7">
+	const SectionTitle = ({title}) => (
+		<Typography
+			variant='h6'
+			fontWeight='bold'
+			mt={1}
+			mb={.5}
+			color='#C400D7'
+		>
 			{title}
 		</Typography>
 	);
 
+	function detailsHandler() {
+		navigate(`/persons/${id}`);
+	}
+
 	return (
-		<Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 4 }}>
+		<Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 4}}>
 			<Box
+				onClick={detailsHandler}
 				sx={{
+					cursor: 'pointer',
 					width: '350px',
 					height: '600px',
 					perspective: '1000px',
@@ -38,7 +59,7 @@ const PersonCard = ({ person, isSelected, onSelectChange }) => {
 					},
 				}}
 			>
-				<Box className="card-inner">
+				<Box className='card-inner'>
 					{/* Front side */}
 					<Box
 						sx={{
@@ -87,32 +108,67 @@ const PersonCard = ({ person, isSelected, onSelectChange }) => {
 										component={'img'}
 										alt={'user image'}
 										src={fields.Gender === 'Female' ? officeGirl : officeBoy}
-										sx={{ width: '100%' }}
+										sx={{width: '100%'}}
 									/>
 								</Box>
 							</Box>
-							<Typography variant='h4' marginTop={1} fontWeight={'bold'}>
+							<Typography
+								variant='h4'
+								marginTop={1}
+								fontWeight={'bold'}
+							>
 								{fields['Name']}
 							</Typography>
-							<Typography fontSize={'1rem'} fontWeight={'bold'} mt={.5}>
+							<Typography
+								fontSize={'1rem'}
+								fontWeight={'bold'}
+								mt={.5}
+							>
 								{fields['Place of residence (city, country, region)']}
 							</Typography>
-							<Typography fontSize={'1rem'} mt={.5}>
+							<Typography
+								fontSize={'1rem'}
+								mt={.5}
+							>
 								{"Age: " + fields['Age'] + ", " + fields['Job title']}
 							</Typography>
-							<Typography fontSize={'1rem'} marginTop={1} textAlign={'left'}>
+							<Typography
+								fontSize={'1rem'}
+								marginTop={1}
+								textAlign={'left'}
+							>
 								{"Industry: " + fields['Industry']}
 							</Typography>
-							<Typography fontSize={'1rem'} marginTop={.5} variant={'body1'} textAlign={'left'}>
+							<Typography
+								fontSize={'1rem'}
+								marginTop={.5}
+								variant={'body1'}
+								textAlign={'left'}
+							>
 								{'Career stage: ' + fields['Career stage']}
 							</Typography>
-							<Typography fontSize={'1rem'} variant={'body1'} marginTop={.5} textAlign={'left'}>
+							<Typography
+								fontSize={'1rem'}
+								variant={'body1'}
+								marginTop={.5}
+								textAlign={'left'}
+							>
 								{"Working environment: " + fields['Working environment']}
 							</Typography>
-							<Typography fontSize={'1rem'} variant={'body1'} marginTop={.5} textAlign={'left'}>
+							<Typography
+								fontSize={'1rem'}
+								variant={'body1'}
+								marginTop={.5}
+								textAlign={'left'}
+							>
 								{"Education level: " + fields['Education level']}
 							</Typography>
-							<Typography fontSize={'1rem'} variant={'body1'} marginTop={.5} textAlign={'left'}>
+							<Typography
+								fontSize={'1rem'}
+								variant={'body1'}
+								marginTop={.5}
+								textAlign={'left'}
+							>
 								{"Income class: " + fields['Income class']}
 							</Typography>
 						</Box>
@@ -154,49 +210,115 @@ const PersonCard = ({ person, isSelected, onSelectChange }) => {
 							},
 						}}
 					>
-						<SectionTitle title="Psychographic Characteristics" />
-						<DetailItem label="Limbic Types" value={fields['Limbic Types']} />
-						<DetailItem label="Enneagram" value={fields['Enneagram']} />
-						<DetailItem label="Myers-Briggs" value={fields['Myers-Briggs']} />
-						<DetailItem label="Spiral Dynamics" value={fields['Spiral Dynamics']} />
-						<DetailItem label="Values and beliefs" value={fields['Values and beliefs']} />
-						<DetailItem label="Lifestyle" value={fields['Lifestyle']} />
+						<SectionTitle title='Psychographic Characteristics'/>
+						<DetailItem
+							label='Limbic Types'
+							value={fields['Limbic Types']}
+						/>
+						<DetailItem
+							label='Enneagram'
+							value={fields['Enneagram']}
+						/>
+						<DetailItem
+							label='Myers-Briggs'
+							value={fields['Myers-Briggs']}
+						/>
+						<DetailItem
+							label='Spiral Dynamics'
+							value={fields['Spiral Dynamics']}
+						/>
+						<DetailItem
+							label='Values and beliefs'
+							value={fields['Values and beliefs']}
+						/>
+						<DetailItem
+							label='Lifestyle'
+							value={fields['Lifestyle']}
+						/>
 
-						<SectionTitle title="Media Usage" />
-						<DetailItem label="Preferred communication channels" value={fields['Preferred communication channels (Social Media, Email, traditional media etc.)']} />
-						<DetailItem label="Device usage" value={fields['Device usage (Smartphone, Desktop, Tablet)']} />
-						<DetailItem label="Online behavior" value={fields['Online behavior (shopping preferences, sources of information)']} />
+						<SectionTitle title='Media Usage'/>
+						<DetailItem
+							label='Preferred communication channels'
+							value={fields['Preferred communication channels (Social Media, Email, traditional media etc.)']}
+						/>
+						<DetailItem
+							label='Device usage'
+							value={fields['Device usage (Smartphone, Desktop, Tablet)']}
+						/>
+						<DetailItem
+							label='Online behavior'
+							value={fields['Online behavior (shopping preferences, sources of information)']}
+						/>
 
-						<SectionTitle title="Buying Behavior" />
-						<DetailItem label="Buying motives" value={fields['Buying motives']} />
-						<DetailItem label="Buying barriers" value={fields['Buying barriers']} />
-						<DetailItem label="Decision-making process" value={fields['Decision-making process (How does the persona make purchase decisions?)']} />
-						<DetailItem label="Brand preferences" value={fields['Brand preferences']} />
+						<SectionTitle title='Buying Behavior'/>
+						<DetailItem
+							label='Buying motives'
+							value={fields['Buying motives']}
+						/>
+						<DetailItem
+							label='Buying barriers'
+							value={fields['Buying barriers']}
+						/>
+						<DetailItem
+							label='Decision-making process'
+							value={fields['Decision-making process (How does the persona make purchase decisions?)']}
+						/>
+						<DetailItem
+							label='Brand preferences'
+							value={fields['Brand preferences']}
+						/>
 
-						<SectionTitle title="Needs and challenges" />
-						<DetailItem label="What does the persona need?" value={fields['What does the persona need?']} />
-						<DetailItem label="What problems or challenges does it have?" value={fields['What problems or challenges does it have?']} />
-						<DetailItem label="How can your product or service help?" value={fields['How can your product or service help?']} />
+						<SectionTitle title='Needs and challenges'/>
+						<DetailItem
+							label='What does the persona need?'
+							value={fields['What does the persona need?']}
+						/>
+						<DetailItem
+							label='What problems or challenges does it have?'
+							value={fields['What problems or challenges does it have?']}
+						/>
+						<DetailItem
+							label='How can your product or service help?'
+							value={fields['How can your product or service help?']}
+						/>
 
-						<SectionTitle title="Goals and Dreams" />
-						<DetailItem label="Short- and long-term goals" value={fields['Short- and long-term goals']} />
-						<DetailItem label="Personal or professional aspirations" value={fields['Personal or professional aspirations']} />
+						<SectionTitle title='Goals and Dreams'/>
+						<DetailItem
+							label='Short- and long-term goals'
+							value={fields['Short- and long-term goals']}
+						/>
+						<DetailItem
+							label='Personal or professional aspirations'
+							value={fields['Personal or professional aspirations']}
+						/>
 
-						<SectionTitle title="Communication Preferences" />
-						<DetailItem label="Tone and style of address" value={fields['Tone and style of address that resonates best']} />
-						<DetailItem label="Visual preferences" value={fields['Visual preferences (colors, images, design)']} />
-						<DetailItem label="Archetypes" value={fields['Archetypes']} />
-						<DetailItem label="Key convincing messages" value={fields['What are the key messages that would convince the persona?']} />
+						<SectionTitle title='Communication Preferences'/>
+						<DetailItem
+							label='Tone and style of address'
+							value={fields['Tone and style of address that resonates best']}
+						/>
+						<DetailItem
+							label='Visual preferences'
+							value={fields['Visual preferences (colors, images, design)']}
+						/>
+						<DetailItem
+							label='Archetypes'
+							value={fields['Archetypes']}
+						/>
+						<DetailItem
+							label='Key convincing messages'
+							value={fields['What are the key messages that would convince the persona?']}
+						/>
 					</Box>
 				</Box>
 			</Box>
-			<Box sx={{ mt: 2, display: 'flex', alignItems: 'center', width: '100%' }}>
+			<Box sx={{mt: 2, display: 'flex', alignItems: 'center', width: '100%'}}>
 				<Checkbox
 					checked={isSelected}
 					onChange={(event) => onSelectChange(id, event.target.checked)}
-					color="primary"
+					color='primary'
 				/>
-				<Typography variant="body2">Select Person</Typography>
+				<Typography variant='body2'>Select Person</Typography>
 			</Box>
 		</Box>
 	);

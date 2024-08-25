@@ -1,22 +1,48 @@
-import Airtable from "airtable";
+import {LINK} from './variables';
 
 export async function getAllRecords() {
-	return await Airtable.base(process.env.REACT_APP_AIRTABLE_BASE).table('Persons list').select({
-		sort: [{ field: 'Created time', direction: 'asc' }]
-	}).all()
+	const res = await fetch(`${LINK}/persons`, {
+		headers: {
+			"Content-Type": "application/json"
+		}
+	});
+	const data = await res.json();
+	return data;
+
 }
 
 export async function getRecordById(id) {
-	return await Airtable.base(process.env.REACT_APP_AIRTABLE_BASE).table('Persons list').find(id)
+	const res = await fetch(`${LINK}/persons/${id}`, {
+		headers: {
+			"Content-Type": "application/json"
+		}
+	});
+	const data = await res.json();
+	return data;
 }
 
-export async function updateRecord(id, data){
-	return await Airtable.base(process.env.REACT_APP_AIRTABLE_BASE).table('Persons list').update(id, data)
+export async function updateRecord(id, data) {
+	const res = await fetch(`${LINK}/persons/${id}`, {
+		method: 'PUT',
+		headers: {
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify({data})
+	});
+	const fData = await res.json();
+	return fData;
 }
 
-export async function deleteRecord(id){
-	await Airtable.base(process.env.REACT_APP_AIRTABLE_BASE).table('Persons list').destroy(id)
+export async function deleteRecord(id) {
+	const res = await fetch(`${LINK}/persons/${id}`, {
+		method: 'DELETE',
+		headers: {
+			"Content-Type": "application/json"
+		}
+	});
+	const data = await res.json();
+	return data;
 }
-export async function createRecord(data){
-	await Airtable.base(process.env.REACT_APP_AIRTABLE_BASE).table('Persons list').create(data)
+
+export async function createRecord(data) {
 }
