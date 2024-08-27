@@ -1,18 +1,24 @@
 {
   "files": {
-    "main.css": "/persons/static/css/main.71111105.css",
-    "main.js": "/persons/static/js/main.35e50112.js",
+    "main.css": "/persons/static/css/main.cf52861f.css",
+    "main.js": "/persons/static/js/main.e74c0e99.js",
+    "static/media/Rajdhani-Bold.ttf": "/persons/static/media/Rajdhani-Bold.a5a831c1b8c8eb1b83ff.ttf",
+    "static/media/Rajdhani-SemiBold.ttf": "/persons/static/media/Rajdhani-SemiBold.7d928c2670caba5b9dd6.ttf",
+    "static/media/Rajdhani-Medium.ttf": "/persons/static/media/Rajdhani-Medium.69a9f7bccb45c01931a2.ttf",
+    "static/media/Rajdhani-Light.ttf": "/persons/static/media/Rajdhani-Light.7f948ddb3029f1193092.ttf",
+    "static/media/Rajdhani-Regular.ttf": "/persons/static/media/Rajdhani-Regular.148606c1eb703f6e597a.ttf",
     "static/media/cartoon-office-girl.png": "/persons/static/media/cartoon-office-girl.8f253b0095c26cbb4c7c.png",
     "static/media/cartoon-office-boy.png": "/persons/static/media/cartoon-office-boy.fde640b21e5f9b353085.png",
     "static/media/pers-1.webp": "/persons/static/media/pers-1.a748d4a6fea1b0c2f639.webp",
     "static/media/pers-2.webp": "/persons/static/media/pers-2.96f0853c6a2cf7ab3d06.webp",
+    "static/media/kivi-logo.png": "/persons/static/media/kivi-logo.e63f59931d7fe76deebe.png",
     "static/media/pers-3.webp": "/persons/static/media/pers-3.1f43dbae1c3ce8835117.webp",
     "index.html": "/persons/index.html",
-    "main.71111105.css.map": "/persons/static/css/main.71111105.css.map",
-    "main.35e50112.js.map": "/persons/static/js/main.35e50112.js.map"
+    "main.cf52861f.css.map": "/persons/static/css/main.cf52861f.css.map",
+    "main.e74c0e99.js.map": "/persons/static/js/main.e74c0e99.js.map"
   },
   "entrypoints": [
-    "static/css/main.71111105.css",
-    "static/js/main.35e50112.js"
+    "static/css/main.cf52861f.css",
+    "static/js/main.e74c0e99.js"
   ]
 }
