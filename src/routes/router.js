@@ -13,7 +13,6 @@ import LoginPage from "../pages/LoginPage";
 const router = createBrowserRouter([
 	{
 		path: "/",
-		// element: <MainLayout/>,
 		element: <PrivateRoute component={MainLayout}/>,
 		errorElement: <NotFound/>,
 		children: [

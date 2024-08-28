@@ -11,7 +11,8 @@ import {
 	TextField
 } from "@mui/material";
 import {toast} from "react-toastify";
-import Loader from "./Loader";
+import {colors} from "../assets/styles/colors";
+import {loginInputStyles} from "../services/inputStyles";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
 	return <Slide
@@ -25,15 +26,6 @@ const DialogLogin = ({onSubmit, onClose, isOpen}) => {
 	}
 
 	const [loading, setLoading] = useState(false);
-
-	const inputStyles = {
-		'& .MuiInputBase-input': {color: '#fff'},
-		'& .MuiInput-underline:before': {borderBottomColor: '#B3B8CD'},
-		'& .MuiInput-underline:after': {borderBottomColor: '#fff'},
-		'& .MuiInputLabel-root': {color: '#B3B8CD'},
-		'& .MuiInputLabel-root.Mui-focused': {color: '#fff'},
-		'& .MuiInputBase-input::placeholder': {color: '#B3B8CD'},
-	};
 
 	async function submitHandler(event) {
 		setLoading(true);
@@ -62,9 +54,8 @@ const DialogLogin = ({onSubmit, onClose, isOpen}) => {
 			open={isOpen}
 			PaperProps={{
 				sx: {
-					border: '1px solid #B3B8CD',
-					backgroundColor: '#231E39',
-					color: '#fff',
+					backgroundColor: colors.darkGrey,
+					color: colors.mainGreen,
 					borderRadius: '20px',
 					padding: '1rem 5rem',
 				},
@@ -74,12 +65,12 @@ const DialogLogin = ({onSubmit, onClose, isOpen}) => {
 		>
 			<DialogTitle sx={{fontWeight: 'bold', mb: 0}}>Login</DialogTitle>
 			<DialogContent>
-				<DialogContentText sx={{color: '#B3B8CD', mb: 5}}>
+				<DialogContentText sx={{color: colors.mainGreen, mb: 5}}>
 					Please login to get access
 				</DialogContentText>
 
 				<TextField
-					sx={inputStyles}
+					sx={loginInputStyles}
 					autoFocus
 					margin='dense'
 					id='username'
@@ -91,7 +82,7 @@ const DialogLogin = ({onSubmit, onClose, isOpen}) => {
 				/>
 
 				<TextField
-					sx={inputStyles}
+					sx={loginInputStyles}
 					margin='dense'
 					id='password'
 					name='password'
@@ -106,14 +97,36 @@ const DialogLogin = ({onSubmit, onClose, isOpen}) => {
 					<Button
 						disabled={loading}
 						variant={'outlined'}
-						color={'warning'}
 						onClick={closeHandler}
+						sx={{
+							borderRadius: '.5rem',
+							color: colors.silver,
+							transition: '.2s',
+							border:`1px solid ${colors.silver}`,
+							minWidth: '5rem',
+							'&:hover': {
+								backgroundColor: colors.silver,
+								color: colors.black,
+								border:`1px solid ${colors.silver}`,
+							}
+						}}
 					>Cancel</Button>
 					<Button
 						disabled={loading}
 						variant={'outlined'}
-						color={'info'}
-						sx={{marginLeft: '2rem!important'}}
+						sx={{
+							marginLeft: '1.5rem!important',
+							borderRadius: '.5rem',
+							color: colors.black,
+							border:`1px solid ${colors.mainGreen}`,
+							minWidth: '5rem',
+							backgroundColor: colors.mainGreen,
+							'&:hover': {
+								backgroundColor: colors.red,
+								color: colors.black,
+								border:`1px solid ${colors.red}`,
+							}
+						}}
 						type='submit'
 					>Login</Button>
 

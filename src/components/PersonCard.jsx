@@ -3,6 +3,7 @@ import {Box, Checkbox, Typography} from "@mui/material";
 import officeBoy from '../assets/images/cartoon-office-boy.png';
 import officeGirl from '../assets/images/cartoon-office-girl.png';
 import { useNavigate} from "react-router-dom";
+import {colors} from "../assets/styles/colors";
 
 const PersonCard = ({person, isSelected, onSelectChange}) => {
 	const {fields, id} = person;
@@ -14,6 +15,7 @@ const PersonCard = ({person, isSelected, onSelectChange}) => {
 				fontSize='.85rem'
 				fontWeight='bold'
 				component='span'
+				color={colors.mainGreen80}
 			>{label}: </Typography>
 			<Typography
 				fontSize='.85rem'
@@ -28,7 +30,7 @@ const PersonCard = ({person, isSelected, onSelectChange}) => {
 			fontWeight='bold'
 			mt={1}
 			mb={.5}
-			color='#C400D7'
+			color={colors.mainGreen}
 		>
 			{title}
 		</Typography>
@@ -67,7 +69,7 @@ const PersonCard = ({person, isSelected, onSelectChange}) => {
 							width: '100%',
 							height: '100%',
 							backfaceVisibility: 'hidden',
-							border: '1px solid silver',
+							border: `1px solid ${colors.mainGreen80}`,
 							borderRadius: '25px',
 							overflow: 'hidden',
 							display: 'flex',
@@ -76,7 +78,7 @@ const PersonCard = ({person, isSelected, onSelectChange}) => {
 					>
 						<Box
 							sx={{
-								backgroundColor: "#231E39",
+								backgroundColor: colors.black,
 								flexGrow: 3,
 								padding: '25px',
 								color: '#B3B8CD',
@@ -86,7 +88,7 @@ const PersonCard = ({person, isSelected, onSelectChange}) => {
 							<Box
 								sx={{
 									margin: '0 auto',
-									border: '1px solid #C400D7',
+									border: `1px solid ${colors.mainGreen}`,
 									width: '140px',
 									height: '140px',
 									borderRadius: '50%',
@@ -116,6 +118,7 @@ const PersonCard = ({person, isSelected, onSelectChange}) => {
 								variant='h4'
 								marginTop={1}
 								fontWeight={'bold'}
+								sx={{color: colors.mainGreen}}
 							>
 								{fields['Name']}
 							</Typography>
@@ -123,12 +126,14 @@ const PersonCard = ({person, isSelected, onSelectChange}) => {
 								fontSize={'1rem'}
 								fontWeight={'bold'}
 								mt={.5}
+								sx={{color: colors.mainGreen}}
 							>
 								{fields['Place of residence (city, country, region)']}
 							</Typography>
 							<Typography
 								fontSize={'1rem'}
 								mt={.5}
+								sx={{color: colors.silver}}
 							>
 								{"Age: " + fields['Age'] + ", " + fields['Job title']}
 							</Typography>
@@ -137,7 +142,7 @@ const PersonCard = ({person, isSelected, onSelectChange}) => {
 								marginTop={1}
 								textAlign={'left'}
 							>
-								{"Industry: " + fields['Industry']}
+								<Typography color={colors.mainGreen80} variant={'span'}>Industry: </Typography><Typography variant={'span'}>{fields['Industry']}</Typography>
 							</Typography>
 							<Typography
 								fontSize={'1rem'}
@@ -145,7 +150,7 @@ const PersonCard = ({person, isSelected, onSelectChange}) => {
 								variant={'body1'}
 								textAlign={'left'}
 							>
-								{'Career stage: ' + fields['Career stage']}
+								<Typography color={colors.mainGreen80} variant={'span'}>Career stage: </Typography><Typography variant={'span'}>{fields['Career stage']}</Typography>
 							</Typography>
 							<Typography
 								fontSize={'1rem'}
@@ -153,7 +158,7 @@ const PersonCard = ({person, isSelected, onSelectChange}) => {
 								marginTop={.5}
 								textAlign={'left'}
 							>
-								{"Working environment: " + fields['Working environment']}
+								<Typography color={colors.mainGreen80} variant={'span'}>Working environment: </Typography><Typography variant={'span'}>{fields['Working environment']}</Typography>
 							</Typography>
 							<Typography
 								fontSize={'1rem'}
@@ -161,28 +166,24 @@ const PersonCard = ({person, isSelected, onSelectChange}) => {
 								marginTop={.5}
 								textAlign={'left'}
 							>
-								{"Education level: " + fields['Education level']}
+								<Typography color={colors.mainGreen80} variant={'span'}>Education level: </Typography><Typography variant={'span'}>{fields['Education level']}</Typography>
 							</Typography>
 							<Typography
 								fontSize={'1rem'}
-								variant={'body1'}
+								variant={"body1"}
 								marginTop={.5}
 								textAlign={'left'}
 							>
-								{"Income class: " + fields['Income class']}
+								<Typography color={colors.mainGreen80} variant={'span'}>Income class: </Typography><Typography variant={'span'}>{fields['Income class']}</Typography>
 							</Typography>
 						</Box>
 						<Box
 							sx={{
-								backgroundColor: "#1F1A36",
+								backgroundColor: colors.black,
 								height: '5%',
 								padding: '20px',
 								color: '#B3B8CD',
 								textAlign: 'center',
-								transition: '.3s',
-								"&:hover": {
-									backgroundColor: "#1F1A36dd",
-								}
 							}}
 						>
 						</Box>
@@ -196,7 +197,7 @@ const PersonCard = ({person, isSelected, onSelectChange}) => {
 							height: '95%',
 							backfaceVisibility: 'hidden',
 							transform: 'rotateY(180deg)',
-							backgroundColor: "#231E39",
+							backgroundColor: colors.black,
 							borderRadius: '25px',
 							padding: '20px',
 							color: '#B3B8CD',
@@ -205,7 +206,7 @@ const PersonCard = ({person, isSelected, onSelectChange}) => {
 								width: '8px',
 							},
 							'&::-webkit-scrollbar-thumb': {
-								backgroundColor: '#C400D7',
+								backgroundColor: colors.mainGreen50,
 								borderRadius: '4px',
 							},
 						}}
@@ -312,13 +313,12 @@ const PersonCard = ({person, isSelected, onSelectChange}) => {
 					</Box>
 				</Box>
 			</Box>
-			<Box sx={{mt: 2, display: 'flex', alignItems: 'center', width: '100%'}}>
+			<Box sx={{mt: 2, display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'center'}}>
 				<Checkbox
 					checked={isSelected}
 					onChange={(event) => onSelectChange(id, event.target.checked)}
-					color='primary'
 				/>
-				<Typography variant='body2'>Select Person</Typography>
+				<Typography variant='body2' color={colors.mainGreen}>Select Person</Typography>
 			</Box>
 		</Box>
 	);

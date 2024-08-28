@@ -6,6 +6,8 @@ import PersonCard from "../components/PersonCard";
 import {askGpt} from "../services/chatGpt";
 import FormattedTextDisplay from "../components/FormattedTextDisplay";
 import Loader from "../components/Loader";
+import {colors} from "../assets/styles/colors";
+import {personsInputStyles} from "../services/inputStyles";
 
 const Persons = () => {
 	const {data = [], error, isLoading, mutate} = useSWR('/persons', () => getAllRecords());
@@ -42,12 +44,12 @@ const Persons = () => {
 	};
 
 	return (
-		<Container
+		<Box
 			sx={{
-				height: '100vh',
+				// height: '100%',
 				overflow: 'auto',
-				padding: '2rem',
-				// width: '100%'
+				padding: '2rem 7rem',
+				backgroundColor: colors.darkGrey
 			}}
 		>
 			{isLoading ? <Loader/> : <Box
@@ -72,17 +74,24 @@ const Persons = () => {
 			<Box sx={{mt: 2, mb: 4}}>
 				<TextField
 					fullWidth
-					variant='outlined'
 					placeholder='Enter your request'
 					value={requestText}
 					onChange={handleRequestChange}
-					sx={{mb: 2}}
+					sx={personsInputStyles}
 					disabled={loading}
 				/>
 				<Button
 					variant='contained'
-					color='primary'
 					onClick={handleSendRequest}
+					sx={{backgroundColor: colors.mainGreen50, color: colors.black, marginTop: '1rem',
+						'&:disabled': {
+						backgroundColor: colors.silver,
+							color: colors.black
+						},
+						'&:hover': {
+							backgroundColor: colors.mainGreen80
+						},
+					}}
 					disabled={!requestText.trim() || Object.values(selectedPersons).every(v => !v) || loading}
 				>
 					{loading ? 'Loading....' : 'Send Request using Selected Persons'}
@@ -90,19 +99,21 @@ const Persons = () => {
 				<Box
 					sx={{
 						marginTop: '3rem',
-						backgroundColor: "silver",
+						backgroundColor: colors.darkGrey,
 						maxHeight: '20rem',
 						minHeight: '2rem',
 						borderRadius: '12px',
 						padding: '10px',
 						overflow: 'auto',
-						transition: '1s'
+						transition: '1s',
+						color: colors.white,
+						border: `1px solid ${colors.mainGreen50}`
 					}}
 				>
 					{loading ? <Loader/> : <FormattedTextDisplay>{resultText}</FormattedTextDisplay>}
 				</Box>
 			</Box>
-		</Container>
+		</Box>
 	);
 };
 

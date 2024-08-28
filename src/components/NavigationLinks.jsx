@@ -7,6 +7,8 @@ import {Link, useLocation, useNavigate} from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 import authService from "../services/auth";
 import DialogLogout from "./DialogLogout";
+import {colors} from "../assets/styles/colors";
+import LinkCustom from "./LinkCustom";
 
 const LINKS = [
 	{name: 'Persons', href: '/persons', icon: PeopleAltIcon},
@@ -17,7 +19,7 @@ const LINKS = [
 const NavigationLinks = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
-	const [modalOpen, setModalOpen] = useState(false)
+	const [modalOpen, setModalOpen] = useState(false);
 
 	function logoutHandler() {
 		authService.logout();
@@ -41,48 +43,27 @@ const NavigationLinks = () => {
 				{LINKS.map((link) => {
 					const LinkIcon = link.icon;
 					return (
-						<Link
+						<LinkCustom
+							key={link.name}
+							Icon={LinkIcon}
+							name={link.name}
+							active={location.pathname === link.href}
 							to={link.href}
-							key={link.href}
-						>
-							<ListItem
-								disablePadding
-								sx={location.pathname === link.href ? {backgroundColor: '#ffffff33'} : {backgroundColor: 'none'}}
-							>
-								<ListItemButton>
-									<ListItemIcon sx={{minWidth: '2rem', color: '#B3B8CD'}}>
-										<LinkIcon/>
-									</ListItemIcon>
-									<ListItemText
-										primary={link.name}
-										sx={{color: '#B3B8CD', textDecoration: 'none'}}
-									/>
-								</ListItemButton>
-							</ListItem>
-						</Link>
+						/>
 					);
 				})}
 			</Box>
-			<Link
+			<LinkCustom
+				Icon={LogoutIcon}
+				name={'Logout'}
 				to={'#'}
-				key={'logout'}
-				onClick={()=> setModalOpen(true)}
-			>
-				<ListItem
-					disablePadding
-				>
-					<ListItemButton>
-						<ListItemIcon sx={{minWidth: '2rem', color: '#B3B8CD'}}>
-							<LogoutIcon/>
-						</ListItemIcon>
-						<ListItemText
-							primary={'Logout'}
-							sx={{color: '#B3B8CD', textDecoration: 'none'}}
-						/>
-					</ListItemButton>
-				</ListItem>
-			</Link>
-			<DialogLogout onSubmit={logoutHandler} onClose={()=> setModalOpen(false)} isOpen={modalOpen} />
+				onClick={() => setModalOpen(true)}
+			/>
+			<DialogLogout
+				onSubmit={logoutHandler}
+				onClose={() => setModalOpen(false)}
+				isOpen={modalOpen}
+			/>
 		</Box>
 	);
 };

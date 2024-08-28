@@ -15,9 +15,9 @@ export const AuthProvider = ({ children }) => {
 				setUser(currentUser);
 				try {
 					// Попытка обновить токен при инициализации
-					await authService.refreshToken();
+					const res = await authService.refreshToken();
 				} catch (error) {
-					console.log(555, error);
+					console.log(error);
 					// Если не удалось обновить токен, выполняем выход
 					await logout();
 				}
@@ -48,7 +48,6 @@ export const AuthProvider = ({ children }) => {
 				try {
 					await authService.refreshToken();
 				} catch (error) {
-					console.log(444, error);
 					await logout();
 				}
 			}
@@ -63,6 +62,7 @@ export const AuthProvider = ({ children }) => {
 		const interceptor = api.interceptors.response.use(
 			(response) => response,
 			async (error) => {
+				console.log({error}, 1);
 				if (error.response && error.response.status === 401 && user) {
 					await logout();
 				}
