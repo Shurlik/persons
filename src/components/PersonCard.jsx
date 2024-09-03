@@ -2,42 +2,18 @@ import React from 'react';
 import {Box, Checkbox, Typography} from "@mui/material";
 import officeBoy from '../assets/images/cartoon-office-boy.png';
 import officeGirl from '../assets/images/cartoon-office-girl.png';
-import { useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {colors} from "../assets/styles/colors";
+import CardSubtitle from "./CardSubtitle";
+import SectionTitle from "./SectionTitle";
+import DetailItem from "./DetailItem";
 
 const PersonCard = ({person, isSelected, onSelectChange}) => {
 	const {fields, id} = person;
 	const navigate = useNavigate();
 
-	const DetailItem = ({label, value}) => (
-		<Box sx={{mb: 1.5}}>
-			<Typography
-				fontSize='.85rem'
-				fontWeight='bold'
-				component='span'
-				color={colors.mainGreen80}
-			>{label}: </Typography>
-			<Typography
-				fontSize='.85rem'
-				component='span'
-			>{value}</Typography>
-		</Box>
-	);
-
-	const SectionTitle = ({title}) => (
-		<Typography
-			variant='h6'
-			fontWeight='bold'
-			mt={1}
-			mb={.5}
-			color={colors.mainGreen}
-		>
-			{title}
-		</Typography>
-	);
-
 	function detailsHandler() {
-		navigate(`/persons/${id}`);
+		// navigate(`/persons/${id}`);
 	}
 
 	return (
@@ -69,7 +45,6 @@ const PersonCard = ({person, isSelected, onSelectChange}) => {
 							width: '100%',
 							height: '100%',
 							backfaceVisibility: 'hidden',
-							border: `1px solid ${colors.mainGreen80}`,
 							borderRadius: '25px',
 							overflow: 'hidden',
 							display: 'flex',
@@ -81,14 +56,13 @@ const PersonCard = ({person, isSelected, onSelectChange}) => {
 								backgroundColor: colors.black,
 								flexGrow: 3,
 								padding: '25px',
-								color: '#B3B8CD',
+								color: colors.white,
 								textAlign: 'center'
 							}}
 						>
 							<Box
 								sx={{
 									margin: '0 auto',
-									border: `1px solid ${colors.mainGreen}`,
 									width: '140px',
 									height: '140px',
 									borderRadius: '50%',
@@ -109,7 +83,7 @@ const PersonCard = ({person, isSelected, onSelectChange}) => {
 									<Box
 										component={'img'}
 										alt={'user image'}
-										src={fields.Gender === 'Female' ? officeGirl : officeBoy}
+										src={fields['Gender'] === 'Female' ? officeGirl : officeBoy}
 										sx={{width: '100%'}}
 									/>
 								</Box>
@@ -118,7 +92,7 @@ const PersonCard = ({person, isSelected, onSelectChange}) => {
 								variant='h4'
 								marginTop={1}
 								fontWeight={'bold'}
-								sx={{color: colors.mainGreen}}
+								sx={{color: colors.white}}
 							>
 								{fields['Name']}
 							</Typography>
@@ -126,63 +100,44 @@ const PersonCard = ({person, isSelected, onSelectChange}) => {
 								fontSize={'1rem'}
 								fontWeight={'bold'}
 								mt={.5}
-								sx={{color: colors.mainGreen}}
+								sx={{color: colors.white}}
 							>
-								{fields['Place of residence (city, country, region)']}
+								{fields['Place of residence']}
 							</Typography>
 							<Typography
 								fontSize={'1rem'}
 								mt={.5}
-								sx={{color: colors.silver}}
+								sx={{color: colors.white, marginBottom: '1rem'}}
 							>
 								{"Age: " + fields['Age'] + ", " + fields['Job title']}
 							</Typography>
-							<Typography
-								fontSize={'1rem'}
-								marginTop={1}
-								textAlign={'left'}
-							>
-								<Typography color={colors.mainGreen80} variant={'span'}>Industry: </Typography><Typography variant={'span'}>{fields['Industry']}</Typography>
-							</Typography>
-							<Typography
-								fontSize={'1rem'}
-								marginTop={.5}
-								variant={'body1'}
-								textAlign={'left'}
-							>
-								<Typography color={colors.mainGreen80} variant={'span'}>Career stage: </Typography><Typography variant={'span'}>{fields['Career stage']}</Typography>
-							</Typography>
-							<Typography
-								fontSize={'1rem'}
-								variant={'body1'}
-								marginTop={.5}
-								textAlign={'left'}
-							>
-								<Typography color={colors.mainGreen80} variant={'span'}>Working environment: </Typography><Typography variant={'span'}>{fields['Working environment']}</Typography>
-							</Typography>
-							<Typography
-								fontSize={'1rem'}
-								variant={'body1'}
-								marginTop={.5}
-								textAlign={'left'}
-							>
-								<Typography color={colors.mainGreen80} variant={'span'}>Education level: </Typography><Typography variant={'span'}>{fields['Education level']}</Typography>
-							</Typography>
-							<Typography
-								fontSize={'1rem'}
-								variant={"body1"}
-								marginTop={.5}
-								textAlign={'left'}
-							>
-								<Typography color={colors.mainGreen80} variant={'span'}>Income class: </Typography><Typography variant={'span'}>{fields['Income class']}</Typography>
-							</Typography>
+							<CardSubtitle
+								header={'Industry'}
+								text={fields['Industry']}
+							/>
+							<CardSubtitle
+								header={'Career stage'}
+								text={fields['Career stage']}
+							/>
+							<CardSubtitle
+								header={'Working environment'}
+								text={fields['Working environment']}
+							/>
+							<CardSubtitle
+								header={'Education level'}
+								text={fields['Education level']}
+							/>
+							<CardSubtitle
+								header={'Income class'}
+								text={fields['Income class']}
+							/>
 						</Box>
 						<Box
 							sx={{
 								backgroundColor: colors.black,
 								height: '5%',
 								padding: '20px',
-								color: '#B3B8CD',
+								color: colors.white,
 								textAlign: 'center',
 							}}
 						>
@@ -200,13 +155,13 @@ const PersonCard = ({person, isSelected, onSelectChange}) => {
 							backgroundColor: colors.black,
 							borderRadius: '25px',
 							padding: '20px',
-							color: '#B3B8CD',
+							color: colors.white,
 							overflow: 'auto',
 							'&::-webkit-scrollbar': {
 								width: '8px',
 							},
 							'&::-webkit-scrollbar-thumb': {
-								backgroundColor: colors.mainGreen50,
+								backgroundColor: colors.silver,
 								borderRadius: '4px',
 							},
 						}}
@@ -221,94 +176,108 @@ const PersonCard = ({person, isSelected, onSelectChange}) => {
 							value={fields['Enneagram']}
 						/>
 						<DetailItem
-							label='Myers-Briggs'
-							value={fields['Myers-Briggs']}
+							label='Myers-Briggs (MBTI)'
+							value={fields['Myers-Briggs (MBTI)']}
+						/>
+						<DetailItem
+							label='DISG'
+							value={fields['DISG']}
+						/>
+						<DetailItem
+							label='Sinus-Milieus'
+							value={fields['Sinus-Milieus']}
 						/>
 						<DetailItem
 							label='Spiral Dynamics'
 							value={fields['Spiral Dynamics']}
 						/>
 						<DetailItem
-							label='Values and beliefs'
-							value={fields['Values and beliefs']}
+							label='Hobbies and Interests'
+							value={fields['Hobbies and Interests']}
 						/>
 						<DetailItem
-							label='Lifestyle'
-							value={fields['Lifestyle']}
+							label='TV Shows / Books'
+							value={fields['TV Shows / Books']}
+						/>
+
+						<SectionTitle title='Values and Pain Points'/>
+						<DetailItem
+							label='Important Values'
+							value={fields['Important Values']}
+						/>
+						<DetailItem
+							label='Pain Points'
+							value={fields['Pain Points']}
+						/>
+						<DetailItem
+							label='Fears'
+							value={fields['Fears']}
+						/>
+
+						<SectionTitle title='Goals and Gains'/>
+						<DetailItem
+							label='Goals and Dreams'
+							value={fields['Goals and Dreams']}
+						/>
+						<DetailItem
+							label='Materialistic Gains'
+							value={fields['Materialistic Gains']}
+						/>
+						<DetailItem
+							label='Emotional Win'
+							value={fields['Emotional Win']}
+						/>
+
+						<SectionTitle title='Brand Preferences'/>
+						<DetailItem
+							label='Brand-Values'
+							value={fields['Brand-Values']}
+						/>
+						<DetailItem
+							label='Brand-Examples'
+							value={fields['Brand-Examples']}
+						/>
+						<DetailItem
+							label='Brand Archetype'
+							value={fields['Brand Archetype']}
+						/>
+						<DetailItem
+							label='Brand-Magnet'
+							value={fields['Brand-Magnet']}
+						/>
+
+						<SectionTitle title='Buying Behavior'/>
+						<DetailItem
+							label='Buying Behavior'
+							value={fields['Buying Behavior']}
+						/>
+						<DetailItem
+							label='Buying motives'
+							value={fields['Buying Motives']}
+						/>
+						<DetailItem
+							label='Buying barriers'
+							value={fields['Buying Barriers']}
 						/>
 
 						<SectionTitle title='Media Usage'/>
 						<DetailItem
 							label='Preferred communication channels'
-							value={fields['Preferred communication channels (Social Media, Email, traditional media etc.)']}
+							value={fields['Preferred communication channels']}
 						/>
 						<DetailItem
 							label='Device usage'
-							value={fields['Device usage (Smartphone, Desktop, Tablet)']}
+							value={fields['Device usage']}
 						/>
 						<DetailItem
 							label='Online behavior'
-							value={fields['Online behavior (shopping preferences, sources of information)']}
+							value={fields['Online behavior']}
 						/>
 
-						<SectionTitle title='Buying Behavior'/>
+						<SectionTitle title='Elevator Pitch'/>
 						<DetailItem
-							label='Buying motives'
-							value={fields['Buying motives']}
-						/>
-						<DetailItem
-							label='Buying barriers'
-							value={fields['Buying barriers']}
-						/>
-						<DetailItem
-							label='Decision-making process'
-							value={fields['Decision-making process (How does the persona make purchase decisions?)']}
-						/>
-						<DetailItem
-							label='Brand preferences'
-							value={fields['Brand preferences']}
-						/>
-
-						<SectionTitle title='Needs and challenges'/>
-						<DetailItem
-							label='What does the persona need?'
-							value={fields['What does the persona need?']}
-						/>
-						<DetailItem
-							label='What problems or challenges does it have?'
-							value={fields['What problems or challenges does it have?']}
-						/>
-						<DetailItem
-							label='How can your product or service help?'
-							value={fields['How can your product or service help?']}
-						/>
-
-						<SectionTitle title='Goals and Dreams'/>
-						<DetailItem
-							label='Short- and long-term goals'
-							value={fields['Short- and long-term goals']}
-						/>
-						<DetailItem
-							label='Personal or professional aspirations'
-							value={fields['Personal or professional aspirations']}
-						/>
-
-						<SectionTitle title='Communication Preferences'/>
-						<DetailItem
-							label='Tone and style of address'
-							value={fields['Tone and style of address that resonates best']}
-						/>
-						<DetailItem
-							label='Visual preferences'
-							value={fields['Visual preferences (colors, images, design)']}
-						/>
-						<DetailItem
-							label='Archetypes'
-							value={fields['Archetypes']}
-						/>
-						<DetailItem
-							label='Key convincing messages'
-							value={fields['What are the key messages that would convince the persona?']}
+							label='Elevator Pitch'
+							value={fields['Elevator Pitch']}
 						/>
 					</Box>
 				</Box>
@@ -318,7 +287,10 @@ const PersonCard = ({person, isSelected, onSelectChange}) => {
 					checked={isSelected}
 					onChange={(event) => onSelectChange(id, event.target.checked)}
 				/>
-				<Typography variant='body2' color={colors.mainGreen}>Select Person</Typography>
+				<Typography
+					variant='body2'
+					color={colors.white}
+				>Select Person</Typography>
 			</Box>
 		</Box>
 	);

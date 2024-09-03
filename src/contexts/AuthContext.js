@@ -28,6 +28,19 @@ export const AuthProvider = ({ children }) => {
 		initAuth();
 	}, []);
 
+	useEffect(() => {
+		const intervalId = setInterval(async () => {
+			try {
+				await authService.refreshToken();
+			} catch (error) {
+				console.error('Failed to refresh token:', error);
+				// Возможно, имеет смысл уведомить пользователя, что сессия скоро завершится
+			}
+		}, 10 * 60 * 1000); // Обновление каждые 10 минут
+
+		return () => clearInterval(intervalId); // Очистка интервала при размонтировании компонента
+	}, []);
+
 	const login = async (username, password) => {
 		const data = await authService.login(username, password);
 		setUser(data.user);

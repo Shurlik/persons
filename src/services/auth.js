@@ -70,13 +70,11 @@ const authService = {
 			localStorage.setItem('accessToken', accessToken);
 			return accessToken;
 		} catch (error) {
-			console.log(2, {error});
 			if (error.response) {
 				switch (error.response.data.errorCode) {
 					case 'NO_REFRESH_TOKEN':
 					case 'INVALID_REFRESH_TOKEN':
 						// Perform logout if refresh token is invalid or missing
-						console.log(1);
 						await this.logout();
 						throw new Error('Please login');
 					default:
@@ -100,13 +98,9 @@ const authService = {
 api.interceptors.response.use(
 	(response) => response,
 	async (error) => {
-		console.log(3, {error}, {isRefreshing});
 		const originalRequest = error.config;
-		console.log('or: ', originalRequest._retry, {isRefreshing});
-		if (error.response.status === 401 && !originalRequest._retry) {
-			console.log(1);
+		if (error.response?.status === 401 && !originalRequest._retry) {
 			if (originalRequest._retry === undefined) {
-				console.log(4);
 				return Promise.reject('No refresh token');
 			}
 			if (isRefreshing) {
@@ -121,16 +115,12 @@ api.interceptors.response.use(
 			}
 			originalRequest._retry = true;
 			isRefreshing = true;
-			console.log(2, {isRefreshing}, originalRequest._retry);
-
 			try {
 				const accessToken = await authService.refreshToken();
-				console.log({accessToken});
 				api.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
 				processQueue(null, accessToken);
 				return api(originalRequest);
 			} catch (refreshError) {
-				console.log(123);
 				processQueue(refreshError, null);
 				// Logout user if token refresh fails
 				await authService.logout();

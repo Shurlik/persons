@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import useSWR from "swr";
 import {getAllRecords} from "../services/airtable";
-import {Box, Button, Container, TextField} from "@mui/material";
+import {Box, Button, TextField} from "@mui/material";
 import PersonCard from "../components/PersonCard";
 import {askGpt} from "../services/chatGpt";
 import FormattedTextDisplay from "../components/FormattedTextDisplay";
@@ -40,16 +40,14 @@ const Persons = () => {
 		setRequestText('');
 		setSelectedPersons({});
 		setLoading(false);
-
 	};
 
 	return (
 		<Box
 			sx={{
-				// height: '100%',
 				overflow: 'auto',
 				padding: '2rem 7rem',
-				backgroundColor: colors.darkGrey
+				backgroundColor: colors.darkGrey,
 			}}
 		>
 			{isLoading ? <Loader/> : <Box
@@ -57,9 +55,9 @@ const Persons = () => {
 					margin: '0 auto',
 					display: 'grid',
 					gridTemplateColumns: '1fr 1fr 1fr',
-					padding: '20px 0',
 					justifyContent: 'center',
-					gap: '20px',
+					gap: '10px',
+					maxWidth: '1200px'
 				}}
 			>
 				{data.map(p => (
@@ -83,9 +81,10 @@ const Persons = () => {
 				<Button
 					variant='contained'
 					onClick={handleSendRequest}
-					sx={{backgroundColor: colors.mainGreen50, color: colors.black, marginTop: '1rem',
+					sx={{
+						backgroundColor: colors.mainGreen50, color: colors.black, marginTop: '1rem',
 						'&:disabled': {
-						backgroundColor: colors.silver,
+							backgroundColor: colors.mainGreen10,
 							color: colors.black
 						},
 						'&:hover': {

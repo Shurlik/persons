@@ -11,11 +11,11 @@ const LinkCustom = ({name, Icon, active, to, onClick}) => {
 		>
 			<ListItem
 				disablePadding
-				sx={active ? {backgroundColor: colors.mainGreen10} : {backgroundColor: 'none'}}
+				sx={active ? {backgroundColor: colors.mainGreen, color: colors.black} : {backgroundColor: 'none'}}
 			>
 		<ListItemButton onClick={onClick}>
 			<ListItemIcon
-				sx={{
+				sx={active ? {color: colors.black, minWidth: '2rem'} : {
 					minWidth: '2rem', color: colors.mainGreen80
 				}}
 			>
@@ -23,7 +23,7 @@ const LinkCustom = ({name, Icon, active, to, onClick}) => {
 			</ListItemIcon>
 			<ListItemText
 				primary={name}
-				sx={{color: colors.mainGreen80, textDecoration: 'none', '&:hover': {
+				sx={active? {color: colors.black} : {color: colors.mainGreen80, textDecoration: 'none', '&:hover': {
 						color: colors.mainGreen
 					},
 				}}

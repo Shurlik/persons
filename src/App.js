@@ -5,7 +5,7 @@ import router from './routes/router';
 import {AuthProvider} from "./contexts/AuthContext";
 import 'react-toastify/dist/ReactToastify.css';
 import './assets/fonts/fonts.css';
-import {createTheme, ThemeProvider} from "@mui/material";
+import {Box, createTheme, ThemeProvider} from "@mui/material";
 import {colors} from "./assets/styles/colors";
 
 const theme = createTheme({
@@ -46,7 +46,7 @@ const theme = createTheme({
 		MuiCheckbox: {
 			styleOverrides: {
 				root: {
-					color: colors.mainGreen50,
+					color: colors.white,
 					'&.Mui-checked': {
 						color: colors.mainGreen,
 					},
@@ -60,13 +60,13 @@ function App() {
 	return (
 		<ThemeProvider theme={theme}>
 			<AuthProvider>
-				<div className={'wrapper'}>
+				<Box className={'wrapper'} sx={{height: '100h'}}>
 					<RouterProvider router={router}/>
 					<ToastContainer
 						position='top-left'
 						autoClose={1500}
 					/>
-				</div>
+				</Box>
 			</AuthProvider>
 		</ThemeProvider>
 	);

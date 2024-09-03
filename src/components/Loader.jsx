@@ -1,6 +1,7 @@
 import {Container} from "@mui/material";
 import CircularProgress, {
 } from '@mui/material/CircularProgress';
+import {colors} from '../assets/styles/colors'
 
 const Loader = ({props}) => {
 	return (
@@ -19,11 +20,11 @@ const Loader = ({props}) => {
 					>
 						<stop
 							offset="0%"
-							stopColor="#231E39"
+							stopColor={colors.mainGreen}
 						/>
 						<stop
 							offset="100%"
-							stopColor="#B3B8CD"
+							stopColor={colors.silver}
 						/>
 					</linearGradient>
 				</defs>

@@ -1,7 +1,5 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Box, Slide} from "@mui/material";
-import {styled} from "@mui/material/styles";
-import {toast} from "react-toastify";
 import {colors} from "../assets/styles/colors";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -28,7 +26,7 @@ const DialogLogout = ({onSubmit, onClose, isOpen}) => {
 				open={isOpen}
 				PaperProps={{
 					sx:{
-						border: '1px solid #B3B8CD',
+						border: `1px solid ${colors.grey}`,
 						backgroundColor: colors.darkGrey,
 						color: colors.mainGreen,
 						borderRadius: '20px',
@@ -66,14 +64,16 @@ const DialogLogout = ({onSubmit, onClose, isOpen}) => {
 						sx={{
 							marginLeft: '1.5rem!important',
 							borderRadius: '.5rem',
-							color: colors.mainGreen,
+							color: colors.black,
 							transition: '.2s',
 							border:`1px solid ${colors.mainGreen}`,
 							minWidth: '5rem',
+							backgroundColor: colors.mainGreen,
 							'&:hover': {
-								backgroundColor: colors.mainGreen,
+								backgroundColor: colors.red,
 								color: colors.black,
-								border:`1px solid ${colors.mainGreen}`,
+								border:`1px solid ${colors.red}`,
+
 							}
 						}}
 						type='submit'

@@ -8,6 +8,7 @@ import ManagementPage from "../pages/ManagementPage";
 import Creation from "../pages/CreationPage";
 import PrivateRoute from "./PrivateRoute";
 import LoginPage from "../pages/LoginPage";
+import SbsCreate from "../pages/SbsCreate";
 
 
 const router = createBrowserRouter([
@@ -33,9 +34,9 @@ const router = createBrowserRouter([
 				element: <ManagementPage/>,
 			},
 			{
-				path: "/create",
-				element: <Creation/>,
-			}
+				path: "/generate",
+				element: <SbsCreate/>,
+			},
 		]
 	},
 	{

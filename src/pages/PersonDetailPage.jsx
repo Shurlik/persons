@@ -25,7 +25,6 @@ const PersonDetail = () => {
 		setLoading(true);
 		try {
 			const res = await createDetails(id);
-			console.log(res);
 			await mutate();
 		} catch (e) {
 			console.log('error: ', e);

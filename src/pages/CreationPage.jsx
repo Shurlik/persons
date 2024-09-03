@@ -97,6 +97,7 @@ const PersonaCreation = () => {
 					<Box>
 						<Typography>Select the target country for your persona:</Typography>
 						<Select
+							variant={'filled'}
 							value={country}
 							onChange={handleCountryChange}
 							fullWidth
@@ -109,6 +110,7 @@ const PersonaCreation = () => {
 						</Select>
 						<Typography sx={{marginTop: '1rem'}}>Select the Gender of your persona:</Typography>
 						<Select
+							variant={'filled'}
 							value={gender}
 							onChange={handleGenderChange}
 							fullWidth
