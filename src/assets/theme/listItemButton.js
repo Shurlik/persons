@@ -1,0 +1,22 @@
+import { colors } from "../styles/colors";
+
+export default {
+	styleOverrides: {
+		root: {
+			alignItems: "center", // Вместо alignVertical
+			borderRadius: '.4rem',
+			padding: '.6rem 1rem',
+			'&:hover': {
+				backgroundColor: colors.orange, // Сохраняем белый фон при наведении
+			},
+			'&.Mui-selected': {
+				backgroundColor: colors.mainGreen80, // Цвет фона при выборе
+				color: colors.white,
+				// borderColor: colors.white,
+				'&:hover': {
+					backgroundColor: colors.orange, // Сохраняем белый фон при наведении на выбранный элемент
+				},
+			},
+		},
+	},
+};

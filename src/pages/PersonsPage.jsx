@@ -1,11 +1,13 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import useSWR from "swr";
 import {getAllRecords} from "../services/airtable";
-import {Box, Button, Container, TextField} from "@mui/material";
+import {Box, Button, TextField} from "@mui/material";
 import PersonCard from "../components/PersonCard";
 import {askGpt} from "../services/chatGpt";
 import FormattedTextDisplay from "../components/FormattedTextDisplay";
 import Loader from "../components/Loader";
+import {colors} from "../assets/styles/colors";
+import {personsInputStyles} from "../services/inputStyles";
 
 const Persons = () => {
 	const {data = [], error, isLoading, mutate} = useSWR('/persons', () => getAllRecords());
@@ -28,15 +30,8 @@ const Persons = () => {
 			.filter(([_, isSelected]) => isSelected)
 			.map(([id, _]) => id);
 
-		const profiles = [];
-		selectedIds.forEach((i) => {
-			const f = data.find(d => d.id === i);
-			profiles.push(f.fields);
-		});
-
 		try {
-			const res = await askGpt(requestText, profiles);
-			console.log({res});
+			const res = await askGpt(requestText, selectedIds);
 			setResultText(res);
 		} catch (e) {
 			console.log('error: ', e);
@@ -45,25 +40,24 @@ const Persons = () => {
 		setRequestText('');
 		setSelectedPersons({});
 		setLoading(false);
-
 	};
 
 	return (
-		<Container
+		<Box
 			sx={{
-				height: '100vh',
 				overflow: 'auto',
-				padding: '2rem'
+				padding: '2rem 7rem',
+				backgroundColor: colors.darkGrey,
 			}}
 		>
-			<Box
+			{isLoading ? <Loader/> : <Box
 				sx={{
 					margin: '0 auto',
 					display: 'grid',
 					gridTemplateColumns: '1fr 1fr 1fr',
-					padding: '20px 0',
 					justifyContent: 'center',
-					gap: '20px',
+					gap: '10px',
+					maxWidth: '1200px'
 				}}
 			>
 				{data.map(p => (
@@ -74,21 +68,29 @@ const Persons = () => {
 						onSelectChange={handleSelectChange}
 					/>
 				))}
-			</Box>
+			</Box>}
 			<Box sx={{mt: 2, mb: 4}}>
 				<TextField
 					fullWidth
-					variant='outlined'
 					placeholder='Enter your request'
 					value={requestText}
 					onChange={handleRequestChange}
-					sx={{mb: 2}}
+					sx={personsInputStyles}
 					disabled={loading}
 				/>
 				<Button
 					variant='contained'
-					color='primary'
 					onClick={handleSendRequest}
+					sx={{
+						backgroundColor: colors.mainGreen50, color: colors.black, marginTop: '1rem',
+						'&:disabled': {
+							backgroundColor: colors.mainGreen10,
+							color: colors.black
+						},
+						'&:hover': {
+							backgroundColor: colors.mainGreen80
+						},
+					}}
 					disabled={!requestText.trim() || Object.values(selectedPersons).every(v => !v) || loading}
 				>
 					{loading ? 'Loading....' : 'Send Request using Selected Persons'}
@@ -96,19 +98,21 @@ const Persons = () => {
 				<Box
 					sx={{
 						marginTop: '3rem',
-						backgroundColor: "silver",
+						backgroundColor: colors.darkGrey,
 						maxHeight: '20rem',
 						minHeight: '2rem',
 						borderRadius: '12px',
 						padding: '10px',
 						overflow: 'auto',
-						transition: '1s'
+						transition: '1s',
+						color: colors.white,
+						border: `1px solid ${colors.mainGreen50}`
 					}}
 				>
 					{loading ? <Loader/> : <FormattedTextDisplay>{resultText}</FormattedTextDisplay>}
 				</Box>
 			</Box>
-		</Container>
+		</Box>
 	);
 };
 

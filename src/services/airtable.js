@@ -1,22 +1,62 @@
-import Airtable from "airtable";
+import { api } from './auth';
 
 export async function getAllRecords() {
-	return await Airtable.base(process.env.REACT_APP_AIRTABLE_BASE).table('Persons list').select({
-		sort: [{ field: 'Created time', direction: 'asc' }]
-	}).all()
+	try {
+		const response = await api.get('/persons');
+		return response.data;
+	} catch (error) {
+		console.error('Error fetching all records:', error);
+		throw error;
+	}
+}
+
+export async function createUser({country, gender, offer}) {
+	try {
+		const response = await api.post('/persons', {country, gender, offer});
+		return response.data;
+	} catch (error) {
+		console.error('Error creating user:', error);
+		throw error;
+	}
 }
 
 export async function getRecordById(id) {
-	return await Airtable.base(process.env.REACT_APP_AIRTABLE_BASE).table('Persons list').find(id)
+	try {
+		const response = await api.get(`/persons/${id}`);
+		return response.data;
+	} catch (error) {
+		console.error('Error fetching record by ID:', error);
+		throw error;
+	}
 }
 
-export async function updateRecord(id, data){
-	return await Airtable.base(process.env.REACT_APP_AIRTABLE_BASE).table('Persons list').update(id, data)
+export async function updateRecord(id, data, prompt) {
+	try {
+		const response = await api.put(`/persons/${id}`, {data, prompt});
+		console.log({response})
+		return response.data;
+	} catch (error) {
+		console.error('Error updating record:', error);
+		throw error;
+	}
 }
 
-export async function deleteRecord(id){
-	await Airtable.base(process.env.REACT_APP_AIRTABLE_BASE).table('Persons list').destroy(id)
+export async function deleteRecord(id) {
+	try {
+		const response = await api.delete(`/persons/${id}`);
+		return response.data;
+	} catch (error) {
+		console.error('Error deleting record:', error);
+		throw error;
+	}
 }
-export async function createRecord(data){
-	await Airtable.base(process.env.REACT_APP_AIRTABLE_BASE).table('Persons list').create(data)
+
+export async function createRecord(data) {
+	try {
+		const response = await api.post('/persons', data);
+		return response.data;
+	} catch (error) {
+		console.error('Error creating record:', error);
+		throw error;
+	}
 }

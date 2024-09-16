@@ -6,12 +6,15 @@ import MainLayout from "../layouts/Main";
 import PersonDetailPage from "../pages/PersonDetailPage";
 import ManagementPage from "../pages/ManagementPage";
 import Creation from "../pages/CreationPage";
+import PrivateRoute from "./PrivateRoute";
+import LoginPage from "../pages/LoginPage";
+import SbsCreate from "../pages/SbsCreate";
 
 
-export default createBrowserRouter([
+const router = createBrowserRouter([
 	{
 		path: "/",
-		element: <MainLayout/>,
+		element: <PrivateRoute component={MainLayout}/>,
 		errorElement: <NotFound/>,
 		children: [
 			{
@@ -23,7 +26,7 @@ export default createBrowserRouter([
 				element: <Persons/>,
 			},
 			{
-				path: "/persons/:person",
+				path: "/persons/:id",
 				element: <PersonDetailPage/>,
 			},
 			{
@@ -31,9 +34,19 @@ export default createBrowserRouter([
 				element: <ManagementPage/>,
 			},
 			{
-				path: "/create",
-				element: <Creation/>,
-			}
+				path: "/generate",
+				element: <SbsCreate/>,
+			},
 		]
+	},
+	{
+		path: "/login",
+		element: <LoginPage/>
 	}
 ]);
+
+window.addEventListener('logout', () => {
+	router.navigate('/login');
+});
+
+export default router;

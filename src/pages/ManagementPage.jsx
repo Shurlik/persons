@@ -12,17 +12,25 @@ import {
 	List,
 	ListItemButton,
 	ListItemText,
-	TextField,
 	Typography
 } from "@mui/material";
 import officeGirl from "../assets/images/cartoon-office-girl.png";
 import officeBoy from "../assets/images/cartoon-office-boy.png";
+import {useNavigate} from "react-router-dom";
+import {colors} from "../assets/styles/colors";
+import Loader from "../components/Loader";
+import RenderEditField from "../components/RenderEditField";
+import RenderDetailFields from "../components/RenderDetailFields";
 
 const ManagementPage = () => {
-	const {data = [], error, isLoading, mutate} = useSWR('/persons', () => getAllRecords());
+	const {data = [], error, isLoading, mutate} = useSWR('/persons', async () => await getAllRecords());
 	const [selectedPerson, setSelectedPerson] = useState(null);
 	const [isEditing, setIsEditing] = useState(false);
+	const [isViewingDetails, setIsViewingDetails] = useState(false);
+	const [loading, setLoading] = useState(false);
 	const [editedFields, setEditedFields] = useState({});
+
+	const navigate = useNavigate();
 
 	const handleSelectPerson = (person) => {
 		setSelectedPerson(person);
@@ -30,12 +38,25 @@ const ManagementPage = () => {
 	};
 
 	const handleEditPerson = () => {
-		setIsEditing(true);
+		navigate('/generate', {
+			state: {
+				userId: selectedPerson.id
+			}
+		});
+	};
+
+	const handleViewDetails = () => {
+		setIsViewingDetails(true);
+	};
+
+	const handleCloseDetails = () => {
+		setIsViewingDetails(false);
+		setIsEditing(false);
 	};
 
 	const handleCloseEdit = () => {
-		setIsEditing(false);
-		setEditedFields(selectedPerson.fields);
+		// setIsEditing(false);
+		// setEditedFields(selectedPerson.fields);
 	};
 
 	const handleFieldChange = (field, value) => {
@@ -43,6 +64,7 @@ const ManagementPage = () => {
 	};
 
 	const handleSaveChanges = async () => {
+		setLoading(true);
 		try {
 			await updateRecord(selectedPerson.id, editedFields);
 			mutate();
@@ -51,6 +73,7 @@ const ManagementPage = () => {
 		} catch (error) {
 			console.error("Error updating record:", error);
 		}
+		setLoading(false);
 	};
 
 	const handleDeletePerson = async () => {
@@ -65,57 +88,71 @@ const ManagementPage = () => {
 		}
 	};
 
-	const renderEditFields = (sectionTitle, fields) => (
-		<Box key={sectionTitle}>
-			<Typography
-				variant='h6'
-				sx={{mt: 2, mb: 1, color: "#C400D7"}}
-			>{sectionTitle}</Typography>
-			{fields.map(field => (
-				<TextField
-					key={field}
-					label={field}
-					value={editedFields[field] || ''}
-					onChange={(e) => handleFieldChange(field, e.target.value)}
-					fullWidth
-					margin='dense'
-				/>
-			))}
-		</Box>
-	);
-
 	const sections = [
 		{
 			title: "Demographic Data",
-			fields: ["Name", "Age", "Gender", "Education level", "Income class", "Place of residence (city, country, region)"]
+			fields: ["Name",
+				"Age",
+				"Education level",
+				"Occupation",
+				"Income class",
+				"Relationship Status",
+				"Number of Kids",
+				"Place of residence"]
 		},
 		{
 			title: "Professional Information",
-			fields: ["Job title", "Industry", "Career stage", "Working environment"]
+			fields: ["Job title",
+				"Industry",
+				"Career stage",
+				"Working environment"]
 		},
 		{
 			title: "Psychographic Characteristics",
-			fields: ["Limbic Types", "Enneagram", "Myers-Briggs", "Spiral Dynamics", "Values and beliefs", "Lifestyle"]
+			fields: ["Limbic Types",
+				"Enneagram",
+				"Myers-Briggs (MBTI)",
+				"DISG",
+				"Sinus-Milieus",
+				"Spiral Dynamics",
+				"Hobbies and Interests",
+				"TV Shows / Books"]
 		},
 		{
-			title: "Media Usage",
-			fields: ["Preferred communication channels (Social Media, Email, traditional media etc.)", "Device usage (Smartphone, Desktop, Tablet)", "Online behavior (shopping preferences, sources of information)"]
+			title: "Empathy Card",
+			fields: ["Empathy Card"]
+		},
+		{
+			title: "Values: What is important",
+			fields: ["Important Values"]
+		},
+		{
+			title: "Pain Points and Fears",
+			fields: ["Pain Points", "Fears"]
+		},
+		{
+			title: "Goals, Dreams, and Gains",
+			fields: ["Goals and Dreams", "Materialistic Gains", "Emotional Win"]
+		},
+		{
+			title: "Magical Solution",
+			fields: ["Magical Solution"]
+		},
+		{
+			title: "Brand",
+			fields: ["Brand-Values", "Brand-Examples", "Brand Archetype", "Brand-Magnet"]
+		},
+		{
+			title: "Elevator Pitch",
+			fields: ["Elevator Pitch"]
 		},
 		{
 			title: "Buying Behavior",
-			fields: ["Buying motives", "Buying barriers", "Decision-making process (How does the persona make purchase decisions?)", "Brand preferences"]
+			fields: ["Buying Behavior", "Buying Motives", "Buying Barriers"]
 		},
 		{
-			title: "Needs and challenges",
-			fields: ["What does the persona need?", "What problems or challenges does it have?", "How can your product or service help?"]
-		},
-		{
-			title: "Goals and Dreams",
-			fields: ["Short- and long-term goals", "Personal or professional aspirations"]
-		},
-		{
-			title: "Communication Preferences",
-			fields: ["Tone and style of address that resonates best", "Visual preferences (colors, images, design)", "Archetypes", "What are the key messages that would convince the persona?"]
+			title: "Media Usage",
+			fields: ["Preferred communication channels", "Device usage", "Online behavior"]
 		}
 	];
 
@@ -127,31 +164,40 @@ const ManagementPage = () => {
 			<Typography
 				variant='h3'
 				gutterBottom
-				textAlign={'center'}
-				mt={2}
-				fontWeight={'bold'}
-			>Manage Persons</Typography>
-			<Box display='flex' justifyContent={'center'} alignItems={'start'}>
+				sx={{
+					textAlign: 'left',
+					mt: 2,
+					fontWeight: 'bold',
+					color: colors.white
+				}}
+			>
+				Manage Persons
+			</Typography>
+			<Box
+				display='flex'
+				justifyContent={'start'}
+				alignItems={'start'}
+			>
 				<List sx={{width: '30%', marginRight: 2}}>
-					{data.map((person) => (
+					{Array.isArray(data) && data.map((person) => (
 						<ListItemButton
 							sx={{
 								transition: '.3s',
 								border: '1px solid silver',
 								borderRadius: '10px',
 								marginY: '10px',
-								backgroundColor: '#231E39aa',
-								color: '#B3B8CD',
+								backgroundColor: colors.darkGrey43,
+								color: colors.white,
 								fontWeight: 'bold',
 								'&:hover': {
-									backgroundColor: '#231E39'
+									backgroundColor: colors.silverDark
 								},
 								'&.Mui-selected': {
-									backgroundColor: '#231E39',
+									backgroundColor: colors.silverDark,
 									color: 'white',
 								},
 								'&.Mui-selected:hover': {
-									backgroundColor: '#231E39'
+									backgroundColor: colors.silverDark
 								}
 							}}
 							key={person.id}
@@ -166,23 +212,19 @@ const ManagementPage = () => {
 					sx={selectedPerson ? {
 						flexGrow: 1,
 						textAlign: 'center',
-						backgroundColor: '#231E39',
+						backgroundColor: colors.black,
 						borderRadius: '2rem',
 						padding: '1rem 2rem',
-						color: '#B3B8CD',
+						color: colors.white,
 						transition: '.7s',
 						overflow: 'hidden',
 						marginTop: '12px'
-					}: {}}
+					} : {}}
 				>
 					{selectedPerson && (
 						<>
-							<Typography
-								variant='h4'
-							>{selectedPerson.fields.Name}</Typography>
-							<Typography
-								variant='h5'
-							>Age: {selectedPerson.fields.Age}, {selectedPerson.fields['Job title']}</Typography>
+							<Typography variant='h4'>{selectedPerson.fields.Name}</Typography>
+							<Typography variant='h5'>Age: {selectedPerson.fields.Age}, {selectedPerson.fields['Job title']}</Typography>
 							<Box
 								sx={{
 									border: '1px solid silver',
@@ -203,47 +245,87 @@ const ManagementPage = () => {
 							<Typography
 								variant='h5'
 								mt={3}
-							>From: {selectedPerson.fields['Place of residence (city, country, region)']}</Typography>
-							<Box
-								sx={{
-									mt: 10
-								}}
 							>
+								From: {selectedPerson.fields['Place of residence']}
+							</Typography>
+							<Box sx={{mt: 10}}>
 								<Button
 									onClick={handleEditPerson}
 									variant='contained'
 									color='primary'
-									sx={{mr: 3, mt: 1, mb: 1, width: '7rem'}}
+									sx={{marginX: 3,mt: 1, mb: 1, width: '7rem'}}
 								>
-									Edit
+									Generation
+								</Button>
+								<Button
+									onClick={handleViewDetails}
+									variant='contained'
+									color='success'
+									sx={{marginX: 3,mt: 1, mb: 1, width: '7rem'}}
+								>
+									Details
 								</Button>
 								<Button
 									onClick={handleDeletePerson}
 									variant='contained'
 									color='error'
-									sx={{mt: 1, mb: 1, ml:3, width: '7rem'}}
+									sx={{marginX: 3,mt: 1, mb: 1, width: '7rem'}}
 								>
 									Delete
 								</Button>
 							</Box>
 							<Dialog
-								open={isEditing}
-								onClose={handleCloseEdit}
+								open={isViewingDetails}
+								onClose={handleCloseDetails}
 								maxWidth='md'
 								fullWidth
 							>
-								<DialogTitle>Edit Person</DialogTitle>
+								<Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+									{loading && <Box
+										sx={{
+											position: 'absolute',
+											top: '40%',
+											left: '50%',
+											transform: 'translateX(-50%)'
+										}}
+									><Loader/></Box>}
+									<DialogTitle>Person Details</DialogTitle>
+									{isEditing && <DialogActions>
+										<Button
+											disabled={loading}
+											color={'success'}
+											variant={'contained'}
+											onClick={handleSaveChanges}
+											sx={{minWidth: '10rem'}}
+										>Save</Button>
+									</DialogActions>}
+									<DialogActions>
+										<Button
+											disabled={loading}
+											variant={'contained'}
+											onClick={() => setIsEditing(old => !old)}
+											sx={{minWidth: '10rem'}}
+										>{!isEditing ? 'Edit Person' : "To View"}</Button>
+									</DialogActions>
+								</Box>
 								<DialogContent>
-									<Box sx={{maxHeight: '70vh', overflowY: 'auto'}}>
-										{sections.map(section => renderEditFields(section.title, section.fields))}
-									</Box>
+									{isEditing ? <Box sx={{maxHeight: '70vh', overflowY: 'auto'}}>
+										{sections.map((section) => <RenderEditField
+											key={section.title}
+											sectionTitle={section.title}
+											fields={section.fields} {...{
+											handleFieldChange,
+											editedFields,
+											loading
+										}}/>)}
+									</Box> : <Box sx={{maxHeight: '70vh', overflowY: 'auto'}}>
+										{sections.map((section) => <RenderDetailFields
+											sectionTitle={section.title}
+											fields={section.fields} {...{selectedPerson}} />)}
+									</Box>}
 								</DialogContent>
 								<DialogActions>
-									<Button onClick={handleCloseEdit}>Cancel</Button>
-									<Button
-										onClick={handleSaveChanges}
-										color='primary'
-									>Save</Button>
+									<Button onClick={handleCloseDetails}>Close</Button>
 								</DialogActions>
 							</Dialog>
 						</>

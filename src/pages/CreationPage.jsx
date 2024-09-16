@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
-	Stepper,
+	Box,
+	Button,
+	CircularProgress,
+	MenuItem,
+	Select,
 	Step,
 	StepLabel,
-	Button,
-	Typography,
-	Box,
+	Stepper,
 	TextField,
-	Select,
-	MenuItem,
-	CircularProgress
+	Typography
 } from '@mui/material';
-import { generateFullPerson, generatePersonSection } from '../services/chatGpt';
+import {generateFullPersonAuto, generatePersonSection} from '../services/chatGpt';
 import {useNavigate} from "react-router-dom";
-import {createRecord} from "../services/airtable";
+import Loader from "../components/Loader";
 
 const PersonaCreation = () => {
 	const [activeStep, setActiveStep] = useState(0);
@@ -59,11 +59,7 @@ const PersonaCreation = () => {
 	const handleFullGeneration = async () => {
 		setIsLoading(true);
 		try {
-			const fullPersona = await generateFullPerson(country, gender);
-			console.log({fullPersona});
-			await createRecord(fullPersona)
-			setPersonaData(fullPersona);
-			// handleNext();
+			const fullPersona = await generateFullPersonAuto(country, gender);
 			navigate('/persons');
 		} catch (error) {
 			console.error('Error generating full persona:', error);
@@ -100,16 +96,28 @@ const PersonaCreation = () => {
 				return (
 					<Box>
 						<Typography>Select the target country for your persona:</Typography>
-						<Select value={country} onChange={handleCountryChange} fullWidth sx={{borderRadius: '10px'}}>
-							<MenuItem value="USA">United States</MenuItem>
-							<MenuItem value="UK">United Kingdom</MenuItem>
-							<MenuItem value="DE">Germany</MenuItem>
+						<Select
+							variant={'filled'}
+							value={country}
+							onChange={handleCountryChange}
+							fullWidth
+							sx={{borderRadius: '10px'}}
+						>
+							<MenuItem value='USA'>United States</MenuItem>
+							<MenuItem value='UK'>United Kingdom</MenuItem>
+							<MenuItem value='DE'>Germany</MenuItem>
 							{/* Add more countries as needed */}
 						</Select>
 						<Typography sx={{marginTop: '1rem'}}>Select the Gender of your persona:</Typography>
-						<Select value={gender} onChange={handleGenderChange} fullWidth  sx={{borderRadius: '10px'}}>
-							<MenuItem value="Male">Male</MenuItem>
-							<MenuItem value="Female">Female</MenuItem>
+						<Select
+							variant={'filled'}
+							value={gender}
+							onChange={handleGenderChange}
+							fullWidth
+							sx={{borderRadius: '10px'}}
+						>
+							<MenuItem value='Male'>Male</MenuItem>
+							<MenuItem value='Female'>Female</MenuItem>
 						</Select>
 					</Box>
 				);
@@ -117,8 +125,13 @@ const PersonaCreation = () => {
 				return (
 					<Box>
 						<Typography>Choose how you want to create your persona:</Typography>
-						<Select value={creationMode} onChange={handleCreationModeChange} fullWidth  sx={{borderRadius: '10px'}}>
-							<MenuItem value="auto">Generate Automatically</MenuItem>
+						<Select
+							value={creationMode}
+							onChange={handleCreationModeChange}
+							fullWidth
+							sx={{borderRadius: '10px'}}
+						>
+							<MenuItem value='auto'>Generate Automatically</MenuItem>
 							{/*<MenuItem value="section">Generate by Sections</MenuItem>*/}
 							{/*<MenuItem value="manual">Manual Input</MenuItem>*/}
 						</Select>
@@ -128,23 +141,30 @@ const PersonaCreation = () => {
 				if (creationMode === 'auto') {
 					return (
 						<Box>
-							{(!gender || !country || !creationMode) ? <Typography variant="h6">Please, select all values</Typography>: <Button
-								onClick={handleFullGeneration}
-								disabled={isLoading}
-							>
-								Generate Full Persona
-							</Button>}
-							{isLoading && <CircularProgress />}
+							{(!gender || !country || !creationMode) ?
+								<Typography variant='h6'>Please, select all values</Typography> : <Button
+									onClick={handleFullGeneration}
+									disabled={isLoading}
+								>
+									Generate Full Persona
+								</Button>}
+							{isLoading && <Box sx={{margin: '0 auto'}}><Loader/></Box>}
 						</Box>
 					);
 				} else if (creationMode === 'section' || creationMode === 'manual') {
 					return (
 						<Box>
 							{sections.map((section) => (
-								<Box key={section} mb={2}>
-									<Typography variant="h6">{section}</Typography>
+								<Box
+									key={section}
+									mb={2}
+								>
+									<Typography variant='h6'>{section}</Typography>
 									{creationMode === 'section' && (
-										<Button onClick={() => handleSectionGeneration(section)} disabled={isLoading}>
+										<Button
+											onClick={() => handleSectionGeneration(section)}
+											disabled={isLoading}
+										>
 											Generate this section
 										</Button>
 									)}
@@ -152,11 +172,11 @@ const PersonaCreation = () => {
 										// Here you would map through the fields for each section
 										<TextField
 											fullWidth
-											label="Sample Field"
+											label='Sample Field'
 											onChange={(e) => handleManualInput(section, 'sampleField', e.target.value)}
 										/>
 									)}
-									{isLoading && <CircularProgress />}
+									{isLoading && <CircularProgress/>}
 								</Box>
 							))}
 						</Box>
@@ -166,7 +186,7 @@ const PersonaCreation = () => {
 			case 3:
 				return (
 					<Box>
-						<Typography variant="h6">Review your persona:</Typography>
+						<Typography variant='h6'>Review your persona:</Typography>
 						<pre>{JSON.stringify(personaData, null, 2)}</pre>
 					</Box>
 				);
@@ -176,16 +196,21 @@ const PersonaCreation = () => {
 	};
 
 	return (
-		<Box sx={{
-			margin: '0 auto',
-			padding: '20px',
-			display: 'flex',
-			flexDirection: 'column',
-			alignItems: 'center'
-		}}>
-			<Stepper activeStep={activeStep} sx={{
-				width: '150%'
-			}}>
+		<Box
+			sx={{
+				margin: '0 auto',
+				padding: '20px',
+				display: 'flex',
+				flexDirection: 'column',
+				alignItems: 'center'
+			}}
+		>
+			<Stepper
+				activeStep={activeStep}
+				sx={{
+					width: '150%'
+				}}
+			>
 				{steps.map((label, index) => {
 					const stepProps = {};
 					const labelProps = {};
@@ -196,19 +221,19 @@ const PersonaCreation = () => {
 					);
 				})}
 			</Stepper>
-			<Box sx={{ mt: 5, mb: 1, height: '15rem' }}>
+			<Box sx={{mt: 5, mb: 1, height: '15rem'}}>
 				{renderStepContent(activeStep)}
 			</Box>
-			<Box sx={{ display: 'flex', flexDirection: 'row', pt: 2, mt: 5 }}>
+			<Box sx={{display: 'flex', flexDirection: 'row', pt: 2, mt: 5}}>
 				<Button
-					color="inherit"
+					color='inherit'
 					disabled={activeStep === 0}
 					onClick={handleBack}
-					sx={{ mr: 1 }}
+					sx={{mr: 1}}
 				>
 					Back
 				</Button>
-				<Box sx={{ flex: '1 1 auto' }} />
+				<Box sx={{flex: '1 1 auto'}}/>
 				{activeStep !== steps.length - 1 && <Button
 					onClick={handleNext}
 					disabled={isLoading}
