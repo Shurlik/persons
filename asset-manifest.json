@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/persons/static/css/main.ae6307c2.css",
-    "main.js": "/persons/static/js/main.b746497f.js",
+    "main.js": "/persons/static/js/main.ebee5200.js",
     "static/media/Rajdhani-Bold.ttf": "/persons/static/media/Rajdhani-Bold.a5a831c1b8c8eb1b83ff.ttf",
     "static/media/Rajdhani-SemiBold.ttf": "/persons/static/media/Rajdhani-SemiBold.7d928c2670caba5b9dd6.ttf",
     "static/media/Rajdhani-Medium.ttf": "/persons/static/media/Rajdhani-Medium.69a9f7bccb45c01931a2.ttf",
@@ -13,10 +13,10 @@
     "static/media/kivi-logo.png": "/persons/static/media/kivi-logo.e63f59931d7fe76deebe.png",
     "index.html": "/persons/index.html",
     "main.ae6307c2.css.map": "/persons/static/css/main.ae6307c2.css.map",
-    "main.b746497f.js.map": "/persons/static/js/main.b746497f.js.map"
+    "main.ebee5200.js.map": "/persons/static/js/main.ebee5200.js.map"
   },
   "entrypoints": [
     "static/css/main.ae6307c2.css",
-    "static/js/main.b746497f.js"
+    "static/js/main.ebee5200.js"
   ]
 }
