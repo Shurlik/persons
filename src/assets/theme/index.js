@@ -1,15 +1,17 @@
 import {createTheme} from '@mui/material/styles';
-import inputs from "./inputs";
+import {inputStyles, inputOutlinedStyles} from "./inputs";
 import labels from "./labels";
 import buttons from "./buttons";
 import {colors} from "../styles/colors";
 import listItemButton from "./listItemButton";
 import {tableCell, tableHead, tableRow} from './table';
 import {menu, menuItem} from "./menu";
+import {customSelect, customSelectItem, customSelectMenu} from "./select";
 
 const index = createTheme({
 	typography: {
 		fontFamily: [
+			'Inter',
 			'Rajdhani',
 			'Bebas Neue',
 			'-apple-system',
@@ -32,10 +34,12 @@ const index = createTheme({
 			letterSpacing: 5
 		},
 		h3: {
-			fontWeight: 600,
+			fontFamily: 'Bebas Neue',
+			fontWeight: 400,
 		},
 		h4: {
-			fontWeight: 600,
+			fontWeight: 400,
+			fontFamily: 'Bebas Neue',
 		},
 		h5: {
 			fontSize: '1.5rem',
@@ -60,7 +64,8 @@ const index = createTheme({
 		}
 	},
 	components: {
-		MuiOutlinedInput: inputs,
+		MuiInput: inputStyles,
+		MuiOutlinedInput: inputOutlinedStyles,
 		MuiInputLabel: labels,
 		MuiButton: buttons,
 		MuiListItemButton: listItemButton,
@@ -68,7 +73,20 @@ const index = createTheme({
 		MuiTableRow: tableRow,
 		MuiTableCell: tableCell,
 		MuiMenu: menu,
-		MuiMenuItem: menuItem,
+		MuiMenuItem: customSelectItem,
+		// MuiMenuItem: menuItem,
+		MuiSelect: {
+			...customSelect,
+			defaultProps: {
+				MenuProps: {
+					PaperProps: {
+						sx: customSelectMenu.styleOverrides.paper
+					}
+				}
+			}
+		},
+		// MuiSelect:customSelect,
+		// MuiMenuItem:customSelectItem,
 	},
 });
 

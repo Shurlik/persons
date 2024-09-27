@@ -46,6 +46,7 @@ export const AuthProvider = ({ children }) => {
 		setUser(data.user);
 		return data;
 	};
+
 	const logout = useCallback(async () => {
 		await authService.logout();
 		setUser(null);

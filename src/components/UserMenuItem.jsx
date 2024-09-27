@@ -1,6 +1,6 @@
 import React from 'react';
 import {Box, Typography} from "@mui/material";
-import Logo from "../assets/images/cartoon-office-girl.png";
+import Logo from "../assets/images/BS-logo.png";
 import {colors} from "../assets/styles/colors";
 import DropMenu from "./DropMenu";
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -30,8 +30,8 @@ const UserMenuItem = ({onLogout}) => {
 					overflow: 'hidden',
 					borderRadius: '50%',
 					backgroundColor: colors.silver,
-					width: '3rem',
-					height: '3rem',
+					width: '2.5rem',
+					height: '2.5rem',
 					display: 'flex',
 					justifyContent: 'center',
 					alignItems: 'center',
@@ -51,12 +51,13 @@ const UserMenuItem = ({onLogout}) => {
 				}}
 				onClick={handleClick}
 			>
-				<Typography variant={'h6'}>Girl Name</Typography>
+				<Typography variant={'h6'} sx={{fontSize: '.9rem'}}>Workingsolo.ai</Typography>
 				<Typography
 					sx={{
 						color: colors.lightGray,
+						fontSize: '.8rem'
 					}}
-				>girl@email.com</Typography>
+				>bigshift@workingsolo.ai</Typography>
 			</Box>
 
 			<DropMenu

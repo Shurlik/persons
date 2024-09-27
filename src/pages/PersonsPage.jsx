@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import useSWR from "swr";
 import {getAllRecords} from "../services/airtable";
-import {Box, Button, TextField} from "@mui/material";
+import {Box, Button, TextField, Typography} from "@mui/material";
 import PersonCard from "../components/PersonCard";
 import {askGpt} from "../services/chatGpt";
 import FormattedTextDisplay from "../components/FormattedTextDisplay";
@@ -45,19 +45,19 @@ const Persons = () => {
 	return (
 		<Box
 			sx={{
+				maxWidth: '100rem',
 				overflow: 'auto',
-				padding: '2rem 7rem',
-				backgroundColor: colors.darkGrey,
+				padding: '5rem 1rem 1rem',
+				margin: '0 auto'
 			}}
 		>
 			{isLoading ? <Loader/> : <Box
 				sx={{
 					margin: '0 auto',
 					display: 'grid',
-					gridTemplateColumns: '1fr 1fr 1fr',
+					gridTemplateColumns: 'repeat(auto-fill, 360px)',
 					justifyContent: 'center',
-					gap: '10px',
-					maxWidth: '1200px'
+					gap: '1.5rem',
 				}}
 			>
 				{data.map(p => (
@@ -69,48 +69,45 @@ const Persons = () => {
 					/>
 				))}
 			</Box>}
-			<Box sx={{mt: 2, mb: 4}}>
+			<Box sx={{mt: 5, mb: 4, paddingX: '2rem'}}>
+				<Typography variant={'h6'} sx={{
+					color: colors.white,
+					marginBottom: '1rem'
+				}}>Enter your request</Typography>
 				<TextField
 					fullWidth
 					placeholder='Enter your request'
 					value={requestText}
 					onChange={handleRequestChange}
-					sx={personsInputStyles}
+					// sx={personsInputStyles}
 					disabled={loading}
+					variant={'outlined'}
 				/>
 				<Button
-					variant='contained'
+					sx={{marginTop: '1rem'}}
+					variant='outlined'
 					onClick={handleSendRequest}
-					sx={{
-						backgroundColor: colors.mainGreen50, color: colors.black, marginTop: '1rem',
-						'&:disabled': {
-							backgroundColor: colors.mainGreen10,
-							color: colors.black
-						},
-						'&:hover': {
-							backgroundColor: colors.mainGreen80
-						},
-					}}
+					color='secondary'
 					disabled={!requestText.trim() || Object.values(selectedPersons).every(v => !v) || loading}
 				>
 					{loading ? 'Loading....' : 'Send Request using Selected Persons'}
 				</Button>
-				<Box
+				{loading ? <Loader/> : resultText && <Box
 					sx={{
 						marginTop: '3rem',
-						backgroundColor: colors.darkGrey,
+						backgroundColor: colors.white,
 						maxHeight: '20rem',
 						minHeight: '2rem',
 						borderRadius: '12px',
-						padding: '10px',
+						padding: '24px',
 						overflow: 'auto',
 						transition: '1s',
 						color: colors.white,
-						border: `1px solid ${colors.mainGreen50}`
+						border: `1px solid ${colors.orange50}`
 					}}
 				>
-					{loading ? <Loader/> : <FormattedTextDisplay>{resultText}</FormattedTextDisplay>}
-				</Box>
+					 <FormattedTextDisplay>{resultText}</FormattedTextDisplay>
+				</Box>}
 			</Box>
 		</Box>
 	);

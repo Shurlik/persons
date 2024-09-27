@@ -14,6 +14,10 @@ code {
 a {
   text-decoration: none
 }
+a:link, a:visited {
+  color: white
+}
+
 li, ul, ol {
   padding-top: 1px;
   padding-bottom: 2px
@@ -21,3 +25,12 @@ li, ul, ol {
 p, ul {
   margin-top: 0px
 }
+ .swiper-pagination-bullet {
+   background-color: #FF6000!important;
+ }
+ .swiper-pagination-bullet .swiper-pagination-bullet-active {
+   opacity: 1
+ }
+ .swiper-button-next, .swiper-button-prev {
+   color: #FF6000!important
+ }

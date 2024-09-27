@@ -8,7 +8,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import DialogLogin from "../components/DialogLogin";
 import {colors} from "../assets/styles/colors";
 import Logo from "../assets/images/kivi-logo.png";
-import { TextPlugin } from "gsap/TextPlugin"
+import {TextPlugin} from "gsap/TextPlugin"
 
 const LoginPage = () => {
 	const {login} = useAuth();
@@ -43,22 +43,22 @@ const LoginPage = () => {
 
 		// Анимация текста
 		timeline.fromTo(textRef2.current, {opacity: 0,}, {
-				opacity: 1,
-				duration: 1,
-				ease: 'power2.in'
-			}, )
+			opacity: 1,
+			duration: 1,
+			ease: 'power2.in'
+		},)
 			.fromTo(titleRef.current, {opacity: 0}, {
 				opacity: 1,
 				duration: 1,
 				ease: 'power2.in'
 			}, ">-1")
-			.fromTo('#texttest', {},{duration: 1, text: 'SUPREME AI MARKETING', ease: "none", delimiter: "1"})
+			.fromTo('#texttest', {}, {duration: 1, text: 'SUPREME AI MARKETING', ease: "none", delimiter: "1"})
 			.fromTo(textRef.current, {opacity: 0}, {
-				opacity: 1,
-				duration: 1,
-				ease: 'power2.in'
-			},
-				">-3")
+					opacity: 1,
+					duration: .5,
+					ease: 'power2.in'
+				},
+				">-1.5")
 		;
 	}, []);
 
@@ -68,7 +68,7 @@ const LoginPage = () => {
 	return (
 		<Box
 			sx={{
-				backgroundColor: '#000',
+				backgroundColor: colors.backgroundMain,
 				height: '100%',
 				display: 'flex',
 				alignItems: 'center',
@@ -84,7 +84,7 @@ const LoginPage = () => {
 			<Typography
 				ref={textRef2}
 				variant={'h2'}
-				sx={{color: colors.white, fontSize:'6rem'}}
+				sx={{color: colors.white, fontSize: '6rem'}}
 			>
 				Welcome to
 			</Typography>
@@ -99,7 +99,15 @@ const LoginPage = () => {
 				id={'texttest'}
 				ref={textUnderRef}
 				variant={'p'}
-				sx={{height: '2rem', fontWeight: 'normal', fontSize: '1rem', letterSpacing: 5, color: colors.mainGreen, marginBottom: '3rem', marginTop: '-1rem'}}
+				sx={{
+					height: '2rem',
+					fontWeight: 'normal',
+					fontSize: '1rem',
+					letterSpacing: 5,
+					color: colors.mainGreen,
+					marginBottom: '3rem',
+					marginTop: '-1rem'
+				}}
 			>
 			</Typography>
 			<Box
@@ -108,22 +116,11 @@ const LoginPage = () => {
 				<Button
 					ref={textRef}
 					onClick={openLogin}
-					variant='outlined'
+					variant='contained'
 					endIcon={<LoginIcon/>}
+					color='primary'
 					sx={{
-						borderRadius: '.5rem',
-						marginTop: '2rem',
-						color: colors.mainGreen,
-						transition: '.2s',
-						border:`2px solid ${colors.mainGreen}`,
-						fontWeight: 'bold',
-						fontSize: '1.5rem',
-						minWidth: '10rem',
-						'&:hover': {
-							// border:`2px solid ${colors.red}`,
-							backgroundColor: colors.mainGreen,
-							color: colors.black
-						}
+						width: '8rem'
 					}}
 				>
 					Login

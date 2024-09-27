@@ -24,7 +24,7 @@ const Loader = ({props}) => {
 						/>
 						<stop
 							offset="100%"
-							stopColor={colors.silver}
+							stopColor={colors.orange}
 						/>
 					</linearGradient>
 				</defs>

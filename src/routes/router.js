@@ -5,10 +5,11 @@ import NotFound from "../pages/404";
 import MainLayout from "../layouts/Main";
 import PersonDetailPage from "../pages/PersonDetailPage";
 import ManagementPage from "../pages/ManagementPage";
-import Creation from "../pages/CreationPage";
 import PrivateRoute from "./PrivateRoute";
 import LoginPage from "../pages/LoginPage";
-import SbsCreate from "../pages/SbsCreate";
+import CreatePage from "../pages/CreatePage";
+import FormsPage from "../pages/FormsPage";
+import ArticlesPage from "../pages/ArticlesPage";
 
 
 const router = createBrowserRouter([
@@ -19,7 +20,10 @@ const router = createBrowserRouter([
 		children: [
 			{
 				index: true,
-				element: <Navigate to="/persons" replace />,
+				element: <Navigate
+					to='/persons'
+					replace
+				/>,
 			},
 			{
 				path: "/persons",
@@ -34,9 +38,17 @@ const router = createBrowserRouter([
 				element: <ManagementPage/>,
 			},
 			{
-				path: "/generate",
-				element: <SbsCreate/>,
+				path: "/create",
+				element: <CreatePage/>,
 			},
+			{
+				path: "/forms",
+				element: <FormsPage/>
+			},
+			{
+				path: "/articles",
+				element: <ArticlesPage/>
+			}
 		]
 	},
 	{

@@ -2,9 +2,10 @@ import React from 'react';
 import {ListItemIcon, ListItemText, Menu, MenuItem} from "@mui/material";
 import {colors} from "../assets/styles/colors";
 
-const DropMenu = ({open, onClose, data, anchorEl}) => {
+const DropMenu = ({open, onClose, data, anchorEl, disabled}) => {
 	return (
 		<Menu
+			disabled={disabled}
 			id='basic-menu'
 			anchorEl={anchorEl}
 			open={open}
@@ -17,10 +18,16 @@ const DropMenu = ({open, onClose, data, anchorEl}) => {
 				const Icon = d.icon;
 				const fn = d.fn;
 				return <MenuItem
-					sx={{color: colors.white}}
+					sx={{
+						color: colors.white,
+						backgroundColor: colors.backgroundMain,
+						'&:hover': {
+							backgroundColor: colors.background,
+							color: colors.orange
+						}
+					}}
 					key={d?.title}
 					onClick={fn}
-					divider
 				>
 					<ListItemText
 						sx={d.color ? {
@@ -28,7 +35,7 @@ const DropMenu = ({open, onClose, data, anchorEl}) => {
 							}
 							: {
 								'& .MuiListItemText-primary': {
-									color: colors.white
+									color: 'inherit'
 								}
 							}}
 					>{d?.title}</ListItemText>

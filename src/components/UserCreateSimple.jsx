@@ -2,8 +2,10 @@ import React, {useState} from 'react';
 import {Box, Button, MenuItem, Select, TextField, Typography} from "@mui/material";
 import {styled} from "@mui/material/styles";
 import {colors} from "../assets/styles/colors";
-import {createUser} from "../services/airtable";
+import {createUser, uploadFile} from "../services/airtable";
 import {toast} from "react-toastify";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import VisuallyHiddenInput from "./VisuallyHiddenInput";
 
 const StyledTextField = styled(TextField)(({theme}) => ({
 	backgroundColor: colors.white,
@@ -60,6 +62,36 @@ const UserCreateSimple = ({onFinish, setShowStart}) => {
 	const [gender, setGender] = useState('');
 	const [offer, setOffer] = useState('');
 	const [loading, setLoading] = useState(false);
+	const [file, setFile] = useState(null);
+	const [previewUrl, setPreviewUrl] = useState(null);
+
+	function handleFileChange(e) {
+		if (e.target.files) {
+			setFile(e.target.files[0]);
+			const objectUrl = URL.createObjectURL(e.target.files[0]);
+			setPreviewUrl(objectUrl);
+		}
+	}
+
+	function clear() {
+		setPreviewUrl(null);
+		setFile(null);
+	}
+
+	const handleFileUpload = async (id) => {
+		setLoading(true);
+		if (file) {
+			const formData = new FormData();
+			formData.append('file', file);
+			try {
+				const res = await uploadFile(id, formData);
+			} catch (e) {
+				console.log('error: ', e);
+				toast.error('Uploaded error');
+			}
+		}
+		setLoading(false);
+	};
 
 	const startHandler = async () => {
 		if (!country || !gender) {
@@ -70,7 +102,10 @@ const UserCreateSimple = ({onFinish, setShowStart}) => {
 		try {
 			const data = await createUser({country, gender, offer});
 			onFinish(data.id);
-			setShowStart(true)
+			if (file) {
+				await handleFileUpload(data.id);
+			}
+			setShowStart(true);
 		} catch (e) {
 			console.log('User creation error: ', e);
 			toast.error('User creation error');
@@ -91,69 +126,126 @@ const UserCreateSimple = ({onFinish, setShowStart}) => {
 	};
 
 	return (
-		<Box sx={{maxWidth: '30rem'}}>
+		<Box>
 			<Typography
 				sx={{color: colors.white, fontWeight: '800'}}
 				variant={'h2'}
 			>Let's create!</Typography>
+			<Box sx={{display: 'flex'}}>
+				<Box>
+					<Typography
+						sx={{
+							color: colors.white,
+							marginTop: '3rem',
+							fontSize: '1.3rem',
+							fontWeight: '700'
+						}}
+					>Enter the target country for your persona:</Typography>
+					<StyledTextField
+						disabled={loading}
+						variant={'outlined'}
+						value={country}
+						onChange={handleCountryChange}
+						fullWidth
+						sx={{borderRadius: '10px', marginBottom: '1rem', fontSize: '1.3rem'}}
+						placeholder='Enter country'
+					/>
 
-			<Typography
-				sx={{
-					color: colors.white,
-					marginTop: '3rem',
-					fontSize: '1.3rem',
-					fontWeight: '700'
-				}}
-			>Enter the target country for your persona:</Typography>
-			<StyledTextField
-				disabled={loading}
-				variant={'outlined'}
-				value={country}
-				onChange={handleCountryChange}
-				fullWidth
-				sx={{borderRadius: '10px', marginBottom: '1rem', fontSize: '1.3rem'}}
-				placeholder='Enter country'
-			/>
+					<Typography
+						sx={{
+							color: colors.white,
+							fontSize: '1.3rem',
+							fontWeight: '700'
+						}}
+					>Select the Gender of your persona:</Typography>
+					<StyledSelect
+						disabled={loading}
+						value={gender}
+						onChange={handleGenderChange}
+						fullWidth
+						sx={{borderRadius: '10px', marginBottom: '1rem'}}
+					>
+						<StyledMenuItem value='Male'>Male</StyledMenuItem>
+						<StyledMenuItem value='Female'>Female</StyledMenuItem>
+					</StyledSelect>
 
-			<Typography
-				sx={{
-					color: colors.white,
-					fontSize: '1.3rem',
-					fontWeight: '700'
-				}}
-			>Select the Gender of your persona:</Typography>
-			<StyledSelect
-				disabled={loading}
-				value={gender}
-				onChange={handleGenderChange}
-				fullWidth
-				sx={{borderRadius: '10px', marginBottom: '1rem'}}
-			>
-				<StyledMenuItem value='Male'>Male</StyledMenuItem>
-				<StyledMenuItem value='Female'>Female</StyledMenuItem>
-			</StyledSelect>
-
-			<Typography
-				sx={{
-					color: colors.white,
-					fontSize: '1.3rem',
-					fontWeight: '700'
-				}}
-			>Enter your offer:</Typography>
-			<StyledTextField
-				disabled={loading}
-				variant={'outlined'}
-				value={offer}
-				onChange={handleOfferChange}
-				fullWidth
-				sx={{borderRadius: '10px', marginBottom: '1rem'}}
-				multiline
-				rows={4}
-			/>
+					<Typography
+						sx={{
+							color: colors.white,
+							fontSize: '1.3rem',
+							fontWeight: '700'
+						}}
+					>Enter your offer:</Typography>
+					<StyledTextField
+						disabled={loading}
+						variant={'outlined'}
+						value={offer}
+						onChange={handleOfferChange}
+						fullWidth
+						sx={{borderRadius: '10px', marginBottom: '1rem'}}
+						multiline
+						rows={4}
+					/>
+				</Box>
+				<Box sx={{padding: '1rem', mt: 5, ml: 10}}>
+					<Box
+						sx={{
+							border: `2px solid ${colors.silver}`,
+							height: '15rem',
+							width: '15rem',
+							borderRadius: '2rem',
+							overflow: 'hidden'
+						}}
+					>
+						<Box
+							component={previewUrl ? 'img' : undefined}
+							alt={'user image'}
+							src={previewUrl ? previewUrl : undefined}
+							sx={{width: '100%', height: '100%', objectFit: 'cover'}}
+						/>
+					</Box>
+					<Box sx={{marginTop: '1rem', textAlign: 'center'}}>
+						{!!file && (<Box
+							sx={{
+								display: 'flex',
+								alignItems: 'center',
+								justifyContent: 'center',
+								gap: '1rem'
+							}}
+						><Typography
+							sx={{color: colors.white, fontSize: '1.3rem', fontWeight: 'bold'}}
+							component={'span'}
+						>{file.name}</Typography><Box
+							onClick={loading ? () => {
+							} : clear}
+							component={'span'}
+							sx={{
+								cursor: 'pointer',
+								marginBottom: '5px'
+							}}
+						>❌</Box></Box>)}
+						<Button
+							onChange={handleFileChange}
+							sx={{marginTop: '1rem'}}
+							component='label'
+							role={undefined}
+							variant='contained'
+							accept='image/*'
+							startIcon={<CloudUploadIcon/>}
+						>
+							Select file
+							<VisuallyHiddenInput
+								type='file'
+								accept='image/*'
+							/>
+						</Button>
+					</Box>
+				</Box>
+			</Box>
 
 			<Box
 				mt={10}
-				sx={{margin: '5rem auto', textAlign: 'center'}}
+				sx={{margin: '5rem auto'}}
 			>
 				<Button
 					disabled={loading}

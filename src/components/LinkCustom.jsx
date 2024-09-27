@@ -1,9 +1,9 @@
 import React from 'react';
-import {ListItem, ListItemButton, ListItemIcon, ListItemText} from "@mui/material";
-import {colors} from "../assets/styles/colors";
+import {ListItem, ListItemButton, ListItemText} from "@mui/material";
 import {Link} from "react-router-dom";
+import {colors} from "../assets/styles/colors";
 
-const LinkCustom = ({name, Icon, active, to, onClick}) => {
+const LinkCustom = ({name, active, to, onClick}) => {
 	return (
 		<Link
 			to={to}
@@ -11,24 +11,20 @@ const LinkCustom = ({name, Icon, active, to, onClick}) => {
 		>
 			<ListItem
 				disablePadding
-				sx={active ? {backgroundColor: colors.mainGreen, color: colors.black} : {backgroundColor: 'none'}}
+				// sx={active ? {backgroundColor: colors.mainGreen, color: colors.black} : {backgroundColor: 'none'}}
 			>
-		<ListItemButton onClick={onClick}>
-			<ListItemIcon
-				sx={active ? {color: colors.black, minWidth: '2rem'} : {
-					minWidth: '2rem', color: colors.mainGreen80
-				}}
-			>
-				<Icon />
-			</ListItemIcon>
-			<ListItemText
-				primary={name}
-				sx={active? {color: colors.black} : {color: colors.mainGreen80, textDecoration: 'none', '&:hover': {
-						color: colors.mainGreen
-					},
-				}}
-			/>
-		</ListItemButton>
+				<ListItemButton
+					onClick={onClick}
+					selected={active}
+				>
+					<ListItemText
+						sx={{
+							margin: 0,
+						}}
+						primary={name}
+						primaryTypographyProps={{ fontSize: '1.2rem', lineHeight: 1, color: active ? colors.black :colors.white }}
+					/>
+				</ListItemButton>
 			</ListItem>
 		</Link>
 	);

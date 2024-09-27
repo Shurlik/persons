@@ -44,6 +44,7 @@ const authService = {
 			}
 			return response.data;
 		} catch (error) {
+			console.log(123, {error});
 			if (error === 'Wrong Login/Password') {
 				toast.error('Wrong username or password');
 			} else {
@@ -100,6 +101,10 @@ api.interceptors.response.use(
 	async (error) => {
 		const originalRequest = error.config;
 		if (error.response?.status === 401 && !originalRequest._retry) {
+			if (error.response?.data?.errorCode === "INVALID_CREDENTIALS") {
+				return Promise.reject("Wrong Login/Password");
+			}
+
 			if (originalRequest._retry === undefined) {
 				return Promise.reject('No refresh token');
 			}

@@ -10,7 +10,7 @@ export default {
 				backgroundColor: colors.orange, // Сохраняем белый фон при наведении
 			},
 			'&.Mui-selected': {
-				backgroundColor: colors.mainGreen80, // Цвет фона при выборе
+				backgroundColor: colors.mainGreen, // Цвет фона при выборе
 				color: colors.white,
 				// borderColor: colors.white,
 				'&:hover': {
