@@ -1,13 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import useSWR from "swr";
 import {getAllRecords} from "../services/airtable";
-import {Box, Button, TextField, Typography} from "@mui/material";
+import {Box, Button, FormControl, MenuItem, Select, TextField, Typography} from "@mui/material";
 import PersonCard from "../components/PersonCard";
 import {askGpt} from "../services/chatGpt";
 import FormattedTextDisplay from "../components/FormattedTextDisplay";
 import Loader from "../components/Loader";
 import {colors} from "../assets/styles/colors";
-import {personsInputStyles} from "../services/inputStyles";
+import {askClaude} from "../services/claude";
+import {toast} from "react-toastify";
 
 const Persons = () => {
 	const {data = [], error, isLoading, mutate} = useSWR('/persons', () => getAllRecords());
@@ -15,6 +16,11 @@ const Persons = () => {
 	const [requestText, setRequestText] = useState('');
 	const [resultText, setResultText] = useState('');
 	const [loading, setLoading] = useState(false);
+	const [assistant, setAssistant] = useState('gpt');
+
+	const handleChange = (event) => {
+		setAssistant(event.target.value);
+	};
 
 	const handleSelectChange = (personId, isSelected, personData) => {
 		setSelectedPersons(prev => ({...prev, [personId]: isSelected}));
@@ -31,14 +37,23 @@ const Persons = () => {
 			.map(([id, _]) => id);
 
 		try {
-			const res = await askGpt(requestText, selectedIds);
+			const res = assistant === 'gpt'
+				? await askGpt(requestText, selectedIds)
+				: await askClaude(requestText, selectedIds);
+			if (typeof res !== 'string') {
+				toast.error('Wrong output!');
+				console.error('output: ', res);
+				return;
+			}
 			setResultText(res);
+			setRequestText('');
+			setSelectedPersons({});
 		} catch (e) {
 			console.log('error: ', e);
+			toast.error('Something goes wrong');
 		}
 
-		setRequestText('');
-		setSelectedPersons({});
+
 		setLoading(false);
 	};
 
@@ -70,10 +85,54 @@ const Persons = () => {
 				))}
 			</Box>}
 			<Box sx={{mt: 5, mb: 4, paddingX: '2rem'}}>
-				<Typography variant={'h6'} sx={{
-					color: colors.white,
-					marginBottom: '1rem'
-				}}>Enter your request</Typography>
+
+
+				{/*====*/}
+				<Box
+					sx={{
+						display: 'flex',
+						justifyContent: 'space-between',
+						alignItems: 'end',
+						padding: '1rem 0'
+					}}
+				>
+					<Typography
+						variant={'h6'}
+						sx={{
+							color: colors.white,
+							marginBottom: '1rem',
+							flexGrow: '1',
+							flexShrink: '0'
+						}}
+					>Enter your request</Typography>
+					<Box sx={{
+						display: 'flex',
+						alignItems: 'center',
+						gap: '1rem'
+					}}>
+						<Typography
+							variant={'h6'}
+							sx={{
+								color: colors.white,
+							}}
+						>Select model:</Typography>
+						<FormControl
+							sx={{
+								width: '15rem'
+							}}
+						>
+							<Select
+								value={assistant}
+								label='Assistant'
+								onChange={handleChange}
+								defaultValue={'gpt'}
+							>
+								<MenuItem value={'gpt'}>Chat GPT</MenuItem>
+								<MenuItem value={'claude'}>Claude</MenuItem>
+							</Select>
+						</FormControl>
+					</Box>
+				</Box>
 				<TextField
 					fullWidth
 					placeholder='Enter your request'
@@ -106,7 +165,7 @@ const Persons = () => {
 						border: `1px solid ${colors.orange50}`
 					}}
 				>
-					 <FormattedTextDisplay>{resultText}</FormattedTextDisplay>
+					<FormattedTextDisplay>{resultText}</FormattedTextDisplay>
 				</Box>}
 			</Box>
 		</Box>

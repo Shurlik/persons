@@ -1,11 +1,11 @@
 import {createTheme} from '@mui/material/styles';
-import {inputStyles, inputOutlinedStyles} from "./inputs";
+import {inputOutlinedStyles, inputStyles} from "./inputs";
 import labels from "./labels";
 import buttons from "./buttons";
 import {colors} from "../styles/colors";
 import listItemButton from "./listItemButton";
 import {tableCell, tableHead, tableRow} from './table';
-import {menu, menuItem} from "./menu";
+import {menu} from "./menu";
 import {customSelect, customSelectItem, customSelectMenu} from "./select";
 
 const index = createTheme({
@@ -26,7 +26,8 @@ const index = createTheme({
 			'"Segoe UI Symbol"',
 		].join(','),
 		h1: {
-			fontWeight: 700,
+			fontWeight: 400,
+			fontFamily: 'Bebas Neue',
 		},
 		h2: {
 			fontWeight: 400,
@@ -44,7 +45,8 @@ const index = createTheme({
 		h5: {
 			fontSize: '1.5rem',
 			fontFamily: 'Bebas Neue',
-			letterSpacing: 3
+			letterSpacing: 3,
+			fontWeight: 400,
 		},
 		h6: {
 			fontWeight: 600,

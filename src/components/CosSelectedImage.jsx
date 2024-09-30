@@ -1,42 +1,62 @@
 import React, {useEffect, useState} from 'react';
 import useSWR from "swr";
-import {getContent} from "../services/airtable";
+import {getContent, updateBlogPostData} from "../services/airtable";
 import {Box, Button, Container} from "@mui/material";
 import {colors} from "../assets/styles/colors";
 import Loader from "./Loader";
 import OutputsTextField from "./OutputsTextField";
 import PageHeader from "./PageHeader";
+import axios from "axios";
+import ToggleEdit from "./ToggleEdit";
 
-const CosSelectedImage = ({airId, selectedImageId, setSteps}) => {
+const CosSelectedImage = ({airId, selectedImageId, setSteps, steps}) => {
 	const {data = {}, error, isLoading, mutate} = useSWR(`/cos/content/${airId}`, () =>
 		getContent(airId)
 	);
-
+	const [edit, setEdit] = useState(false);
 
 	const [prompt, setPrompt] = useState('');
 	const [loading, setLoading] = useState(false);
 
-	const nextStepHandler = () => {
+	const nextStepHandler = async () => {
 		setLoading(true);
+		await updateBlogPostData(airId, {'Thumbnail Prompt': prompt});
+		await axios(`https://hook.eu2.make.com/sohfl6556adrsi6eu721e4s68w8cgole?recordId=${airId}`);
+
 		setSteps(null);
-		setTimeout(() => setSteps(6), 350);
+		setTimeout(() => setSteps(steps += 1), 350);
 		setLoading(false);
 	};
 
+	const previousStepHandler = () => {
+		setSteps(null);
+		setTimeout(() => setSteps(steps -= 1), 400);
+	};
+
 	useEffect(() => {
-		if (data) {
-			setPrompt(data?.content?.fields['Thumbnail Prompt']);
+		if (data && selectedImageId?.description) {
+			setPrompt(data?.content?.fields['Thumbnail Prompt'] + '\n\n' + '!Important! additional information about Image: ' + selectedImageId?.description);
 		}
 	}, [data]);
 
+	useEffect(() => {
+		if (!selectedImageId?.id) {
+			setSteps(null);
+			setTimeout(() => setSteps(steps += 1), 350);
+		}
+	}, []);
+
+	if(!selectedImageId?.id){
+		return <Loader />
+	}
 
 	return (
-		<Container>
+		<Container sx={{position: 'relative'}}>
 			<PageHeader
-				header={'Selected Image'}
+				header={'Selected Image Style'}
 				sx={{flexGrow: 1}}
 			/>
-			<Box
+			{!!selectedImageId?.id && <Box
 				sx={{
 					width: '20rem',
 					marginBottom: '2rem',
@@ -46,32 +66,18 @@ const CosSelectedImage = ({airId, selectedImageId, setSteps}) => {
 				<Box
 					component={'img'}
 					alt={'img'}
-					src={selectedImageId.url}
+					src={selectedImageId?.url}
 					sx={{width: '100%', height: '100%', objectFit: 'cover',}}
 				/>
 
-			</Box>
+			</Box>}
 			<OutputsTextField
-				title={'Final Prompt'}
+				editable={edit}
+				title={'Final Image Prompt'}
 				loading={loading}
 				onChange={(event) => setPrompt(event.target.value)}
-				value={prompt + '\n\n' + '## Additional Prompt to create the Image: ' + selectedImageId.description}
+				value={prompt}
 			/>
-			{/*<Typography*/}
-			{/*	variant={'h4'}*/}
-			{/*	sx={{color: colors.white, marginTop: '2rem'}}*/}
-			{/*>Final Prompt</Typography>*/}
-			{/*<TextField*/}
-			{/*	sx={{...loginInputStyles, width: '100%'}}*/}
-			{/*	variant='standard'*/}
-			{/*	multiline*/}
-			{/*	rows={25}*/}
-			{/*	required*/}
-			{/*	// disabled*/}
-			{/*	disabled={loading}*/}
-			{/*	value={prompt + '\n\n' + '## Additional Prompt to create the Image: ' + selectedImageId.description}*/}
-			{/*	// onChange={(event) => setPrompt(event.target.value)}*/}
-			{/*/>*/}
 
 			<Button
 				onClick={nextStepHandler}
@@ -80,6 +86,13 @@ const CosSelectedImage = ({airId, selectedImageId, setSteps}) => {
 				sx={{width: '100%', marginTop: '3rem'}}
 				disabled={loading}
 			>Next step</Button>
+			<Button
+				onClick={previousStepHandler}
+				variant={'outlined'}
+				color={'primary'}
+				sx={{width: '100%', marginTop: '1rem'}}
+				disabled={loading}
+			>Previous step</Button>
 			{loading && <Box
 				sx={{
 					display: 'flex',
@@ -95,6 +108,10 @@ const CosSelectedImage = ({airId, selectedImageId, setSteps}) => {
 				}}
 			>
 				<Loader/></Box>}
+			<ToggleEdit
+				isEdit={edit}
+				onClick={() => setEdit(old => !old)}
+			/>
 		</Container>
 	);
 };

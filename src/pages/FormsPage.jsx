@@ -1,11 +1,9 @@
 import React, {useState} from 'react';
-import {Box, FormControl, MenuItem, Select, Typography} from "@mui/material";
+import {Box, FormControl, MenuItem, Select} from "@mui/material";
 import UserFormSelect from "../components/UserFormSelect";
-import {loginInputStyles} from "../services/inputStyles";
 import useSWR from "swr";
 import {getAllRecords} from "../services/airtable";
 import Loader from "../components/Loader";
-import {colors} from "../assets/styles/colors";
 import BlogPostForm from "../components/forms/BlogPostForm";
 import ResearchResult from "../components/ResearchResult";
 import CosOutputs from "../components/CosOutputs";
@@ -14,6 +12,7 @@ import CustomSlide from "../components/CustomSlide";
 import CosSelectedImage from "../components/CosSelectedImage";
 import CosFinal from "../components/CosFinal";
 import PageHeader from "../components/PageHeader";
+import CosOutline from "../components/CosOutline";
 
 const FormsPage = () => {
 	const [person, setPerson] = useState('');
@@ -21,6 +20,7 @@ const FormsPage = () => {
 	const {data = [], error, isLoading, mutate} = useSWR('/persons', () => getAllRecords());
 	const [steps, setSteps] = useState(0);
 	const [research, setResearch] = useState('');
+
 
 // 	const [research, setResearch] = useState(`Allgemeine Blogging-Statistiken
 //
@@ -92,7 +92,7 @@ const FormsPage = () => {
 
 
 	// const [airId, setAirId] = useState('recKDVIbUbaRD47vR');
-	const [airId, setAirId] = useState(null)
+	const [airId, setAirId] = useState(null);
 	const [selectedImageId, setSelectedImageId] = useState(null);
 
 
@@ -132,7 +132,6 @@ const FormsPage = () => {
 				>
 					<Select
 						fullWidth
-						// sx={loginInputStyles}
 						variant={'outlined'}
 						labelId='demo-simple-select-standard-label'
 						value={person}
@@ -150,6 +149,7 @@ const FormsPage = () => {
 					selectedValues={selectedValues}
 					setSelectedValues={setSelectedValues}
 					setSteps={setSteps}
+					steps={steps}
 				/>}
 			</CustomSlide>
 			<CustomSlide
@@ -161,32 +161,38 @@ const FormsPage = () => {
 					setResearch={setResearch}
 					setSteps={setSteps}
 					setAirId={setAirId}
+					steps={steps}
 				/>
 			</CustomSlide>
 			<CustomSlide
 				condition={steps === 2}
 			>
-				<ResearchResult {...{research, setResearch, airId, setSteps}}/>
+				<ResearchResult {...{research, setResearch, airId, setSteps, steps}}/>
 			</CustomSlide>
 			<CustomSlide
 				condition={steps === 3}
 			>
-				<CosOutputs {...{airId, setSteps}} />
+				<CosOutline {...{airId, setSteps, steps}} />
 			</CustomSlide>
 			<CustomSlide
 				condition={steps === 4}
 			>
-				<CosImages {...{airId, setSteps,selectedImageId, setSelectedImageId}} />
+				<CosOutputs {...{airId, setSteps, steps}} />
 			</CustomSlide>
 			<CustomSlide
 				condition={steps === 5}
 			>
-				<CosSelectedImage {...{airId, setSteps, selectedImageId}} />
+				<CosImages {...{airId, setSteps, selectedImageId, setSelectedImageId, steps}} />
 			</CustomSlide>
 			<CustomSlide
 				condition={steps === 6}
 			>
-				<CosFinal {...{airId, selectedImageId}} />
+				<CosSelectedImage {...{airId, setSteps, selectedImageId, steps}} />
+			</CustomSlide>
+			<CustomSlide
+				condition={steps === 7}
+			>
+				<CosFinal {...{airId, selectedImageId, steps, setSteps}} />
 			</CustomSlide>
 		</Box>
 	);

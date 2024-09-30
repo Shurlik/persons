@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import useSWR from "swr";
 import {getContent, getImages} from "../services/airtable";
-import {Box, Button, Container, TextField, Typography} from "@mui/material";
+import {Box, Button, Container, Typography} from "@mui/material";
 import {colors} from "../assets/styles/colors";
-import {loginInputStyles} from "../services/inputStyles";
 import {Swiper, SwiperSlide} from 'swiper/react';
 // Import Swiper styles
 import 'swiper/css';
@@ -14,11 +13,14 @@ import {A11y, Navigation, Pagination, Scrollbar} from 'swiper/modules';
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import Loader from "./Loader";
 import OutputsTextField from "./OutputsTextField";
+import ToggleEdit from "./ToggleEdit";
 
-const CosImages = ({airId, selectedImageId, setSelectedImageId, setSteps}) => {
+const CosImages = ({airId, selectedImageId, setSelectedImageId, setSteps, steps}) => {
 	const {data = {}, error, isLoading, mutate} = useSWR(`/cos/content/${airId}`, () =>
 		getContent(airId)
 	);
+
+	const [edit, setEdit] = useState(false);
 
 	const {
 		data: images = [],
@@ -27,17 +29,19 @@ const CosImages = ({airId, selectedImageId, setSelectedImageId, setSteps}) => {
 		mutate: imgMutate
 	} = useSWR('/cos/images', () => getImages());
 
-	console.log(images);
-
-
 	const [prompt, setPrompt] = useState('');
 	const [loading, setLoading] = useState(false);
 
 	const nextStepHandler = () => {
 		setLoading(true);
 		setSteps(null);
-		setTimeout(() => setSteps(5), 350);
+		setTimeout(() => setSteps(steps += 1), 350);
 		setLoading(false);
+	};
+
+	const previousStepHandler = () => {
+		setSteps(null);
+		setTimeout(() => setSteps(steps -= 1), 400);
 	};
 
 	useEffect(() => {
@@ -48,9 +52,10 @@ const CosImages = ({airId, selectedImageId, setSelectedImageId, setSteps}) => {
 
 
 	return (
-		<Container>
+		<Container sx={{position: 'relative'}}>
 			<Box>
 				<OutputsTextField
+					editable={edit}
 					title={'Thumbnail Prompt'}
 					loading={loading}
 					onChange={(event) => setPrompt(event.target.value)}
@@ -103,13 +108,20 @@ const CosImages = ({airId, selectedImageId, setSelectedImageId, setSteps}) => {
 				</Swiper>
 			</Box>
 
-			{!!selectedImageId && <Button
+			<Button
 				onClick={nextStepHandler}
 				variant={'contained'}
 				color={'primary'}
 				sx={{width: '100%', marginTop: '3rem'}}
 				disabled={loading}
-			>Next step</Button>}
+			>Next step</Button>
+			<Button
+				onClick={previousStepHandler}
+				variant={'outlined'}
+				color={'primary'}
+				sx={{width: '100%', marginTop: '1rem'}}
+				disabled={loading}
+			>Previous step</Button>
 			{loading && <Box
 				sx={{
 					display: 'flex',
@@ -125,6 +137,10 @@ const CosImages = ({airId, selectedImageId, setSelectedImageId, setSteps}) => {
 				}}
 			>
 				<Loader/></Box>}
+			<ToggleEdit
+				isEdit={edit}
+				onClick={() => setEdit(old => !old)}
+			/>
 		</Container>
 	);
 };

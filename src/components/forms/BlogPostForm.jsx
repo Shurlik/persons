@@ -15,13 +15,12 @@ import PageHeader from "../PageHeader";
 import useSWR from "swr";
 import {getLists, uploadBlogPostData} from "../../services/airtable";
 import Loader from "../Loader";
-import {loginInputStyles} from "../../services/inputStyles";
 import {toast} from "react-toastify";
 import Grid from '@mui/material/Grid2';
 import {colors} from "../../assets/styles/colors";
 import axios from "axios";
 
-const BlogPostForm = ({person, selectedValues, setResearch, setSteps, setAirId}) => {
+const BlogPostForm = ({person, selectedValues, setResearch, setSteps, setAirId, steps}) => {
 	const {handleSubmit, control, reset} = useForm();
 	const {data = [], error, isLoading, mutate} = useSWR('/lists', getLists);
 	const [loading, setLoading] = useState(false);
@@ -29,7 +28,6 @@ const BlogPostForm = ({person, selectedValues, setResearch, setSteps, setAirId})
 	const onSubmit = async (data) => {
 		setLoading(true);
 
-		const persPrompt = '\n\n!!! IMPORTANT !!! für eine Persona mit folgenden Merkmalen:\n';
 		const starterString = person ? `Name: ${person?.fields?.Name};\nAge: ${person?.fields?.Age};\nGender: ${person?.fields?.Gender};\nPlace of residence: ${person?.fields['Place of residence']};\nJob title: ${person?.fields['Job title']};\n` : "";
 		const aboutUser = selectedValues.reduce((acc, curr) => acc + `${curr}: ${person?.fields[curr]};\n`, starterString);
 
@@ -38,24 +36,12 @@ const BlogPostForm = ({person, selectedValues, setResearch, setSteps, setAirId})
 			"Brand Asset": ["reciAkXMfTGHYfAXR"],
 			"Assignee": [{id: "usrVAFHfpENuQIP6z"}],
 			"Blogpost Template Prompts": data?.postType,
-			// "Publish Date": moment(data?.publishDateTime).format('YYYY-MM-DD'),
-			// "Writing Brand Voice": data?.writingGuidelines,
 			"Extra Context Instruction": `${data?.extraContext}`,
 			"Secondary Keyword": data.secondaryKeyword,
 			"Primary Keyword": data.primaryKeyword,
 			"Writing Brand Voice": 'Friendly',
 			"Persona data": aboutUser
 		};
-
-		// const newForm = {
-		// 	title: data.title,
-		// 	primaryKeyword: data.primaryKeyword,
-		// 	secondaryKeyword: data.secondaryKeyword,
-		// 	extra: `${data?.extraContext}${person ? persPrompt + ' ' + aboutUser : ''}`,
-		// 	blogpostTemplatePrompts: data.postType,
-		// 	language: 'German',
-		// 	brandVoice: 'Friendly'
-		// }
 
 		if (!newForm['Blogpost Template Prompts'].length) {
 			setLoading(false);
@@ -78,7 +64,7 @@ const BlogPostForm = ({person, selectedValues, setResearch, setSteps, setAirId})
 			const result = await axios(`https://hook.eu2.make.com/4kwge4k6ylha37wca5joxqz19ab4icys?record_id=${res.postData.id}`);
 			setResearch(result.data);
 			setSteps(null);
-			setTimeout(() => setSteps(2), 350);
+			setTimeout(() => setSteps(steps += 1), 350);
 			// reset();
 			toast.success('Success!');
 		} catch (e) {
@@ -88,6 +74,11 @@ const BlogPostForm = ({person, selectedValues, setResearch, setSteps, setAirId})
 			setLoading(false);
 		}
 
+	};
+
+	const previousStepHandler = () => {
+		setSteps(null);
+		setTimeout(() => setSteps(steps -= 1), 400);
 	};
 
 	const menuBrandAssets = !isLoading ? data.BrandAssets.map((item) => <MenuItem
@@ -152,71 +143,6 @@ const BlogPostForm = ({person, selectedValues, setResearch, setSteps, setAirId})
 							/>
 						</Grid>
 
-
-						{/*/!* Brand Asset *!/*/}
-						{/*<Grid*/}
-						{/*	size={6}*/}
-						{/*>*/}
-						{/*	<Typography*/}
-						{/*		variant='subtitle1'*/}
-						{/*		gutterBottom*/}
-						{/*	>*/}
-						{/*		Add Brand Asset*/}
-						{/*	</Typography>*/}
-						{/*	<Controller*/}
-						{/*		name='brandAsset'*/}
-						{/*		control={control}*/}
-						{/*		defaultValue={[]}*/}
-						{/*		render={({field}) => (*/}
-						{/*			<FormControl fullWidth>*/}
-						{/*				<Select*/}
-						{/*					{...field}*/}
-						{/*					// sx={loginInputStyles}*/}
-						{/*					variant='standard'*/}
-						{/*					multiple*/}
-						{/*					disabled={loading}*/}
-						{/*				>*/}
-						{/*					{menuBrandAssets}*/}
-						{/*				</Select>*/}
-						{/*			</FormControl>*/}
-						{/*		)}*/}
-						{/*	/>*/}
-						{/*</Grid>*/}
-
-						{/*/!* Add Assignee *!/*/}
-						{/*<Grid*/}
-						{/*	size={6}*/}
-						{/*>*/}
-						{/*	<Typography*/}
-						{/*		variant='subtitle1'*/}
-						{/*		gutterBottom*/}
-						{/*	>*/}
-						{/*		Add Assignee*/}
-						{/*	</Typography>*/}
-						{/*	<Controller*/}
-						{/*		name='assignee'*/}
-						{/*		control={control}*/}
-						{/*		defaultValue={[]}*/}
-						{/*		render={({field}) => (*/}
-						{/*			<FormControl fullWidth>*/}
-						{/*				<Select*/}
-						{/*					{...field}*/}
-						{/*					// sx={loginInputStyles}*/}
-						{/*					variant='standard'*/}
-						{/*					multiple*/}
-						{/*					disabled={loading}*/}
-						{/*				>*/}
-						{/*					{assigneeItem ? (*/}
-						{/*						<MenuItem value={assigneeItem.id}>{assigneeItem.name}</MenuItem>*/}
-						{/*					) : (*/}
-						{/*						<MenuItem value=''>No assignee available</MenuItem>*/}
-						{/*					)}*/}
-						{/*				</Select>*/}
-						{/*			</FormControl>*/}
-						{/*		)}*/}
-						{/*	/>*/}
-						{/*</Grid>*/}
-
 						{/* Type of Post - MultiSelect */}
 						<Grid
 							size={6}
@@ -248,38 +174,6 @@ const BlogPostForm = ({person, selectedValues, setResearch, setSteps, setAirId})
 							/>
 						</Grid>
 
-
-						{/*/!* Publish Date and Time *!/*/}
-						{/*<Grid*/}
-						{/*	size={6}*/}
-						{/*>*/}
-						{/*	<Typography*/}
-						{/*		variant='subtitle1'*/}
-						{/*		gutterBottom*/}
-						{/*	>*/}
-						{/*		Publish Date*/}
-						{/*	</Typography>*/}
-						{/*	<Controller*/}
-						{/*		name='publishDateTime'*/}
-						{/*		control={control}*/}
-						{/*		defaultValue={null}*/}
-						{/*		render={({field}) => (*/}
-						{/*			<DatePicker*/}
-						{/*				disabled={loading}*/}
-						{/*				sx={loginInputStyles}*/}
-						{/*				variant='standard'*/}
-						{/*				{...field}*/}
-						{/*				slotProps={{*/}
-						{/*					textField: {*/}
-						{/*						fullWidth: true,*/}
-						{/*						variant: 'outlined'*/}
-						{/*					},*/}
-						{/*				}}*/}
-						{/*			/>*/}
-						{/*		)}*/}
-						{/*	/>*/}
-						{/*</Grid>*/}
-						{/*===*/}
 						{/* Primary Keyword */}
 						<Grid
 							size={8}
@@ -325,7 +219,6 @@ const BlogPostForm = ({person, selectedValues, setResearch, setSteps, setAirId})
 										disabled={loading}
 										{...field}
 										fullWidth
-										// sx={loginInputStyles}
 										variant='outlined'
 									/>
 								)}
@@ -350,7 +243,6 @@ const BlogPostForm = ({person, selectedValues, setResearch, setSteps, setAirId})
 									<TextField
 										{...field}
 										fullWidth
-										// sx={loginInputStyles}
 										variant='outlined'
 										multiline
 										rows={6}
@@ -372,7 +264,7 @@ const BlogPostForm = ({person, selectedValues, setResearch, setSteps, setAirId})
 							// container
 							justifyContent='space-between'
 						>
-							<DialogActions sx={{marginTop: '3rem'}}>
+							{/*<DialogActions sx={{marginTop: '3rem'}}>*/}
 								<Button
 									onClick={nextHandler}
 									variant={'contained'}
@@ -380,7 +272,14 @@ const BlogPostForm = ({person, selectedValues, setResearch, setSteps, setAirId})
 									sx={{width: '100%'}}
 									type={'submit'}
 								>Next step</Button>
-							</DialogActions>
+								<Button
+									onClick={previousStepHandler}
+									variant={'outlined'}
+									color={'primary'}
+									sx={{width: '100%', marginTop: '1rem'}}
+									disabled={loading}
+								>Previous step</Button>
+							{/*</DialogActions>*/}
 						</Grid>
 					</Grid>
 				</form>

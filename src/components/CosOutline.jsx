@@ -2,22 +2,22 @@ import React, {useEffect, useState} from 'react';
 import {Button, Container} from "@mui/material";
 import useSWR from "swr";
 import {getContent, updateBlogPostData} from "../services/airtable";
-import OutputsTextField from "./OutputsTextField";
 import ToggleEdit from "./ToggleEdit";
+import OutputsTextField from "./OutputsTextField";
 
-const CosOutputs = ({airId, setSteps, steps}) => {
-
-	const [final, setFinal] = useState('');
+const CosOutline = ({airId, setSteps, steps}) => {
 	const [edit, setEdit] = useState(false);
+	const [outline, setOutline] = useState('');
+
 	const {data = {}, error, isLoading, mutate} = useSWR(`/cos/content/${airId}`, () =>
 		getContent(airId)
 	);
 
 	const nextStepHandler = async () => {
 		setLoading(true);
-		await updateBlogPostData(airId, {'AI Final Output (Blogpost)': final });
+		await updateBlogPostData(airId, {'AI Outline (Blogpost)': outline });
 		setSteps(null);
-		setTimeout(() => setSteps(steps += 1), 350);
+		setTimeout(() => setSteps(steps += 1), 400);
 		setLoading(false);
 	};
 
@@ -28,7 +28,7 @@ const CosOutputs = ({airId, setSteps, steps}) => {
 
 	useEffect(() => {
 		if (data) {
-			setFinal(data?.content?.fields['AI Final Output (Blogpost)']);
+			setOutline(data?.content?.fields['AI Outline (Blogpost)']);
 		}
 	}, [data]);
 
@@ -36,13 +36,14 @@ const CosOutputs = ({airId, setSteps, steps}) => {
 	const [loading, setLoading] = useState(false);
 
 	return (
-		<Container  sx={{position: 'relative'}}>
+		<Container sx={{position: 'relative'}}>
 			<OutputsTextField
 				editable={edit}
-				value={final}
-				title={'AI final Output'}
+				value={outline}
+				title={'Outline'}
 				loading={loading}
-				onChange={(event) => setFinal(event.target.value)}  />
+				onChange={(event) => setOutline(event.target.value)}
+			/>
 			<Button
 				onClick={nextStepHandler}
 				variant={'contained'}
@@ -50,6 +51,7 @@ const CosOutputs = ({airId, setSteps, steps}) => {
 				sx={{width: '100%', marginTop: '3rem'}}
 				disabled={loading}
 			>Next step</Button>
+
 			<Button
 				onClick={previousStepHandler}
 				variant={'outlined'}
@@ -65,4 +67,4 @@ const CosOutputs = ({airId, setSteps, steps}) => {
 	);
 };
 
-export default CosOutputs;
+export default CosOutline;

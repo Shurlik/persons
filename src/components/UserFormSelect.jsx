@@ -10,7 +10,7 @@ import Grid from "@mui/material/Grid2";
 const ADD_DATA = ['Limbic Types', 'Important Values', 'Pain Points', 'Fears', 'Goals and Dreams', 'Materialistic Gains', 'Emotional Win'];
 
 
-const UserFormSelect = ({person, selectedValues, setSelectedValues, setSteps}) => {
+const UserFormSelect = ({person, selectedValues, setSelectedValues, setSteps, steps}) => {
 	const [details, setDetails] = useState(null);
 
 
@@ -40,7 +40,7 @@ const UserFormSelect = ({person, selectedValues, setSelectedValues, setSteps}) =
 
 	const nextStepHandler = () => {
 		setSteps(null);
-		setTimeout(() => setSteps(1), 350);
+		setTimeout(() => setSteps(steps += 1), 350);
 	};
 
 	useEffect(() => {

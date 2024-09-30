@@ -38,10 +38,6 @@ const ArticlesPage = () => {
 	if (!data?.articles) {
 		return <Loader/>;
 	}
-	data.articles.forEach(e => {
-		console.log(e.fields["Article Image"])
-		}
-	)
 
 	const articles = data.articles.map(d => ({
 		id: d.id,
