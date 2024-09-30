@@ -7,6 +7,7 @@ const FormattedTextDisplay = ({children, custom}) => {
 	return (
 		<Box
 			sx={{
+				transition: '.3s',
 				'& p': {marginBottom: '8px'},
 				'& h2': {marginTop: '12px', marginBottom: '8px', color: colors.silver},
 				'& hr': {margin: '12px 0', border: 'none', borderTop: `1px solid ${colors.silver}`},
