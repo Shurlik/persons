@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/persons/static/css/main.b7d981e4.css",
-    "main.js": "/persons/static/js/main.4a80e412.js",
+    "main.js": "/persons/static/js/main.71fb47f3.js",
     "static/media/Rajdhani-Bold.ttf": "/persons/static/media/Rajdhani-Bold.a5a831c1b8c8eb1b83ff.ttf",
     "static/media/Rajdhani-SemiBold.ttf": "/persons/static/media/Rajdhani-SemiBold.7d928c2670caba5b9dd6.ttf",
     "static/media/Rajdhani-Medium.ttf": "/persons/static/media/Rajdhani-Medium.69a9f7bccb45c01931a2.ttf",
@@ -11,13 +11,12 @@
     "static/media/cartoon-office-boy.png": "/persons/static/media/cartoon-office-boy.fde640b21e5f9b353085.png",
     "static/media/BebasNeue-Regular.ttf": "/persons/static/media/BebasNeue-Regular.12e3683f9192436a7be8.ttf",
     "static/media/kivi-logo.png": "/persons/static/media/kivi-logo.e63f59931d7fe76deebe.png",
-    "static/media/BS-logo.png": "/persons/static/media/BS-logo.1379a2183b71f078dee5.png",
     "index.html": "/persons/index.html",
     "main.b7d981e4.css.map": "/persons/static/css/main.b7d981e4.css.map",
-    "main.4a80e412.js.map": "/persons/static/js/main.4a80e412.js.map"
+    "main.71fb47f3.js.map": "/persons/static/js/main.71fb47f3.js.map"
   },
   "entrypoints": [
     "static/css/main.b7d981e4.css",
-    "static/js/main.4a80e412.js"
+    "static/js/main.71fb47f3.js"
   ]
 }
