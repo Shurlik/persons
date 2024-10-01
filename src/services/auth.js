@@ -93,7 +93,27 @@ const authService = {
 	getAccessToken() {
 		return localStorage.getItem('accessToken');
 	},
+
+	async getProfile() {
+		try {
+			const response = await api.get('/users/profile');
+			return response.data;
+		} catch (error) {
+			console.error('Error fetching all records:', error);
+			throw error;
+		}
+	},
+
+	async updateProfile(data) {
+		try {
+			const response = await api.put('/users/profile', {data});
+			return response.data;
+		} catch (e) {
+			console.log('error: ', e);
+		}
+	}
 };
+
 
 // Interceptor for handling authentication errors
 api.interceptors.response.use(

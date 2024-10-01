@@ -1,12 +1,13 @@
 import React from 'react';
-import { Box, Typography, TextField } from '@mui/material';
+import {Box, Typography, TextField, Select, MenuItem} from '@mui/material';
 import { colors } from '../assets/styles/colors';
 import FormattedTextDisplay from './FormattedTextDisplayPersDetails';
 import {loginInputStyles} from "../services/inputStyles";
 
 const fieldTypes = {
 	'Age': 'number',
-	'Количество детей': 'number',
+	'Number of Kids': 'number',
+	'Gender': 'select',
 	// Предположим, что 'Description' - это многострочное поле
 	'Description': 'multiline',
 	'Fears': 'multiline',
@@ -94,6 +95,38 @@ const PersonDetailTextSection = ({ title, subtitles, content, isEditing, onChang
 										...loginInputStyles
 									}}
 								/>
+							) : fieldType === 'select' ? (
+								<Select
+									sx={{
+										marginTop: '0.5rem',
+										width: '50%',
+										backgroundColor: colors.background,
+										// color: '#ffffff',
+										border: `1px solid ${colors.gray40}`,
+										borderRadius: '8px',
+										padding: '10px 20px',
+										fontSize: '16px',
+										'& .MuiSelect-icon': {
+											color: colors.orange,
+										},
+										'& .MuiOutlinedInput-notchedOutline': {
+											borderColor: colors.gray40, // Цвет рамки
+										},
+										'&:hover .MuiOutlinedInput-notchedOutline': {
+											// borderColor: '#ffffff', // Изменение цвета обводки при ховере
+										},
+										'&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+											borderColor: colors.orange, // Цвет обводки при фокусе
+										},
+									}}
+									labelId="demo-simple-select-label"
+									value={content[s] || ''}
+									onChange={(e) => onChange(s, e.target.value)}
+								>
+									<MenuItem value={'Male'}>Male</MenuItem>
+									<MenuItem value={'Female'}>Female</MenuItem>
+									<MenuItem value={'Non-Binary'}>Non-Binary</MenuItem>
+								</Select>
 							) : (
 								<TextField
 									variant='standard'

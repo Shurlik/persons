@@ -64,8 +64,14 @@ const PersonsList = ({
 	};
 
 	const editHandler = () => {
-		handleEditPerson(id);
+		// handleEditPerson(id);
+		navigate(`/persons/${id}`, {
+			state: {
+				edit: true
+			}
+		});
 	};
+
 	const downloadHandler = () => {
 		const downloadUrl = `${LINK}/files/download/${id}`;
 		simulateDownloadClick(downloadUrl);

@@ -53,6 +53,16 @@ export async function deleteRecord(id) {
 export async function uploadFile(id, data) {
 	try {
 		const response = await api.post(`/files/profile/${id}`, data);
+		// return response.data;
+	} catch (error) {
+		console.error('Error creating record:', error);
+		throw error;
+	}
+}
+
+export async function uploadProfileFile(data) {
+	try {
+		const response = await api.post(`/files/user`, data);
 		return response.data;
 	} catch (error) {
 		console.error('Error creating record:', error);

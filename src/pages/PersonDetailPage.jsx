@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import useSWR from 'swr';
-import {getRecordById, updateRecord} from '../services/airtable';
+import {getRecordById, updateRecord, uploadFile} from '../services/airtable';
 import {Box, Typography} from '@mui/material';
 import Loader from '../components/Loader';
 import {useLocation} from 'react-router-dom';
@@ -10,19 +10,32 @@ import PersonDetailTextSection from '../components/PersonDetailTextSection';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
+import ImageSearchIcon from "@mui/icons-material/ImageSearch";
+import officeGirl from "../assets/images/cartoon-office-girl.png";
+import officeBoy from "../assets/images/cartoon-office-boy.png";
 
 const KEYS = Object.keys(personData);
 
 const PersonDetail = () => {
 	const location = useLocation();
+	let edit = location.state?.edit;
 	const id = location.pathname.split('/')[2];
 	const {data = {}, error, isLoading, mutate} = useSWR(`/persons/${id}`, () =>
 		getRecordById(id)
 	);
+	const [previewUrl, setPreviewUrl] = useState(null);
+	const [file, setFile] = useState(null);
 
 	const [loading, setLoading] = useState(false);
-	const [isEditing, setIsEditing] = useState(false);
+	const [isEditing, setIsEditing] = useState(edit);
 	const [formData, setFormData] = useState({});
+
+	const fileInputRef = useRef(null);
+
+
+
+
+
 
 	// Обновляем formData, когда приходят новые данные
 	useEffect(() => {
@@ -38,17 +51,37 @@ const PersonDetail = () => {
 		}));
 	};
 
+	const handleImageChange = (event) => {
+		const file = event.target.files[0];
+		if (file) {
+			setFile(null);
+			setFile(file);
+			const reader = new FileReader();
+			reader.onloadend = () => {
+				setPreviewUrl(reader.result);
+			};
+			reader.readAsDataURL(file);
+		}
+	};
+
 	const saveData = async (updatedData) => {
 		setLoading(true);
 		try {
+			//saving image first if exists
+			if (file) {
+				const formData = new FormData();
+				formData.append('file', file);
+				await uploadFile(id, formData);
+			}
+
 			// Преобразование числовых полей
 			const dataToSave = {...updatedData};
 			dataToSave['Age'] = Number(dataToSave['Age']);
 			dataToSave['Number of Kids'] = Number(dataToSave['Number of Kids']);
+			dataToSave['User Image'] = undefined;
 			// Сохранение данных на сервере
 			await updateRecord(id, dataToSave);
 			// Обновляем данные после успешного сохранения
-			console.log({dataToSave});
 			await mutate();
 			// Выключаем режим редактирования
 			setIsEditing(false);
@@ -60,9 +93,19 @@ const PersonDetail = () => {
 		}
 	};
 
+	const handleImageClick = () => {
+		if (loading) {
+			return;
+		}
+		fileInputRef.current.click();
+	};
+
+
 	const cancelEditing = () => {
 		// Отменяем изменения, восстанавливая исходные данные
 		setFormData(data.fields);
+		setPreviewUrl(null);
+		setFile(null);
 		setIsEditing(false);
 	};
 
@@ -87,6 +130,15 @@ const PersonDetail = () => {
 			onChange={handleChange}
 		/>
 	)).filter((_, index) => index % 2 !== 0);
+
+	content2.unshift(<PersonDetailTextSection
+		key={'Personal'}
+		title={'Personal'}
+		subtitles={['Country', 'Gender']}
+		content={formData}
+		isEditing={isEditing}
+		onChange={handleChange}
+	/>);
 
 	if (isLoading || loading) {
 		return (
@@ -130,12 +182,13 @@ const PersonDetail = () => {
 						overflow: 'hidden',
 						margin: '0 auto',
 						textAlign: 'center',
+						position: 'relative'
 					}}
 				>
 					<Box
 						component={'img'}
 						alt={'user image'}
-						src={data.fields['User Image'][0]?.url}
+						src={previewUrl ? previewUrl : data?.fields['User Image']?.length > 0 ? data.fields['User Image'][0]?.url : data?.fields['Gender'] === 'Female' ? officeGirl : officeBoy}
 						sx={{
 							width: '100%',
 							height: '100%',
@@ -143,6 +196,32 @@ const PersonDetail = () => {
 							filter: 'grayscale(100%)',
 						}}
 					/>
+					{isEditing && <Box
+						onClick={handleImageClick}
+						sx={{
+							position: 'absolute',
+							top: '50%',
+							left: 0,
+							right: 0,
+							bottom: 0,
+							backgroundColor: colors.orange20,
+							display: 'flex',
+							alignItems: 'center',
+							justifyContent: 'center',
+							transition: '.3s',
+							cursor: 'pointer',
+							'&:hover': {
+								backgroundColor: colors.orange50
+							}
+						}}
+					>
+						<ImageSearchIcon
+							sx={{
+								color: colors.orange,
+								fontSize: '2rem'
+							}}
+						/>
+					</Box>}
 				</Box>
 				{/* Отображение имени и должности */}
 				<Typography
@@ -321,6 +400,13 @@ const PersonDetail = () => {
 					)}
 				</Box>
 			</Box>
+			<input
+				ref={fileInputRef}
+				accept='image/*'
+				type='file'
+				onChange={handleImageChange}
+				style={{display: 'none'}}
+			/>
 		</Box>
 	);
 };

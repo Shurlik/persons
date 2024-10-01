@@ -75,7 +75,6 @@ const DialogLogin = ({onSubmit, onClose, isOpen}) => {
 					margin='dense'
 					id='username'
 					name='username'
-					// label='Username'
 					fullWidth
 					variant='standard'
 					disabled={loading}
