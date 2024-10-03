@@ -42,13 +42,25 @@ export default {
 				backgroundColor: colors.orange,
 				color: colors.white,
 				border: `1px solid ${colors.orange}`,
-
 			},
 			'&:disabled': {
 				color: colors.orange50,
 				border: `1px solid ${colors.orange50}`,
 				backgroundColor: colors.background
 			}
+		},
+		outlinedInfo: {
+			color: colors.orange,
+			border: `1px solid ${colors.orange}`,
+			padding:'.3rem 1.5rem',
+			fontSize: '1rem',
+			fontWeight: 'bold',
+			transition: '.3s',
+			'&:hover': {
+				backgroundColor: colors.orange,
+				color: colors.white,
+				// border: `1px solid ${colors.silver}`,
+			},
 		},
 	},
 };

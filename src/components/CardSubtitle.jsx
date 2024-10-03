@@ -5,12 +5,21 @@ import {colors} from "../assets/styles/colors";
 const CardSubtitle = ({header, text}) => {
 	return (
 		<Typography
-			fontSize={'1rem'}
-			variant={'body1'}
-			marginTop={.5}
-			textAlign={'left'}
+			sx={{
+				fontWeight: '700',
+				fontSize: '.9rem',
+				marginTop: '.8rem',
+				textAlign: 'left',
+				color: colors.white
+			}}
 		>
-			<Typography fontWeight={'bold'} color={colors.white} variant={'span'}>{header}:&nbsp;</Typography><Typography variant={'span'}>{text}</Typography>
+			<Typography variant={'span'}>{header}:&nbsp;&nbsp;&nbsp;</Typography><Typography
+			sx={{
+				color: colors.gray2,
+				fontWeight: 'normal'
+			}}
+			variant={'span'}
+		>{text}</Typography>
 		</Typography>
 	);
 };

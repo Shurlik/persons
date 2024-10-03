@@ -5,12 +5,12 @@ import {colors} from "../assets/styles/colors";
 const PageHeader = ({header}) => {
 	return (
 		<Typography
-			variant='h3'
+			variant={'h3'}
 			gutterBottom
 			sx={{
 				textAlign: 'left',
 				mt: 2,
-				fontWeight: 'bold',
+				// fontWeight: 'bold',
 				color: colors.white
 			}}
 		>

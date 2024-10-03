@@ -1,25 +1,55 @@
 import {colors} from "../styles/colors";
 
-export default {
+export const inputOutlinedStyles = {
 	styleOverrides: {
 		root: {
-			alignVertical: "center",
-			backgroundColor: colors.white, // Цвет фона инпута
-			borderRadius: '8px', // Закругленные углы
+			backgroundColor: colors.white,
+			padding: '16px',
+			borderRadius: '8px',
 			'& .MuiOutlinedInput-notchedOutline': {
-				borderColor: colors.silver, // Цвет рамки
+				borderColor: colors.darkGrey42,
 			},
 			'&:hover .MuiOutlinedInput-notchedOutline': {
-				boxShadow: `0 0 5px 1px ${colors.white}`,
-				borderColor: colors.grey// Цвет рамки при наведении
+				borderColor: colors.orange50,
 			},
 			'&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-				borderColor: colors.white, // Цвет рамки при фокусе
+				borderColor: colors.orange50,
+			},
+			'& .MuiInputBase-input::placeholder': {
+				color: colors.darkGrayMain, // Принудительно применяем тёмный цвет
 			},
 		},
 		input: {
-			color: '#000', // Цвет текста инпута
-			padding: '12px', // Padding внутри инпута
+			color: colors.black,
+			padding: 0,
+			'&::placeholder': {
+				color: colors.darkGrayMain, // Принудительно применяем тёмный цвет
+			},
 		},
 	},
-}
+};
+
+
+export const inputStyles = {
+	styleOverrides: {
+		root: {
+			backgroundColor: colors.background,
+			'& .MuiInput-root': {
+				color: colors.white, // Цвет текста
+				'&::before': {
+					borderBottom: `1px solid ${colors.grey}`, // Цвет линии снизу
+				},
+				'&:hover:not(.Mui-disabled)::before': {
+					borderBottom: `1px solid ${colors.orange}`, // Цвет при наведении
+				},
+				'&::after': {
+					borderBottom: `1px solid ${colors.orange}`, // Цвет при фокусе
+				},
+			},
+			'& .MuiInput-input::placeholder': {
+				color: colors.grey, // Цвет плейсхолдера
+				opacity: 1, // Непрозрачность плейсхолдера
+			},
+		},
+	},
+};

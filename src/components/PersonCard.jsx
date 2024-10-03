@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Box, Checkbox, Typography} from "@mui/material";
 import officeBoy from '../assets/images/cartoon-office-boy.png';
 import officeGirl from '../assets/images/cartoon-office-girl.png';
@@ -7,23 +7,37 @@ import {colors} from "../assets/styles/colors";
 import CardSubtitle from "./CardSubtitle";
 import SectionTitle from "./SectionTitle";
 import DetailItem from "./DetailItem";
+import PersonCardHead from "./PersonCardHead";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
 
 const PersonCard = ({person, isSelected, onSelectChange}) => {
 	const {fields, id} = person;
 	const navigate = useNavigate();
 
+	const [isHovered, setIsHovered] = useState(false);
+
+	const handleMouseEnter = () => setIsHovered(true);
+	const handleMouseLeave = () => setIsHovered(false);
+
 	function detailsHandler() {
 		// navigate(`/persons/${id}`);
 	}
 
+	const handleClick = (event) => {
+		if (event.target.type !== 'checkbox') {
+			onSelectChange(id, !isSelected);
+		}
+	};
+
 	return (
-		<Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 4}}>
+		<Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
 			<Box
+				onMouseEnter={handleMouseEnter}
+				onMouseLeave={handleMouseLeave}
 				onClick={detailsHandler}
 				sx={{
-					cursor: 'pointer',
-					width: '350px',
-					height: '600px',
+					width: '360px',
+					height: '500px',
 					perspective: '1000px',
 					'& .card-inner': {
 						position: 'relative',
@@ -41,11 +55,14 @@ const PersonCard = ({person, isSelected, onSelectChange}) => {
 					{/* Front side */}
 					<Box
 						sx={{
+							boxSizing: 'border-box',
+							border: `1px solid ${colors.gray40}`,
 							position: 'absolute',
 							width: '100%',
 							height: '100%',
 							backfaceVisibility: 'hidden',
-							borderRadius: '25px',
+							borderTopRightRadius: '25px',
+							borderTopLeftRadius: '25px',
 							overflow: 'hidden',
 							display: 'flex',
 							flexDirection: 'column',
@@ -55,59 +72,24 @@ const PersonCard = ({person, isSelected, onSelectChange}) => {
 							sx={{
 								backgroundColor: colors.black,
 								flexGrow: 3,
-								padding: '25px',
+								padding: '24px',
 								color: colors.white,
 								textAlign: 'center'
 							}}
 						>
-							<Box
+							<PersonCardHead
+								name={fields['Name']}
+								image={fields['User Image']?.length > 0 ? fields['User Image'][0]?.url : fields['Gender'] === 'Female' ? officeGirl : officeBoy}
+								place={fields['Place of residence']}
+							/>
+							<Typography
 								sx={{
-									margin: '0 auto',
-									width: '140px',
-									height: '140px',
-									borderRadius: '50%',
-									display: 'flex',
-									alignItems: 'center',
-									justifyContent: 'center'
+									color: colors.white,
+									marginBottom: '1rem',
+									fontWeight: '700',
+									fontSize: '1.1rem',
+									marginTop: '1rem',
 								}}
-							>
-								<Box
-									sx={{
-										border: '1px solid silver',
-										width: '125px',
-										height: '125px',
-										borderRadius: '50%',
-										overflow: 'hidden',
-									}}
-								>
-									<Box
-										component={'img'}
-										alt={'user image'}
-										src={fields['Gender'] === 'Female' ? officeGirl : officeBoy}
-										sx={{width: '100%'}}
-									/>
-								</Box>
-							</Box>
-							<Typography
-								variant='h4'
-								marginTop={1}
-								fontWeight={'bold'}
-								sx={{color: colors.white}}
-							>
-								{fields['Name']}
-							</Typography>
-							<Typography
-								fontSize={'1rem'}
-								fontWeight={'bold'}
-								mt={.5}
-								sx={{color: colors.white}}
-							>
-								{fields['Place of residence']}
-							</Typography>
-							<Typography
-								fontSize={'1rem'}
-								mt={.5}
-								sx={{color: colors.white, marginBottom: '1rem'}}
 							>
 								{"Age: " + fields['Age'] + ", " + fields['Job title']}
 							</Typography>
@@ -132,41 +114,55 @@ const PersonCard = ({person, isSelected, onSelectChange}) => {
 								text={fields['Income class']}
 							/>
 						</Box>
-						<Box
-							sx={{
-								backgroundColor: colors.black,
-								height: '5%',
-								padding: '20px',
-								color: colors.white,
-								textAlign: 'center',
-							}}
-						>
-						</Box>
+
 					</Box>
 
 					{/* Back side */}
 					<Box
+
 						sx={{
+							cursor: 'pointer',
+							border: `1px solid ${colors.orange}`,
+							boxSizing: 'border-box',
 							position: 'absolute',
-							width: '90%',
-							height: '95%',
+							width: '100%',
+							height: '100%',
 							backfaceVisibility: 'hidden',
 							transform: 'rotateY(180deg)',
 							backgroundColor: colors.black,
-							borderRadius: '25px',
-							padding: '20px',
+							borderTopRightRadius: '25px',
+							borderTopLeftRadius: '25px',
+							padding: '20px 10px 20px 20px',
 							color: colors.white,
-							overflow: 'auto',
-							'&::-webkit-scrollbar': {
-								width: '8px',
-							},
-							'&::-webkit-scrollbar-thumb': {
-								backgroundColor: colors.silver,
-								borderRadius: '4px',
-							},
+
 						}}
 					>
-						<SectionTitle title='Psychographic Characteristics'/>
+						<Box sx={{
+							width: '100%',
+							height: '100%',
+							overflow: 'auto',
+							'&::-webkit-scrollbar': {
+								position: 'absolute',
+								left: '100px',
+								width: '10px',
+								borderRadius: '4px',
+							},
+							'&::-webkit-scrollbar-track': {
+								borderRadius: '4px',
+								backgroundColor: colors.orange20,
+							},
+							'&::-webkit-scrollbar-thumb': {
+								backgroundColor: colors.orange,
+								borderRadius: '4px',
+								width: '20px'
+							},
+						}}>
+						<Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '.5rem'}}>
+							<SectionTitle
+								title='Psychographic Characteristics'
+								sx={{flex: '1 1'}}
+							/>
+						</Box>
 						<DetailItem
 							label='Limbic Types'
 							value={fields['Limbic Types']}
@@ -279,18 +275,96 @@ const PersonCard = ({person, isSelected, onSelectChange}) => {
 							label='Elevator Pitch'
 							value={fields['Elevator Pitch']}
 						/>
+						<Box
+							onClick={(e)=>{
+								e.stopPropagation();
+							}}
+							sx={{
+								margin: '0 auto',
+								width: '7rem',
+								borderRadius: '10px',
+								display: 'flex',
+								gap: '.4rem',
+								alignItems: 'center',
+								justifyContent: 'center',
+								cursor: 'pointer',
+								backgroundColor: colors.orange,
+								transition: '.3s',
+								padding: '.2rem .5rem',
+								color: colors.white,
+								'&:hover': {
+									color: colors.black,
+									backgroundColor: colors.mainGreen
+								}
+							}}
+						>
+							<Typography
+								variant='body1'
+								sx={{
+									color: 'inherit',
+									fontSize: '1.2rem',
+									fontWeight: '600',
+								}}
+							>Edit</Typography>
+							<BorderColorIcon sx={{fontSize: '.9rem', color: 'inherit'}}/>
+						</Box>
+					</Box>
 					</Box>
 				</Box>
 			</Box>
-			<Box sx={{mt: 2, display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'center'}}>
-				<Checkbox
-					checked={isSelected}
-					onChange={(event) => onSelectChange(id, event.target.checked)}
-				/>
-				<Typography
-					variant='body2'
-					color={colors.white}
-				>Select Person</Typography>
+			<Box
+				onClick={handleClick}
+				sx={{
+					overflow: 'hidden',
+					boxSizing: 'border-box',
+					borderBottom: `1px solid ${isHovered ? colors.orange : colors.gray40}`,
+					borderLeft: `1px solid ${isHovered ? colors.orange : colors.gray40}`,
+					borderRight: `1px solid ${isHovered ? colors.orange : colors.gray40}`,
+					borderBottomRightRadius: '25px',
+					borderBottomLeftRadius: '25px',
+					width: '360px',
+					display: 'flex',
+					textAlign: 'center',
+					transition: 'border-color .8s, background-color .3s',
+					cursor: 'pointer',
+					userSelect: 'none',
+					backgroundColor: `${isSelected ? colors.orange : colors.black}`,
+				}}
+			>
+				<Box
+					sx={{
+						display: 'flex',
+						alignItems: 'center',
+						width: '100%',
+						justifyContent: 'center',
+
+						paddingTop: '3px',
+						paddingBottom: '3px',
+						transition: '.3s',
+
+					}}
+					// onClick={handleClick}
+				>
+					<Checkbox
+						sx={{
+							color: colors.orange,
+							'&.Mui-checked': {
+								color: colors.white,
+							},
+						}}
+						checked={isSelected}
+						onChange={(event) => onSelectChange(id, event.target.checked)}
+						onClick={(event) => event.stopPropagation()}
+					/>
+					<Typography
+						variant='body1'
+						color={colors.white}
+						sx={{
+							fontWeight: '600',
+							fontSize: '1rem'
+						}}
+					>Select Person</Typography>
+				</Box>
 			</Box>
 		</Box>
 	);

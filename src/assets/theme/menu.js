@@ -14,15 +14,24 @@ export const menu = {
 export const menuItem = {
 	styleOverrides: {
 		root: {
+			'&:before': { borderBottom: 'none' },
+			'&:after': { borderBottom: 'none' },
+			'&:hover:not(.Mui-disabled):before': { borderBottom: 'none' },
 			padding: '8px 20px',
 			borderRadius: '6px',
-			color: colors.white,
+			color: colors.orange,
 			borderBottom: `1px solid ${colors.dark24}`,
 			'&:hover': {
 				backgroundColor: colors.dark24,
+				'&:before': { borderBottom: 'none' },
+				'&:after': { borderBottom: 'none' },
+				'&:hover:not(.Mui-disabled):before': { borderBottom: 'none' },
 			},
 			'&.Mui-selected': {
 				backgroundColor: colors.dark24,
+				'&:before': { borderBottom: 'none' },
+				'&:after': { borderBottom: 'none' },
+				'&:hover:not(.Mui-disabled):before': { borderBottom: 'none' },
 				'&:hover': {
 				},
 			},

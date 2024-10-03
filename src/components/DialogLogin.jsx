@@ -1,14 +1,5 @@
 import React, {useState} from 'react';
-import {
-	Button,
-	Dialog,
-	DialogActions,
-	DialogContent,
-	DialogContentText,
-	DialogTitle,
-	Slide,
-	TextField
-} from "@mui/material";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Slide, TextField, Typography} from "@mui/material";
 import {toast} from "react-toastify";
 import {colors} from "../assets/styles/colors";
 import {loginInputStyles} from "../services/inputStyles";
@@ -40,6 +31,7 @@ const DialogLogin = ({onSubmit, onClose, isOpen}) => {
 				toast.error('Please enter a valid login and password');
 				return;
 			}
+			console.log(username, password);
 			await onSubmit(username, password);
 		} catch (e) {
 			console.log('error: ', e);
@@ -49,85 +41,68 @@ const DialogLogin = ({onSubmit, onClose, isOpen}) => {
 
 	return (
 		<Dialog
+			onClose={closeHandler}
 			TransitionComponent={Transition}
 			open={isOpen}
 			PaperProps={{
 				sx: {
-					backgroundColor: colors.darkGrey,
-					color: colors.mainGreen,
+					backgroundColor: colors.background,
+					color: colors.white,
 					borderRadius: '20px',
-					padding: '1rem 5rem',
+					padding: '3rem 3rem',
+					width: '490px'
 				},
 				component: 'form',
 				onSubmit: submitHandler
 			}}
 		>
-			<DialogTitle sx={{fontWeight: 'bold', mb: 0}}>Login</DialogTitle>
-			<DialogContent>
-				<DialogContentText sx={{color: colors.mainGreen, mb: 5}}>
-					Please login to get access
-				</DialogContentText>
-
+			<DialogTitle
+				sx={{
+					fontWeight: 'bold',
+					mb: 0,
+					fontFamily: 'Bebas Neue',
+					textAlign: 'center',
+					fontSize: '1.8rem',
+					letterSpacing: 1.3
+				}}
+			>Log in</DialogTitle>
+			<DialogContent sx={{marginTop: '1rem'}}>
+				<Typography sx={{color: colors.white}}>Username*</Typography>
 				<TextField
 					sx={loginInputStyles}
 					autoFocus
 					margin='dense'
 					id='username'
 					name='username'
-					label='Username'
 					fullWidth
 					variant='standard'
 					disabled={loading}
+					required={true}
+					placeholder={'Enter your username'}
 				/>
-
+				<Typography sx={{marginTop: '2rem', color: colors.white}}>Password*</Typography>
 				<TextField
-					sx={loginInputStyles}
+					sx={{...loginInputStyles}}
 					margin='dense'
 					id='password'
 					name='password'
-					label='Password'
+					// label='Password'
 					type='password'
 					fullWidth
 					variant='standard'
 					disabled={loading}
+					required={true}
+					placeholder={'Password'}
 				/>
 			</DialogContent>
-			<DialogActions>
-					<Button
-						disabled={loading}
-						variant={'outlined'}
-						onClick={closeHandler}
-						sx={{
-							borderRadius: '.5rem',
-							color: colors.silver,
-							transition: '.2s',
-							border:`1px solid ${colors.silver}`,
-							minWidth: '5rem',
-							'&:hover': {
-								backgroundColor: colors.silver,
-								color: colors.black,
-								border:`1px solid ${colors.silver}`,
-							}
-						}}
-					>Cancel</Button>
-					<Button
-						disabled={loading}
-						variant={'outlined'}
-						sx={{
-							marginLeft: '1.5rem!important',
-							borderRadius: '.5rem',
-							color: colors.black,
-							border:`1px solid ${colors.mainGreen}`,
-							minWidth: '5rem',
-							backgroundColor: colors.mainGreen,
-							'&:hover': {
-								backgroundColor: colors.red,
-								color: colors.black,
-								border:`1px solid ${colors.red}`,
-							}
-						}}
-						type='submit'
-					>Login</Button>
+			<DialogActions sx={{marginTop: '3rem'}}>
+				<Button
+					disabled={loading}
+					variant={'contained'}
+					color={'primary'}
+					type='submit'
+					sx={{width: '100%'}}
+				>Login</Button>
 
 			</DialogActions>
 		</Dialog>

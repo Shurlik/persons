@@ -2,7 +2,7 @@ import React from 'react';
 import {Typography} from "@mui/material";
 import {colors} from "../assets/styles/colors";
 
-const SectionTitle = ({title}) => {
+const SectionTitle = ({title, sx}) => {
 	return (
 		<Typography
 			variant='h6'
@@ -11,6 +11,7 @@ const SectionTitle = ({title}) => {
 			mt={1}
 			mb={.5}
 			color={colors.white}
+			sx={sx}
 		>
 			{title}
 		</Typography>

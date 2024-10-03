@@ -12,8 +12,9 @@ export const AuthProvider = ({ children }) => {
 		const initAuth = async () => {
 			const currentUser = authService.getCurrentUser();
 			if (currentUser) {
-				setUser(currentUser);
+				setUser({...currentUser});
 				try {
+				await updateUserData();
 					// Попытка обновить токен при инициализации
 					const res = await authService.refreshToken();
 				} catch (error) {
@@ -28,10 +29,12 @@ export const AuthProvider = ({ children }) => {
 		initAuth();
 	}, []);
 
+
 	useEffect(() => {
 		const intervalId = setInterval(async () => {
 			try {
 				await authService.refreshToken();
+				await updateUserData();
 			} catch (error) {
 				console.error('Failed to refresh token:', error);
 				// Возможно, имеет смысл уведомить пользователя, что сессия скоро завершится
@@ -41,11 +44,25 @@ export const AuthProvider = ({ children }) => {
 		return () => clearInterval(intervalId); // Очистка интервала при размонтировании компонента
 	}, []);
 
+	const updateUserData = async () => {
+		// if (user) {
+			try {
+				// Предполагается, что у вас есть метод для получения полных данных пользователя
+				const fullUserData = await authService.getProfile();
+				setUser(prevUser => fullUserData?.response);
+			} catch (error) {
+				console.error('Failed to update user data:', error);
+			}
+		// }
+	};
+
 	const login = async (username, password) => {
 		const data = await authService.login(username, password);
 		setUser(data.user);
+		await updateUserData();
 		return data;
 	};
+
 	const logout = useCallback(async () => {
 		await authService.logout();
 		setUser(null);
@@ -90,7 +107,8 @@ export const AuthProvider = ({ children }) => {
 		user,
 		login,
 		logout,
-		loading
+		loading,
+		updateUserData
 	};
 
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

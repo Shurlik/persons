@@ -2,14 +2,14 @@ import React, {useState} from "react";
 import {Box, Button, Checkbox, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {colors} from "../assets/styles/colors";
-import Logo from "../assets/images/cartoon-office-girl.png";
+import officeGirl from "../assets/images/cartoon-office-girl.png";
 import DropMenu from "./DropMenu";
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import DownloadIcon from '@mui/icons-material/Download';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
-import officeGirl from "../assets/images/cartoon-office-girl.png";
 import officeBoy from "../assets/images/cartoon-office-boy.png";
 import {LINK} from "../services/variables";
+import {useNavigate} from "react-router-dom";
 
 const simulateDownloadClick = (url) => {
 	const link = document.createElement('a');
@@ -21,40 +21,70 @@ const simulateDownloadClick = (url) => {
 	document.body.removeChild(link);
 };
 
-const PersonsList = ({persons, handleDeletePerson, handleEditPerson,}) => {
+const PersonsList = ({
+	                     persons,
+	                     handleDeletePerson,
+	                     handleEditPerson,
+	                     listPersonsToDelete,
+	                     setListPersonsToDelete,
+	                     disabled
+                     }) => {
 	const [anchorEl, setAnchorEl] = React.useState(null);
-	const [id, setId] = useState(null)
+	const [id, setId] = useState(null);
 	const open = Boolean(anchorEl);
+
+	const navigate = useNavigate();
 
 
 	const handleItemClick = (item) => {
-			const downloadUrl = `${LINK}/files/download/${id}`;
-			simulateDownloadClick(downloadUrl);
-			handleClose()
+		const downloadUrl = `${LINK}/files/download/${id}`;
+		simulateDownloadClick(downloadUrl);
+		handleClose();
 	};
 
-	const handleClick = (event,id) => {
+	const handleClick = (event, id) => {
 		setAnchorEl(event.currentTarget);
-		setId(id)
+		setId(id);
 	};
 	const handleClose = () => {
 		setAnchorEl(null);
-		setId(null)
+		setId(null);
 	};
 
-	const onSelectChange = () => {
+	const onSelectChange = (checked, userId) => {
+		if (checked) {
+			listPersonsToDelete.push(userId);
+			setListPersonsToDelete([...listPersonsToDelete]);
+		} else {
+			const filtered = listPersonsToDelete.filter(p => {
+				return p !== userId;
+			});
+			setListPersonsToDelete([...filtered]);
+		}
 	};
 
 	const editHandler = () => {
-		handleEditPerson(id)
+		// handleEditPerson(id);
+		navigate(`/persons/${id}`, {
+			state: {
+				edit: true
+			}
+		});
 	};
+
 	const downloadHandler = () => {
 		const downloadUrl = `${LINK}/files/download/${id}`;
 		simulateDownloadClick(downloadUrl);
-		handleClose()
+		handleClose();
 	};
 	const deleteHandler = () => {
-		handleDeletePerson(id)
+		setAnchorEl(null);
+		handleDeletePerson(id);
+		setId(null);
+	};
+
+	const detailHandler = (id) => {
+		navigate(`/persons/${id}`);
 	};
 
 	const MENU_DATA = [
@@ -62,6 +92,20 @@ const PersonsList = ({persons, handleDeletePerson, handleEditPerson,}) => {
 		{title: 'Download', icon: DownloadIcon, fn: downloadHandler},
 		{title: 'Delete', icon: DeleteOutlinedIcon, fn: deleteHandler, color: colors.red},
 	];
+
+	const checkAllHandler = () => {
+		persons.forEach(p => listPersonsToDelete.push(p.id));
+		setListPersonsToDelete([...listPersonsToDelete]);
+	};
+
+	const clearAllHandler = () => {
+		setListPersonsToDelete([]);
+	};
+
+
+	const onMainSelectChange = (event) => {
+		event.target.checked ? checkAllHandler() : clearAllHandler();
+	};
 
 
 	return (
@@ -76,14 +120,17 @@ const PersonsList = ({persons, handleDeletePerson, handleEditPerson,}) => {
 						<TableCell
 							sx={{borderBottom: `1px solid ${colors.grey3}`}}
 						> <Checkbox
+							disabled={disabled}
 							sx={{
 								color: colors.white,
 								'&.Mui-checked': {
 									color: colors.white,
 								},
 							}}
-							checked={true}
-							onChange={(event) => onSelectChange('test', event.target.checked)}
+							// checked={true}
+							checked={!!listPersonsToDelete.length}
+
+							onChange={onMainSelectChange}
 						/></TableCell>
 						<TableCell
 							sx={{borderBottom: `1px solid ${colors.grey3}`}}
@@ -110,14 +157,15 @@ const PersonsList = ({persons, handleDeletePerson, handleEditPerson,}) => {
 						>
 							<TableCell>
 								<Checkbox
+									disabled={disabled}
 									sx={{
 										color: colors.white,
 										'&.Mui-checked': {
 											color: colors.white,
 										},
 									}}
-									checked={true}
-									onChange={(event) => onSelectChange('test', event.target.checked)}
+									checked={listPersonsToDelete.includes(user.id)}
+									onChange={(event) => onSelectChange(event.target.checked, user.id)}
 								/>
 							</TableCell>
 							<TableCell
@@ -146,28 +194,36 @@ const PersonsList = ({persons, handleDeletePerson, handleEditPerson,}) => {
 											component={'img'}
 											alt={'logo'}
 											src={user.fields['User Image']?.length > 0 ? user.fields['User Image'][0]?.url : user.fields['Gender'] === 'Female' ? officeGirl : officeBoy}
-											sx={{width: '100%', height: '100%', objectFit: 'cover',filter: 'grayscale(100%)',}}
+											sx={{width: '100%', height: '100%', objectFit: 'cover', filter: 'grayscale(100%)',}}
 										/>
 									</Box>{user?.fields.Name}</Box></TableCell>
 							<TableCell
 							>{user?.fields.Age}</TableCell>
 							<TableCell>{user?.fields.Country}</TableCell>
-							<TableCell><Button
-								variant={'outlined'}
-								color={'secondary'}
-							>View details</Button></TableCell>
-							<TableCell><MoreVertIcon
-								onClick={(event)=> handleClick(event, user.id)}
-								sx={{
-									cursor: 'pointer'
-								}}
-							/></TableCell>
+							<TableCell>
+								<Button
+									disabled={disabled}
+									onClick={() => detailHandler(user.id)}
+									variant={'outlined'}
+									color={'secondary'}
+								>View details
+								</Button>
+							</TableCell>
+							<TableCell>
+								<MoreVertIcon
+									disabled={disabled}
+									onClick={(event) => handleClick(event, user.id)}
+									sx={{
+										cursor: 'pointer'
+									}}
+								/></TableCell>
 
 						</TableRow>
 					))}
 				</TableBody>
 			</Table>
 			<DropMenu
+				disabled={disabled}
 				onClose={handleClose}
 				open={open}
 				data={MENU_DATA}

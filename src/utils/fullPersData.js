@@ -60,7 +60,7 @@ export const fullPersData = `Generate a complete persona profile with all the fo
   "DISG": "DISC personality type (e.g., Dominant, Influential, Steady, or Conscientious)",
   "Sinus-Milieus": "Sinus-Milieu category",
   "Spiral Dynamics": "Spiral Dynamics level",
-  "Hobbies and Interests": "List of primary hobbies and interests",
+  "Hobbies and Interests": "List of primary hobbies and interests in text format, separate by \n",
   "TV Shows / Books": "Preferred genres or specific titles of TV shows and books",
   "Empathy Card": "- Thinks and Feels: [key thoughts and emotions]\\n- Sees: [what they observe in their environment]\\n- Says and Does: [typical actions and words]\\n- Hears: [messages they receive from others and society]\\n- Pains: [frustrations and challenges]\\n- Gains: [desires and measures of success]",
   "Important Values": "1. [Value1]: [brief definition]\\n2. [Value2]: [brief definition]\\n3. [Value3]: [brief definition]\\n4. [Value4]: [brief definition]\\n5. [Value5]: [brief definition]\\n6. [Value6]: [brief definition]\\n7. [Value7]: [brief definition]",
@@ -86,11 +86,12 @@ export const fullPersData = `Generate a complete persona profile with all the fo
 Instructions:
 1. Create a coherent and realistic persona based on the fields provided.
 2. Ensure all details are concise yet informative, and directly relevant to the persona.
-3. For fields requiring lists (e.g., Pain Points, Fears), provide the specified number of items, each on a new line.
+3. For fields requiring lists (e.g., Pain Points, Fears, Hobbies and Interests), provide the specified number of items, each on a new line.
 4. For the Empathy Card, provide brief but insightful content for each category.
 5. In the Important Values section, list 7 values with brief definitions that align with the persona's characteristics.
 6. For Brand-related fields, ensure the content is specific and relates to the persona's preferences and lifestyle.
 7. The Elevator Pitch should be a single paragraph that addresses the persona's needs and desires.
 8. For communication channels, device usage, and online behavior, provide specific examples relevant to the persona.
+9. All values except Age and Number of kids should be as String. IMPORTANT -> Any arrays or objects!
 
 The response should be a valid JSON object with all fields filled out according to these instructions, creating a comprehensive and cohesive persona profile.`

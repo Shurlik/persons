@@ -23,9 +23,9 @@ const processQueue = (error, token = null) => {
 };
 
 const authService = {
-	async register(username, password) {
+	async register({username, password, email, name}) {
 		try {
-			const response = await api.post('/auth/register', {username, password});
+			const response = await api.post('/auth/register', {username, password, email, name});
 			return response.data;
 		} catch (error) {
 			if (error.response && error.response.data.errorCode === 'USERNAME_EXISTS') {
@@ -92,7 +92,29 @@ const authService = {
 	getAccessToken() {
 		return localStorage.getItem('accessToken');
 	},
+
+	async getProfile() {
+		try {
+			const response = await api.get('/users/profile');
+			return response.data;
+		} catch (error) {
+			console.error('Error fetching all records:', error);
+			throw error;
+		}
+	},
+
+	async updateProfile(data, id) {
+		try {
+			const response = id
+				? await api.put(`/users/profile/${id}`, {data})
+				: await api.put('/users/profile', {data});
+			return response.data;
+		} catch (e) {
+			console.log('error: ', e);
+		}
+	}
 };
+
 
 // Interceptor for handling authentication errors
 api.interceptors.response.use(
@@ -100,6 +122,10 @@ api.interceptors.response.use(
 	async (error) => {
 		const originalRequest = error.config;
 		if (error.response?.status === 401 && !originalRequest._retry) {
+			if (error.response?.data?.errorCode === "INVALID_CREDENTIALS") {
+				return Promise.reject("Wrong Login/Password");
+			}
+
 			if (originalRequest._retry === undefined) {
 				return Promise.reject('No refresh token');
 			}

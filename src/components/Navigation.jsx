@@ -1,25 +1,48 @@
-import React from 'react';
-import {Box, Typography} from "@mui/material";
+import React, {useState} from 'react';
+import {Box} from "@mui/material";
 import NavigationLinks from "./NavigationLinks";
-import {colors} from "../assets/styles/colors";
-import packageJson from '../../package.json';
-import {LINK} from '../services/variables'
+import DialogLogout from "./DialogLogout";
+import authService from "../services/auth";
+import {useNavigate} from "react-router-dom";
+import Logo from "../assets/images/kivi-logo.png";
+import UserMenuItem from "./UserMenuItem";
 
 const Navigation = () => {
+
+	const [modalOpen, setModalOpen] = useState(false);
+	const navigate = useNavigate();
+
+	function logoutHandler() {
+		authService.logout();
+		navigate('/login', {replace: true});
+	}
+
 	return (
 		<Box
 			sx={{
-				backgroundColor: colors.black,
-				padding: '30px 0',
+				margin: '0 auto',
+				padding: '1rem .5rem',
+				display: 'flex',
+				alignItems: 'center',
+				justifyContent: 'space-between',
+				maxWidth: '100rem'
 			}}
 		>
+			<Box>
+				<Box
+					component={'img'}
+					alt={'logo'}
+					src={Logo}
+					sx={{maxWidth: '6rem'}}
+				/>
+			</Box>
 			<NavigationLinks/>
-			<Typography
-				sx={{
-					color: colors.silver30,
-					textAlign: 'center'
-				}}
-			>Version: {packageJson.version} {'<>'} Server: {LINK === 'http://localhost:8080'? 'Local': 'Remote'}</Typography>
+			<UserMenuItem onLogout={()=>setModalOpen(true)}/>
+			<DialogLogout
+				onSubmit={logoutHandler}
+				onClose={() => setModalOpen(false)}
+				isOpen={modalOpen}
+			/>
 		</Box>
 	);
 };

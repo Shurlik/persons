@@ -1,15 +1,17 @@
 import {createTheme} from '@mui/material/styles';
-import inputs from "./inputs";
+import {inputOutlinedStyles, inputStyles} from "./inputs";
 import labels from "./labels";
 import buttons from "./buttons";
 import {colors} from "../styles/colors";
 import listItemButton from "./listItemButton";
 import {tableCell, tableHead, tableRow} from './table';
-import {menu, menuItem} from "./menu";
+import {menu} from "./menu";
+import {customSelect, customSelectItem, customSelectMenu} from "./select";
 
 const index = createTheme({
 	typography: {
 		fontFamily: [
+			'Inter',
 			'Rajdhani',
 			'Bebas Neue',
 			'-apple-system',
@@ -24,7 +26,8 @@ const index = createTheme({
 			'"Segoe UI Symbol"',
 		].join(','),
 		h1: {
-			fontWeight: 700,
+			fontWeight: 400,
+			fontFamily: 'Bebas Neue',
 		},
 		h2: {
 			fontWeight: 400,
@@ -32,15 +35,18 @@ const index = createTheme({
 			letterSpacing: 5
 		},
 		h3: {
-			fontWeight: 600,
+			fontFamily: 'Bebas Neue',
+			fontWeight: 400,
 		},
 		h4: {
-			fontWeight: 600,
+			fontWeight: 400,
+			fontFamily: 'Bebas Neue',
 		},
 		h5: {
 			fontSize: '1.5rem',
 			fontFamily: 'Bebas Neue',
-			letterSpacing: 3
+			letterSpacing: 3,
+			fontWeight: 400,
 		},
 		h6: {
 			fontWeight: 600,
@@ -60,7 +66,8 @@ const index = createTheme({
 		}
 	},
 	components: {
-		MuiOutlinedInput: inputs,
+		MuiInput: inputStyles,
+		MuiOutlinedInput: inputOutlinedStyles,
 		MuiInputLabel: labels,
 		MuiButton: buttons,
 		MuiListItemButton: listItemButton,
@@ -68,7 +75,20 @@ const index = createTheme({
 		MuiTableRow: tableRow,
 		MuiTableCell: tableCell,
 		MuiMenu: menu,
-		MuiMenuItem: menuItem,
+		MuiMenuItem: customSelectItem,
+		// MuiMenuItem: menuItem,
+		MuiSelect: {
+			...customSelect,
+			defaultProps: {
+				MenuProps: {
+					PaperProps: {
+						sx: customSelectMenu.styleOverrides.paper
+					}
+				}
+			}
+		},
+		// MuiSelect:customSelect,
+		// MuiMenuItem:customSelectItem,
 	},
 });
 

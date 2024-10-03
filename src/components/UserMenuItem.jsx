@@ -1,11 +1,17 @@
 import React from 'react';
 import {Box, Typography} from "@mui/material";
-import Logo from "../assets/images/cartoon-office-girl.png";
 import {colors} from "../assets/styles/colors";
 import DropMenu from "./DropMenu";
-import LogoutIcon from '@mui/icons-material/Logout';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import {useAuth} from "../contexts/AuthContext";
+import {useNavigate} from "react-router-dom";
+import LogoutIcon from "@mui/icons-material/Logout";
+import officeGirl from "../assets/images/cartoon-office-girl.png";
+import officeBoy from "../assets/images/cartoon-office-boy.png";
 
 const UserMenuItem = ({onLogout}) => {
+	const {user} = useAuth();
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const open = Boolean(anchorEl);
 	const handleClick = (event) => {
@@ -15,6 +21,7 @@ const UserMenuItem = ({onLogout}) => {
 		setAnchorEl(null);
 	};
 
+	const navigate = useNavigate();
 
 	return (
 		<Box
@@ -22,16 +29,18 @@ const UserMenuItem = ({onLogout}) => {
 				display: 'flex',
 				justifyContent: 'center',
 				alignItems: 'center',
-				gap: '.9rem'
+				gap: '.9rem',
+				cursor: 'pointer'
 			}}
 		>
 			<Box
+				onClick={handleClick}
 				sx={{
 					overflow: 'hidden',
 					borderRadius: '50%',
 					backgroundColor: colors.silver,
-					width: '3rem',
-					height: '3rem',
+					width: '2.5rem',
+					height: '2.5rem',
 					display: 'flex',
 					justifyContent: 'center',
 					alignItems: 'center',
@@ -40,29 +49,40 @@ const UserMenuItem = ({onLogout}) => {
 				<Box
 					component={'img'}
 					alt={'logo'}
-					src={Logo}
+					src={user?.image ? user.image : user['Gender'] === 'Female' ? officeGirl : officeBoy}
 					sx={{width: '100%', height: '100%', objectFit: 'cover',}}
 				/>
 			</Box>
 			<Box
+				onClick={handleClick}
 				sx={{
 					cursor: 'pointer',
 					userSelect: 'none'
 				}}
-				onClick={handleClick}
 			>
-				<Typography variant={'h6'}>Girl Name</Typography>
+				<Typography
+					variant={'h6'}
+					sx={{fontSize: '.9rem'}}
+				>{user.name}</Typography>
 				<Typography
 					sx={{
 						color: colors.lightGray,
+						fontSize: '.8rem'
 					}}
-				>girl@email.com</Typography>
+				>{user?.email}</Typography>
 			</Box>
 
 			<DropMenu
+				isAdmin={user?.role === 'super-admin'}
 				onClose={handleClose}
 				open={open}
-				data={[{title: 'Logout', icon: LogoutIcon, fn: onLogout}]}
+				data={
+					[
+						{title: 'Users', icon: PeopleAltIcon, fn: () => navigate('/users'), admin: true},
+						{title: 'Profile', icon: ManageAccountsIcon, fn: () => navigate('/profile')},
+						{title: 'Logout', icon: LogoutIcon, fn: onLogout}
+					]
+				}
 				anchorEl={anchorEl}
 			/>
 		</Box>
