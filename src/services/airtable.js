@@ -49,6 +49,15 @@ export async function deleteRecord(id) {
 		throw error;
 	}
 }
+export async function deleteUser(id) {
+	try {
+		const response = await api.delete(`/users/profile/${id}`);
+		return response.data;
+	} catch (error) {
+		console.error('Error deleting record:', error);
+		throw error;
+	}
+}
 
 export async function uploadFile(id, data) {
 	try {
@@ -60,9 +69,11 @@ export async function uploadFile(id, data) {
 	}
 }
 
-export async function uploadProfileFile(data) {
+export async function uploadProfileFile(data, id) {
 	try {
-		const response = await api.post(`/files/user`, data);
+		const response = id
+			? await api.post(`/files/user/${id}`, data)
+			: await api.post(`/files/user`, data);
 		return response.data;
 	} catch (error) {
 		console.error('Error creating record:', error);
@@ -122,7 +133,7 @@ export async function updateBlogPostData(id, data) {
 	}
 }
 
-export async function getContent(id){
+export async function getContent(id) {
 	try {
 		const response = await api.get(`/cos/content/${id}`);
 		return response.data;
@@ -131,7 +142,23 @@ export async function getContent(id){
 	}
 }
 
-export async function getArticles(){
+export async function getResearch(id) {
+	try {
+		return await api.post(`/cos/research/${id}`);
+	} catch (e) {
+		console.log('error: ', e);
+	}
+}
+
+export async function getOutline(id) {
+	try {
+		return await api.post(`/cos/outline/${id}`);
+	} catch (e) {
+		console.log('error: ', e);
+	}
+}
+
+export async function getArticles() {
 	try {
 		const response = await api.get(`/cos/articles`);
 		return response.data;
@@ -139,9 +166,28 @@ export async function getArticles(){
 		console.log('error: ', e);
 	}
 }
-export async function getImages(){
+
+export async function getImages() {
 	try {
 		const response = await api.get(`/cos/images`);
+		return response.data;
+	} catch (e) {
+		console.log('error: ', e);
+	}
+}
+
+export async function getUsers() {
+	try {
+		const response = await api.get(`/users`);
+		return response.data;
+	} catch (e) {
+		console.log('error: ', e);
+	}
+}
+
+export async function getUser(id) {
+	try {
+		const response = await api.get(`/users/profile/${id}`);
 		return response.data;
 	} catch (e) {
 		console.log('error: ', e);

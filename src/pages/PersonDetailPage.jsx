@@ -18,8 +18,8 @@ const KEYS = Object.keys(personData);
 
 const PersonDetail = () => {
 	const location = useLocation();
-	let edit = location.state?.edit;
 	const id = location.pathname.split('/')[2];
+	let edit = location.state?.edit;
 	const {data = {}, error, isLoading, mutate} = useSWR(`/persons/${id}`, () =>
 		getRecordById(id)
 	);
@@ -31,11 +31,6 @@ const PersonDetail = () => {
 	const [formData, setFormData] = useState({});
 
 	const fileInputRef = useRef(null);
-
-
-
-
-
 
 	// Обновляем formData, когда приходят новые данные
 	useEffect(() => {

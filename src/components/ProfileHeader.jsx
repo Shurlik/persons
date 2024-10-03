@@ -10,7 +10,7 @@ import {toast} from "react-toastify";
 import authService from "../services/auth";
 import {useAuth} from "../contexts/AuthContext";
 
-const ProfileHeader = ({image, title, details, additional, circleColor, filter, isEditing}) => {
+const ProfileHeader = ({image, title, details, additional, circleColor, filter, isEditing, user}) => {
 	const {updateUserData} = useAuth();
 	const {control, handleSubmit, setValue} = useForm({
 		defaultValues: {
@@ -61,15 +61,14 @@ const ProfileHeader = ({image, title, details, additional, circleColor, filter, 
 		if (loading) {
 			return;
 		}
-		;
 		setLoading(true);
 		try {
 			if (file) {
 				const formData = new FormData();
 				formData.append('file', file);
-				await uploadProfileFile(formData);
+				await uploadProfileFile(formData, user?.id);
 			}
-			await authService.updateProfile(data);
+			await authService.updateProfile(data, user?.id);
 			await updateUserData();
 			toast.success('Updated');
 			setLoading(false);

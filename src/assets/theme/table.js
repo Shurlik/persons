@@ -30,8 +30,8 @@ export const tableCell = {
 		root: {
 			borderBottom: `1px solid ${colors.darkGrey42}`,
 			color: colors.white,
-			fontSize: '1.2rem',
-			fontWeight: '500'
+			fontSize: '1rem',
+			fontWeight: '400'
 		},
 		head: {
 			fontWeight: 'bold',

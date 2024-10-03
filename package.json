@@ -1,11 +1,12 @@
 {
   "name": "persons",
   "homepage": "https://shurlik.github.io/persons/",
-  "version": "0.17.0",
+  "version": "0.18.0",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
+    "@hookform/resolvers": "^3.9.0",
     "@mui/icons-material": "^6.1.0",
     "@mui/material": "^6.1.0",
     "@mui/x-date-pickers": "^7.16.0",

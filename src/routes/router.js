@@ -11,6 +11,9 @@ import CreatePage from "../pages/CreatePage";
 import FormsPage from "../pages/FormsPage";
 import ArticlesPage from "../pages/ArticlesPage";
 import ProfilePage from "../pages/ProfilePage";
+import AdminRoute from "./AdminRoute";
+import UsersPage from "../pages/UsersPage";
+import UserProfilePage from "../pages/UserProfilePage";
 
 
 const router = createBrowserRouter([
@@ -52,7 +55,15 @@ const router = createBrowserRouter([
 			},
 			{
 				path: "/profile",
-				element: <ProfilePage />
+				element: <ProfilePage/>
+			},
+			{
+				path: "/users",
+				element: <AdminRoute component={UsersPage}/>
+			},
+			{
+				path: "/users/:id",
+				element: <AdminRoute component={UserProfilePage}/>
 			}
 		]
 	},

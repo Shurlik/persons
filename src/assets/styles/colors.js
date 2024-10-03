@@ -18,6 +18,7 @@ export const colors = {
 	green227: '#227B4D',
 	red: '#ff2d58',
 	red80: '#ff2d58aa',
+	red20: '#ff2d5844',
 	darkGrey: '#2c2c2c',
 	darkGrey43: '#434343',
 	darkGrey42: '#424242',

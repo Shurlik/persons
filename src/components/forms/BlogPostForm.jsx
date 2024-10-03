@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import PageHeader from "../PageHeader";
 import useSWR from "swr";
-import {getLists, uploadBlogPostData} from "../../services/airtable";
+import {getLists, getResearch, uploadBlogPostData} from "../../services/airtable";
 import Loader from "../Loader";
 import {toast} from "react-toastify";
 import Grid from '@mui/material/Grid2';
@@ -61,7 +61,8 @@ const BlogPostForm = ({person, selectedValues, setResearch, setSteps, setAirId, 
 			// const res = await startResearch({data: newForm});
 			const res = await uploadBlogPostData({data: newForm});
 			setAirId(res.postData.id);
-			const result = await axios(`https://hook.eu2.make.com/4kwge4k6ylha37wca5joxqz19ab4icys?record_id=${res.postData.id}`);
+			const result = await getResearch(res.postData.id);
+			// const result = await axios(`https://hook.eu2.make.com/4kwge4k6ylha37wca5joxqz19ab4icys?record_id=${res.postData.id}`);
 			setResearch(result.data);
 			setSteps(null);
 			setTimeout(() => setSteps(steps += 1), 350);

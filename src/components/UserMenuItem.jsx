@@ -3,6 +3,7 @@ import {Box, Typography} from "@mui/material";
 import {colors} from "../assets/styles/colors";
 import DropMenu from "./DropMenu";
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import {useAuth} from "../contexts/AuthContext";
 import {useNavigate} from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -48,7 +49,7 @@ const UserMenuItem = ({onLogout}) => {
 				<Box
 					component={'img'}
 					alt={'logo'}
-					src={user?.image?.length > 0 ? user?.image[0]?.url : user['Gender'] === 'Female' ? officeGirl : officeBoy}
+					src={user?.image ? user.image : user['Gender'] === 'Female' ? officeGirl : officeBoy}
 					sx={{width: '100%', height: '100%', objectFit: 'cover',}}
 				/>
 			</Box>
@@ -72,10 +73,12 @@ const UserMenuItem = ({onLogout}) => {
 			</Box>
 
 			<DropMenu
+				isAdmin={user?.role === 'super-admin'}
 				onClose={handleClose}
 				open={open}
 				data={
 					[
+						{title: 'Users', icon: PeopleAltIcon, fn: () => navigate('/users'), admin: true},
 						{title: 'Profile', icon: ManageAccountsIcon, fn: () => navigate('/profile')},
 						{title: 'Logout', icon: LogoutIcon, fn: onLogout}
 					]

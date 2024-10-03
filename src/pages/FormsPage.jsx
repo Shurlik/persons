@@ -18,81 +18,105 @@ const FormsPage = () => {
 	const [person, setPerson] = useState('');
 	const [selectedValues, setSelectedValues] = useState([]);
 	const {data = [], error, isLoading, mutate} = useSWR('/persons', () => getAllRecords());
-	const [steps, setSteps] = useState(0);
-	const [research, setResearch] = useState('');
+	const [steps, setSteps] = useState(2);
+	// const [research, setResearch] = useState('');
+	const [outline, setOutline] = useState('');
 
 
-// 	const [research, setResearch] = useState(`Allgemeine Blogging-Statistiken
-//
-//
-// #### Wie viele aktive Blogs gibt es weltweit, und wie viele neue Blogs werden täglich erstellt?
-//
-// Laut einer Studie von 2020 gibt es etwa 600 Millionen Blogs im Internet, obwohl diese Zahl ständig steigt (Quelle: HostingFacts).
-// Es werden täglich etwa 500.000 neue Blog-Beiträge veröffentlicht (Quelle: WordPress).
-//
-//
-// #### Welcher Anteil der Internetnutzer liest regelmäßig Blogs?
-//
-// Etwa 77% der Internetnutzer lesen Blogs, was zeigt, dass Bloggen eine weit verbreitete Online-Aktivität ist (Quelle: HubSpot).
-//
-//
-// Blogging-Erfolg und Traffic
-//
-//
-// #### Welche Metriken verwenden Unternehmen am häufigsten, um den Erfolg ihres Blog-Contents zu messen (z.B. organischer Traffic, Suchmaschinen-Rankings)?
-//
-// Die wichtigsten Metriken für den Erfolg von Blog-Inhalten sind organischer Traffic, Suchmaschinen-Rankings, Seitenaufrufe, Unique Visitors und die Zeit auf der Seite (Quelle: SEMrush).
-//
-//
-// #### Wie oft sollten Blogger neue Inhalte veröffentlichen, um starke Ergebnisse zu erzielen?
-//
-// Es gibt keine feste Regel für die Veröffentlichungshäufigkeit, aber regelmäßige Veröffentlichungen (z.B. wöchentlich oder zweimal pro Woche) können helfen, die Leserbindung zu erhöhen und Suchmaschinen zu befriedigen (Quelle: Moz).
-//
-//
-// SEO und Content-Optimierung
-//
-//
-// #### Welche Auswirkung hat die Verwendung von Schlüsselwörtern auf den Erfolg von Blog-Beiträgen?
-//
-// Die strategische Verwendung von Schlüsselwörtern kann die Sichtbarkeit in Suchmaschinen erheblich verbessern und den organischen Traffic steigern. Es ist wichtig, relevante und spezifische Schlüsselwörter zu verwenden (Quelle: Ahrefs).
-//
-//
-// #### Wie beeinflusst die Länge eines Blog-Beitrags die Anzahl der organischen Besucher und Backlinks?
-//
-// Längere Blog-Beiträge (typischerweise zwischen 1.000 und 2.000 Wörtern) tendieren dazu, mehr Backlinks und höheren organischen Traffic zu generieren, da sie oft als umfassender und wertvoller angesehen werden (Quelle: Backlinko).
-//
-//
-// Visual Content und Interaktion
-//
-//
-// #### Wie viel mehr Traffic und Engagement erhalten Blog-Beiträge mit Bildern oder Videos im Vergleich zu textbasierten Beiträgen?
-//
-// Blog-Beiträge mit Bildern oder Videos können bis zu 94% mehr Views und Shares erhalten als textbasierte Beiträge (Quelle: Social Media Examiner).
-//
-//
-// #### Welche Art von Headlines oder Titeltypen führen zu mehr sozialen Teilen und organic Traffic?
-//
-// Headlines mit Fragen, Zahlen oder Versprechungen von Wert (z.B., "Die Top 10 Tipps...") führen oft zu mehr sozialen Teilen und höherem organischen Traffic (Quelle: BuzzSumo).
-//
-//
-// Zielgruppe und Leserverhalten
-//
-//
-// #### Wie lange verbringen Leser im Durchschnitt mit dem Lesen eines Blog-Beitrags, und wie oft skimming sie den Inhalt anstelle eines gründlichen Lesens?
-//
-// Durchschnittlich verbringen Leser etwa 37 Sekunden mit dem Lesen eines Blog-Beitrags. Viele Leser skimming den Inhalt; nur etwa 20% der Leser lesen den gesamten Artikel (Quelle: Nielsen Norman Group).
-//
-//
-// #### Welche Arten von Inhalten bevorzugen Leser in Deutschland, und wie wichtig sind Themen wie Bildung und Anleitungen für sie?
-//
-// In Deutschland bevorzugen Leser oft Inhalte zu Themen wie Gesundheit, Finanzen, Technologie und Bildung. Anleitungen und How-to-Artikel sind besonders beliebt, da sie praktischen Nutzen bieten (Quelle: Statista).
-//
-//
-// Diese Informationen sollten Ihnen helfen, Ihre Blog-Post-Themen zu strukturieren und relevante Statistiken für Ihre Zielgruppe bereitzustellen.`);
+	const [research, setResearch] = useState(`1. Welcher Prozentsatz von Hunden über 10 Jahren an Krebs erkrankt?
 
 
-	// const [airId, setAirId] = useState('recKDVIbUbaRD47vR');
-	const [airId, setAirId] = useState(null);
+Cancer is a significant health issue in older dogs. According to various studies, it is estimated that approximately 50% of dogs over the age of 10 will develop some form of cancer.
+
+
+
+Source: The American Kennel Club Canine Health Foundation notes that "it's estimated that 1 in 4 dogs will develop cancer in their lifetime, and nearly 50% of dogs over age 10 will develop cancer." [1]
+
+
+2. Welche Hunderassen haben das höchste Risiko, an Krebs zu erkranken?
+
+
+Certain breeds are more prone to developing cancer due to genetic factors. Some of the breeds with a higher risk include:
+
+
+
+Golden Retrievers: Known for their high incidence of hemangiosarcoma and lymphoma.
+Labrador Retrievers: Prone to osteosarcoma (bone cancer) and mast cell tumors.
+German Shepherds: At risk for hemangiosarcoma and lymphoma.
+Rottweilers: High incidence of osteosarcoma.
+
+
+Source: The Veterinary Information Network (VIN) states, "Certain breeds are at higher risk for specific types of cancer," listing several breeds including Golden Retrievers, Labrador Retrievers, German Shepherds, and Rottweilers. [2]
+
+
+3. Wie oft tritt Krebs bei großen und extra-großen Hunden im Vergleich zu kleineren Hunden auf?
+
+
+Larger dogs tend to have a higher incidence of certain types of cancer compared to smaller dogs. For example:
+
+
+
+Osteosarcoma (bone cancer) is more common in large and giant breeds.
+Hemangiosarcoma is also more prevalent in larger breeds.
+
+
+Source: A study published in the "Journal of Veterinary Internal Medicine" found that larger dogs have a significantly higher risk for osteosarcoma compared to smaller dogs. [3]
+
+
+4. Welche Arten von Krebs sind bei Hunden am häufigsten und wie oft treten sie auf?
+
+
+The most common types of cancer in dogs include:
+
+
+
+Lymphoma: Accounts for about 10-20% of all canine cancers.
+Melanoma: Common in dogs, especially those with dark skin.
+Mast Cell Tumors: One of the most common skin cancers in dogs.
+Osteosarcoma (Bone Cancer): Most common primary bone tumor in dogs.
+Hemangiosarcoma: A blood vessel cancer that affects larger breeds more frequently.
+
+
+Source: The American College of Veterinary Internal Medicine (ACVIM) provides detailed information on these common types of canine cancers. [4]
+
+
+5. Wie wirksam sind neue Bluttests wie NuQ™ und OncoK9™ bei der Früherkennung von Krebs bei Hunden?
+
+
+New blood tests such as NuQ™ and OncoK9™ are being developed to aid in early detection of cancer in dogs. While these tests show promise, their effectiveness can vary based on several factors including sensitivity, specificity, and the type of cancer being detected.
+
+
+
+For example:
+
+The OncoK9 test uses liquid biopsy technology to detect circulating tumor DNA (ctDNA) and has shown promising results in detecting various types of canine cancers at an early stage.
+  
+
+However, it's important to note that these tests are still under research and validation.
+
+
+
+Source: PetDx, the company behind OncoK9, provides information on its website regarding the test's capabilities and ongoing research. [5]
+
+
+References
+[1] American Kennel Club Canine Health Foundation - "Cancer in Dogs"
+
+[2] Veterinary Information Network - "Cancer in Dogs"
+
+[3] Journal of Veterinary Internal Medicine - "Incidence Rates of Osteosarcoma in Dogs"
+
+[4] American College of Veterinary Internal Medicine - "Common Types of Canine Cancers"
+
+[5] PetDx - "OncoK9 Test Information"
+
+
+
+These sources provide a solid foundation for understanding the prevalence, risk factors, common types, and early detection methods related to cancer in dogs.`);
+
+
+	const [airId, setAirId] = useState('recfTCxri6Vfih3Z6');
+	// const [airId, setAirId] = useState(null);
 	const [selectedImageId, setSelectedImageId] = useState(null);
 
 
@@ -167,12 +191,12 @@ const FormsPage = () => {
 			<CustomSlide
 				condition={steps === 2}
 			>
-				<ResearchResult {...{research, setResearch, airId, setSteps, steps}}/>
+				<ResearchResult {...{research, setResearch, airId, setSteps, steps, outline, setOutline}}/>
 			</CustomSlide>
 			<CustomSlide
 				condition={steps === 3}
 			>
-				<CosOutline {...{airId, setSteps, steps}} />
+				<CosOutline {...{airId, setSteps, steps, outline, setOutline}} />
 			</CustomSlide>
 			<CustomSlide
 				condition={steps === 4}

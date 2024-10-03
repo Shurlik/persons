@@ -26,13 +26,12 @@ const DialogLogin = ({onSubmit, onClose, isOpen}) => {
 			const username = formJson.username;
 			const password = formJson.password;
 
-			console.log({formJson});
-
 			if (!password || !username) {
 				setLoading(false);
 				toast.error('Please enter a valid login and password');
 				return;
 			}
+			console.log(username, password);
 			await onSubmit(username, password);
 		} catch (e) {
 			console.log('error: ', e);

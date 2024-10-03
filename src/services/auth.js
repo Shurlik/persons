@@ -23,9 +23,9 @@ const processQueue = (error, token = null) => {
 };
 
 const authService = {
-	async register(username, password) {
+	async register({username, password, email, name}) {
 		try {
-			const response = await api.post('/auth/register', {username, password});
+			const response = await api.post('/auth/register', {username, password, email, name});
 			return response.data;
 		} catch (error) {
 			if (error.response && error.response.data.errorCode === 'USERNAME_EXISTS') {
@@ -44,7 +44,6 @@ const authService = {
 			}
 			return response.data;
 		} catch (error) {
-			console.log(123, {error});
 			if (error === 'Wrong Login/Password') {
 				toast.error('Wrong username or password');
 			} else {
@@ -104,9 +103,11 @@ const authService = {
 		}
 	},
 
-	async updateProfile(data) {
+	async updateProfile(data, id) {
 		try {
-			const response = await api.put('/users/profile', {data});
+			const response = id
+				? await api.put(`/users/profile/${id}`, {data})
+				: await api.put('/users/profile', {data});
 			return response.data;
 		} catch (e) {
 			console.log('error: ', e);

@@ -2,7 +2,7 @@ import React from 'react';
 import {ListItemIcon, ListItemText, Menu, MenuItem} from "@mui/material";
 import {colors} from "../assets/styles/colors";
 
-const DropMenu = ({open, onClose, data, anchorEl, disabled}) => {
+const DropMenu = ({open, onClose, data, anchorEl, disabled, isAdmin}) => {
 	return (
 		<Menu
 			disabled={disabled}
@@ -15,6 +15,9 @@ const DropMenu = ({open, onClose, data, anchorEl, disabled}) => {
 			}}
 		>
 			{data.map((d, i) => {
+				if(d.admin && !isAdmin ) {
+					return
+				}
 				const Icon = d.icon;
 				const fn = d.fn;
 				return <MenuItem
@@ -27,7 +30,10 @@ const DropMenu = ({open, onClose, data, anchorEl, disabled}) => {
 						}
 					}}
 					key={d?.title}
-					onClick={fn}
+					onClick={() => {
+						fn();
+						onClose();
+					}}
 				>
 					<ListItemText
 						sx={d.color ? {
@@ -39,10 +45,10 @@ const DropMenu = ({open, onClose, data, anchorEl, disabled}) => {
 								}
 							}}
 					>{d?.title}</ListItemText>
-					<ListItemIcon sx={{justifyContent: 'end'}}>
+					<ListItemIcon sx={{justifyContent: 'end', color: d.color ? d.color : 'inherit'}}>
 						<Icon
 							fontSize='small'
-							sx={d.color ? {color: d.color} : {color: colors.white}}
+							sx={{color: 'inherit'}}
 						/>
 					</ListItemIcon>
 				</MenuItem>;

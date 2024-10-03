@@ -3,6 +3,7 @@ import {useAuth} from "../contexts/AuthContext";
 import {colors} from "../assets/styles/colors";
 import {Box, Button} from "@mui/material";
 import ProfileHeader from "../components/ProfileHeader";
+import noLogo from "../assets/images/no-logo.png";
 
 const ProfilePage = () => {
 	const {user, updateUserData} = useAuth();
@@ -31,7 +32,7 @@ const ProfilePage = () => {
 		>
 			<ProfileHeader
 				title={user?.name}
-				image={user?.image ? user.image[0]?.url : undefined}
+				image={user?.image ? user.image : noLogo}
 				details={user?.email}
 				additional={user?.username}
 				circleColor={colors.mainGreen}

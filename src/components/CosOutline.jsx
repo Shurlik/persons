@@ -5,13 +5,13 @@ import {getContent, updateBlogPostData} from "../services/airtable";
 import ToggleEdit from "./ToggleEdit";
 import OutputsTextField from "./OutputsTextField";
 
-const CosOutline = ({airId, setSteps, steps}) => {
+const CosOutline = ({airId, setSteps, steps, setOutline, outline}) => {
 	const [edit, setEdit] = useState(false);
-	const [outline, setOutline] = useState('');
+	// const [outline, setOutline] = useState('');
 
-	const {data = {}, error, isLoading, mutate} = useSWR(`/cos/content/${airId}`, () =>
-		getContent(airId)
-	);
+	// const {data = {}, error, isLoading, mutate} = useSWR(`/cos/content/${airId}`, () =>
+	// 	getContent(airId)
+	// );
 
 	const nextStepHandler = async () => {
 		setLoading(true);
@@ -26,11 +26,11 @@ const CosOutline = ({airId, setSteps, steps}) => {
 		setTimeout(() => setSteps(steps -= 1), 400);
 	};
 
-	useEffect(() => {
-		if (data) {
-			setOutline(data?.content?.fields['AI Outline (Blogpost)']);
-		}
-	}, [data]);
+	// useEffect(() => {
+	// 	if (data) {
+	// 		setOutline(data?.content?.fields['AI Outline (Blogpost)']);
+	// 	}
+	// }, [data]);
 
 
 	const [loading, setLoading] = useState(false);

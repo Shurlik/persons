@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Box, Button, Container} from "@mui/material";
-import {updateBlogPostData} from "../services/airtable";
+import {getOutline, updateBlogPostData} from "../services/airtable";
 import {toast} from "react-toastify";
 import axios from "axios";
 import {colors} from "../assets/styles/colors";
@@ -8,7 +8,7 @@ import Loader from "./Loader";
 import OutputsTextField from "./OutputsTextField";
 import ToggleEdit from "./ToggleEdit";
 
-const ResearchResult = ({research, setResearch, setSteps, airId, steps}) => {
+const ResearchResult = ({research, setResearch, setSteps, airId, steps, setOutline}) => {
 	const [loading, setLoading] = useState(false);
 	const [edit, setEdit] = useState(false);
 
@@ -18,10 +18,15 @@ const ResearchResult = ({research, setResearch, setSteps, airId, steps}) => {
 
 		try {
 			const res = await updateBlogPostData(airId, data);
-			const result = await axios(`https://hook.eu2.make.com/xbowo27h47trxsd8w2rfjzbkdg69qn8g?record_id=${airId}`);
+
+
+			// const result = await axios(`https://hook.eu2.make.com/xbowo27h47trxsd8w2rfjzbkdg69qn8g?record_id=${airId}`);
+			const result = await getOutline(airId);
+
+			setOutline(result.data);
 			toast.success('Success!');
-			setSteps(null);
-			setTimeout(() => setSteps(steps += 1), 350);
+			// setSteps(null);
+			// setTimeout(() => setSteps(steps += 1), 350);
 			setLoading(false);
 		} catch (e) {
 			console.log('error: ', e);

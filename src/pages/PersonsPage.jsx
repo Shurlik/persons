@@ -116,6 +116,10 @@ const Persons = () => {
 		}
 	}, [resultText]);
 
+	if(isLoading){
+		return <Loader />
+	}
+
 	return (
 		<Box
 			sx={{
