@@ -1,16 +1,6 @@
 import React, {useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
-import {
-	Box,
-	Button,
-	Container,
-	DialogActions,
-	FormControl,
-	MenuItem,
-	Select,
-	TextField,
-	Typography,
-} from '@mui/material';
+import {Box, Button, Container, FormControl, MenuItem, Select, TextField, Typography,} from '@mui/material';
 import PageHeader from "../PageHeader";
 import useSWR from "swr";
 import {getLists, getResearch, uploadBlogPostData} from "../../services/airtable";
@@ -18,7 +8,6 @@ import Loader from "../Loader";
 import {toast} from "react-toastify";
 import Grid from '@mui/material/Grid2';
 import {colors} from "../../assets/styles/colors";
-import axios from "axios";
 
 const BlogPostForm = ({person, selectedValues, setResearch, setSteps, setAirId, steps}) => {
 	const {handleSubmit, control, reset} = useForm();
@@ -61,9 +50,9 @@ const BlogPostForm = ({person, selectedValues, setResearch, setSteps, setAirId, 
 			// const res = await startResearch({data: newForm});
 			const res = await uploadBlogPostData({data: newForm});
 			setAirId(res.postData.id);
-			const result = await getResearch(res.postData.id);
+			// const result = await getResearch(res.postData.id);
 			// const result = await axios(`https://hook.eu2.make.com/4kwge4k6ylha37wca5joxqz19ab4icys?record_id=${res.postData.id}`);
-			setResearch(result.data);
+			// setResearch(result.data);
 			setSteps(null);
 			setTimeout(() => setSteps(steps += 1), 350);
 			// reset();
@@ -266,20 +255,20 @@ const BlogPostForm = ({person, selectedValues, setResearch, setSteps, setAirId, 
 							justifyContent='space-between'
 						>
 							{/*<DialogActions sx={{marginTop: '3rem'}}>*/}
-								<Button
-									onClick={nextHandler}
-									variant={'contained'}
-									color={'primary'}
-									sx={{width: '100%'}}
-									type={'submit'}
-								>Next step</Button>
-								<Button
-									onClick={previousStepHandler}
-									variant={'outlined'}
-									color={'primary'}
-									sx={{width: '100%', marginTop: '1rem'}}
-									disabled={loading}
-								>Previous step</Button>
+							<Button
+								onClick={nextHandler}
+								variant={'contained'}
+								color={'primary'}
+								sx={{width: '100%'}}
+								type={'submit'}
+							>Next step</Button>
+							<Button
+								onClick={previousStepHandler}
+								variant={'outlined'}
+								color={'primary'}
+								sx={{width: '100%', marginTop: '1rem'}}
+								disabled={loading}
+							>Previous step</Button>
 							{/*</DialogActions>*/}
 						</Grid>
 					</Grid>

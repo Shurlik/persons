@@ -1,21 +1,45 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Button, Container} from "@mui/material";
-import useSWR from "swr";
-import {getContent, updateBlogPostData} from "../services/airtable";
+import {updateBlogPostData} from "../services/airtable";
 import OutputsTextField from "./OutputsTextField";
 import ToggleEdit from "./ToggleEdit";
+import {getArticleStream} from "../services/cos";
+import authService from "../services/auth";
+import FullPageLoader from "./FullPageLoader";
 
-const CosOutputs = ({airId, setSteps, steps}) => {
-
-	const [final, setFinal] = useState('');
+const CosOutputs = ({airId, setSteps, steps, final, setFinal}) => {
 	const [edit, setEdit] = useState(false);
-	const {data = {}, error, isLoading, mutate} = useSWR(`/cos/content/${airId}`, () =>
-		getContent(airId)
-	);
+	const [loading, setLoading] = useState(false);
+	const resultBoxRef = useRef(null);
+
+	const resultStream = async () => {
+		setLoading(true);
+		setFinal('');
+		try {
+			await getArticleStream(airId, (chunk) => {
+				setFinal((prev) => prev + chunk);
+			});
+
+			setLoading(false);
+
+		} catch (e) {
+			console.error('Error fetching streams:', e);
+			if (e.message === 'Unauthorized') {
+				// Перенаправляем на страницу входа или показываем сообщение
+				await authService.logout();
+				// Например, используйте React Router для перенаправления
+				// history.push('/login');
+			} else {
+				console.log('getOutlineStream: ', e);
+				// Обработка других ошибок
+			}
+			setLoading(false);
+		}
+	};
 
 	const nextStepHandler = async () => {
 		setLoading(true);
-		await updateBlogPostData(airId, {'AI Final Output (Blogpost)': final });
+		await updateBlogPostData(airId, {'AI Final Output (Blogpost)': final});
 		setSteps(null);
 		setTimeout(() => setSteps(steps += 1), 350);
 		setLoading(false);
@@ -27,28 +51,34 @@ const CosOutputs = ({airId, setSteps, steps}) => {
 	};
 
 	useEffect(() => {
-		if (data) {
-			setFinal(data?.content?.fields['AI Final Output (Blogpost)']);
+		if (resultBoxRef.current) {
+			resultBoxRef.current.scrollTop = resultBoxRef.current.scrollHeight;
 		}
-	}, [data]);
-
-
-	const [loading, setLoading] = useState(false);
+	}, [final]);
 
 	return (
-		<Container  sx={{position: 'relative'}}>
+		<Container sx={{position: 'relative'}}>
+			<Button
+				variant={'outlined'}
+				color={'secondary'}
+				onClick={async () => {
+					await resultStream();
+				}}
+			>Generate</Button>
 			<OutputsTextField
+				ref={resultBoxRef}
 				editable={edit}
 				value={final}
 				title={'AI final Output'}
 				loading={loading}
-				onChange={(event) => setFinal(event.target.value)}  />
+				onChange={(event) => setFinal(event.target.value)}
+			/>
 			<Button
 				onClick={nextStepHandler}
 				variant={'contained'}
 				color={'primary'}
 				sx={{width: '100%', marginTop: '3rem'}}
-				disabled={loading}
+				disabled={loading || !final}
 			>Next step</Button>
 			<Button
 				onClick={previousStepHandler}
@@ -61,6 +91,7 @@ const CosOutputs = ({airId, setSteps, steps}) => {
 				isEdit={edit}
 				onClick={() => setEdit(old => !old)}
 			/>
+			{loading && <FullPageLoader/>}
 		</Container>
 	);
 };
