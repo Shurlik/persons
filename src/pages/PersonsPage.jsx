@@ -124,6 +124,7 @@ const Persons = () => {
 		<Box
 			sx={{
 				maxWidth: '100rem',
+				width:'100%',
 				overflow: 'auto',
 				padding: '5rem 1rem 2rem',
 				margin: '0 auto'
