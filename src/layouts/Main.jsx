@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import Navigation from '../components/Navigation';
-import Sidebar from '../components/Sidebar';
+import Sidebar from '../components/sidebar/Sidebar';
 import { colors } from '../assets/styles/colors';
 
 const MainLayout = () => {
+  const [isSidebarOpen, setSidebarOpen] = useState(true);
+
+  const toggleSidebar = () => {
+    setSidebarOpen((prevState) => !prevState);
+  };
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden' }}>
       {/* Header (Navigation) */}
@@ -27,17 +33,30 @@ const MainLayout = () => {
         {/* Sidebar */}
         <Box
           sx={{
-            width: '300px',
-            backgroundColor: colors.sidebarBackground,
+            width: isSidebarOpen ? '300px' : '60px',
+            minWidth: isSidebarOpen ? '300px': '60px',
+            transition: 'width 0.3s',
             overflowY: 'auto',
             height: 'calc(100vh - 86px)',
           }}
         >
-          <Sidebar />
+          <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
         </Box>
 
         {/* Main content area */}
-        <Box sx={{flexGrow: 1, overflow: 'auto', backgroundColor: colors.backgroundMain,paddingBottom:'120px'}}><Outlet/></Box>
+        <Box
+          sx={{
+            flexGrow: 1,
+            overflow: 'auto',
+            backgroundColor: colors.backgroundMain,
+            paddingLeft: isSidebarOpen ? '24px' : '8px',
+            transition: 'padding-left 0.3s',
+            paddingBottom: '120px',
+            width:'100%'
+          }}
+        >
+          <Outlet />
+        </Box>
       </Box>
     </Box>
   );
