@@ -1,6 +1,7 @@
 import { api } from './auth';
 import authService from './auth';
 import {LINK} from './variables';
+import {smoothOutput} from "../utils/helpers";
 
 
 
@@ -136,7 +137,7 @@ export async function askGptStream(prompt, ids, onData) {
 					token = await authService.refreshToken();
 					if (token) {
 						headers['Authorization'] = 'Bearer ' + token;
-						response = await fetch('/api/chatgpt/stream', {
+						response = await fetch(`${LINK}/chatgpt/stream`, {
 							method: 'POST',
 							headers: headers,
 							body: JSON.stringify({ prompt, ids }),
@@ -182,25 +183,4 @@ export async function askGptStream(prompt, ids, onData) {
 		console.error('Error in askGptStream:', error);
 		throw error;
 	}
-}
-
-// Функция для плавного вывода с задержками
-function smoothOutput(text, onData) {
-	return new Promise((resolve) => {
-		const chunkSize = 3; // Количество символов для вывода за один раз
-		let index = 0;
-
-		function outputNextChunk() {
-			if (index < text.length) {
-				const nextChunk = text.slice(index, index + chunkSize);
-				onData(nextChunk);
-				index += chunkSize;
-				setTimeout(outputNextChunk, 10); // Задержка 50 мс между выводами
-			} else {
-				resolve();
-			}
-		}
-
-		outputNextChunk();
-	});
 }

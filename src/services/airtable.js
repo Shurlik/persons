@@ -1,4 +1,5 @@
 import {api} from './auth';
+import axios from "axios";
 
 export async function getAllRecords() {
 	try {
@@ -143,16 +144,35 @@ export async function getContent(id) {
 }
 
 export async function getResearch(id) {
+	const source = axios.CancelToken.source();
 	try {
-		return await api.post(`/cos/research/${id}`);
+		return await api.post(`/cos/research/${id}`,{}, { cancelToken: source.token });
 	} catch (e) {
 		console.log('error: ', e);
 	}
 }
 
 export async function getOutline(id) {
+	const source = axios.CancelToken.source();
 	try {
-		return await api.post(`/cos/outline/${id}`);
+		return await api.post(`/cos/outline/${id}`,{}, { cancelToken: source.token });
+	} catch (e) {
+		console.log('error: ', e);
+	}
+}
+export async function getArticle(id) {
+	const source = axios.CancelToken.source();
+	try {
+		return await api.post(`/cos/article/${id}`,{}, { cancelToken: source.token });
+	} catch (e) {
+		console.log('error: ', e);
+	}
+}
+
+export async function getThumbnail(id) {
+	const source = axios.CancelToken.source();
+	try {
+		return await api.post(`/cos/thumbnail/${id}`,{}, { cancelToken: source.token });
 	} catch (e) {
 		console.log('error: ', e);
 	}

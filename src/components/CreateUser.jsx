@@ -68,7 +68,6 @@ const CreateUser = ({onClose, callback}) => {
 
 			const {username, password, email, name} = data;
 			const user = await authService.register({username, password, email, name});
-			console.log({user});
 			if (file) {
 				const formData = new FormData();
 				formData.append('file', file);
