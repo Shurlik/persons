@@ -3,7 +3,7 @@ import ReactMarkdown from 'react-markdown';
 import {Box, Typography} from '@mui/material';
 import {colors} from "../assets/styles/colors";
 
-const FormattedTextDisplay = ({children, custom}) => {
+const FormattedTextDisplay = ({children, custom, ref}) => {
 	return (
 		<Box
 			sx={{
@@ -32,6 +32,10 @@ const FormattedTextDisplay = ({children, custom}) => {
 					p: ({node, ...props}) => <Typography
 						variant='body1' {...props}
 						sx={{color: custom ? custom : colors.black, margin: 0}}
+					/>,
+					a: ({node, ...props}) => <Typography
+						variant='a' {...props}
+						sx={{color: custom ? custom : colors.orange2, margin: 0}}
 					/>,
 					li: ({node, ...props}) => <Typography
 						variant='body1' {...props}

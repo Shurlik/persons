@@ -8,14 +8,15 @@ import OutputsTextField from "./OutputsTextField";
 import PageHeader from "./PageHeader";
 import axios from "axios";
 import ToggleEdit from "./ToggleEdit";
+import FullPageLoader from "./FullPageLoader";
 
-const CosSelectedImage = ({airId, selectedImageId, setSteps, steps}) => {
-	const {data = {}, error, isLoading, mutate} = useSWR(`/cos/content/${airId}`, () =>
-		getContent(airId)
-	);
+const CosSelectedImage = ({airId, selectedImageId, setSteps, steps, prompt, setPrompt}) => {
+	// const {data = {}, error, isLoading, mutate} = useSWR(`/cos/content/${airId}`, () =>
+	// 	getContent(airId)
+	// );
 	const [edit, setEdit] = useState(false);
 
-	const [prompt, setPrompt] = useState('');
+	// const [prompt, setPrompt] = useState('');
 	const [loading, setLoading] = useState(false);
 
 	const nextStepHandler = async () => {
@@ -34,10 +35,10 @@ const CosSelectedImage = ({airId, selectedImageId, setSteps, steps}) => {
 	};
 
 	useEffect(() => {
-		if (data && selectedImageId?.description) {
-			setPrompt(data?.content?.fields['Thumbnail Prompt'] + '\n\n' + '!Important! additional information about Image: ' + selectedImageId?.description);
+		if (prompt && selectedImageId?.description) {
+			setPrompt(prompt + '\n\n' + selectedImageId?.description);
 		}
-	}, [data]);
+	}, []);
 
 	useEffect(() => {
 		if (!selectedImageId?.id) {
@@ -93,25 +94,11 @@ const CosSelectedImage = ({airId, selectedImageId, setSteps, steps}) => {
 				sx={{width: '100%', marginTop: '1rem'}}
 				disabled={loading}
 			>Previous step</Button>
-			{loading && <Box
-				sx={{
-					display: 'flex',
-					justifyContent: 'center',
-					alignItems: 'center',
-					position: 'absolute',
-					top: 0,
-					bottom: 0,
-					left: 0,
-					right: 0,
-					backgroundColor: colors.black20,
-					flexDirection: 'column'
-				}}
-			>
-				<Loader/></Box>}
 			<ToggleEdit
 				isEdit={edit}
 				onClick={() => setEdit(old => !old)}
 			/>
+			{loading && <FullPageLoader />}
 		</Container>
 	);
 };

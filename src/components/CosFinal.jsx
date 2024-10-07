@@ -74,9 +74,8 @@ const CosFinal = ({airId, selectedImageId, steps, setSteps}) => {
 	}, [data?.content?.fields["mj status"]]);
 
 
-
 	return (
-		<Container>
+		<Container sx={{position: 'relative'}}>
 			{!!selectedImageId && <><PageHeader
 				header={'Select the Final Image'}
 				sx={{flexGrow: 1}}
@@ -115,6 +114,7 @@ const CosFinal = ({airId, selectedImageId, steps, setSteps}) => {
 					</ImageListItem>)}
 				</ImageList>
 			</>}
+
 			<OutputsTextField
 				editable={edit}
 				title={'Article'}

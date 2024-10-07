@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import useSWR from "swr";
 import {getAllRecords} from "../services/airtable";
-import {Box, Button, FormControl, IconButton, MenuItem, Select, Snackbar, TextField, Typography} from "@mui/material";
+import {Box, Button, IconButton, Snackbar, TextField, Typography} from "@mui/material";
 import PersonCard from "../components/PersonCard";
 import {askGpt, askGptStream} from "../services/chatGpt";
 import FormattedTextDisplay from "../components/FormattedTextDisplay";
@@ -11,6 +11,7 @@ import {askClaude, askClaudeStream} from "../services/claude";
 import {toast} from "react-toastify";
 import authService from "../services/auth";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import AssistantSelector from "../components/AssistantSelector";
 
 const Persons = () => {
 	const {data = [], error, isLoading, mutate} = useSWR('/persons', () => getAllRecords());
@@ -116,8 +117,8 @@ const Persons = () => {
 		}
 	}, [resultText]);
 
-	if(isLoading){
-		return <Loader />
+	if (isLoading) {
+		return <Loader/>;
 	}
 
 	return (
@@ -168,35 +169,10 @@ const Persons = () => {
 							flexShrink: '0'
 						}}
 					>Enter your request</Typography>
-					<Box
-						sx={{
-							display: 'flex',
-							alignItems: 'center',
-							gap: '1rem'
-						}}
-					>
-						<Typography
-							variant={'h6'}
-							sx={{
-								color: colors.white,
-							}}
-						>Select model:</Typography>
-						<FormControl
-							sx={{
-								width: '15rem'
-							}}
-						>
-							<Select
-								value={assistant}
-								label='Assistant'
-								onChange={handleChange}
-								defaultValue={'gpt'}
-							>
-								<MenuItem value={'gpt'}>Chat GPT</MenuItem>
-								<MenuItem value={'claude'}>Claude</MenuItem>
-							</Select>
-						</FormControl>
-					</Box>
+					<AssistantSelector
+						value={assistant}
+						onChange={handleChange}
+					/>
 				</Box>
 				<TextField
 					fullWidth
