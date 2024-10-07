@@ -1,12 +1,14 @@
-import React from 'react';
+import React, {forwardRef} from 'react';
 import {Box, TextField} from "@mui/material";
 import PageHeader from "./PageHeader";
 import FormattedTextDisplayOutline from "./FormattedTextDisplayOutline";
 import {colors} from "../assets/styles/colors";
 
-const OutputsTextField = ({value, title, loading, onChange, editable}) => {
+const OutputsTextField = forwardRef(({value, title, loading, onChange, editable}, ref) => {
 	return (
-		<Box sx={{width: '100%'}}>
+		<Box
+			sx={{width: '100%'}}
+		>
 			<PageHeader
 				header={title}
 				sx={{flexGrow: 1}}
@@ -28,6 +30,7 @@ const OutputsTextField = ({value, title, loading, onChange, editable}) => {
 					onChange={onChange}
 				/> :
 				<Box
+					ref={ref}
 					sx={{
 						backgroundColor: colors.white,
 						padding: '24px',
@@ -46,6 +49,6 @@ const OutputsTextField = ({value, title, loading, onChange, editable}) => {
 		</Box>
 	)
 		;
-};
+});
 
 export default OutputsTextField;

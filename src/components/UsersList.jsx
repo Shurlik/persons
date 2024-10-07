@@ -21,8 +21,6 @@ const UsersList = ({
 	const [id, setId] = useState(null);
 	const open = Boolean(anchorEl);
 
-	console.log({users});
-
 	const navigate = useNavigate();
 
 
@@ -34,18 +32,6 @@ const UsersList = ({
 	const handleClose = () => {
 		setAnchorEl(null);
 		setId(null);
-	};
-
-
-
-	const editHandler = () => {
-		console.log('To Edit');
-		// // handleEditPerson(id);
-		// navigate(`/persons/${id}`, {
-		// 	state: {
-		// 		edit: true
-		// 	}
-		// });
 	};
 
 

@@ -1,21 +1,46 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Button, Container} from "@mui/material";
-import useSWR from "swr";
-import {getContent, updateBlogPostData} from "../services/airtable";
+import {updateBlogPostData} from "../services/airtable";
 import ToggleEdit from "./ToggleEdit";
 import OutputsTextField from "./OutputsTextField";
+import {getOutlineStream} from "../services/cos";
+import authService from "../services/auth";
+import FullPageLoader from "./FullPageLoader";
 
-const CosOutline = ({airId, setSteps, steps, setOutline, outline}) => {
+const CosOutline = ({airId, setSteps, steps, setOutline, outline, provider}) => {
+	const [loading, setLoading] = useState(false);
 	const [edit, setEdit] = useState(false);
-	// const [outline, setOutline] = useState('');
+	const resultBoxRef = useRef(null);
 
-	// const {data = {}, error, isLoading, mutate} = useSWR(`/cos/content/${airId}`, () =>
-	// 	getContent(airId)
-	// );
+	const resultStream = async () => {
+		setLoading(true);
+		setOutline('');
+		try {
+			await getOutlineStream(airId, (chunk) => {
+				setOutline((prev) => prev + chunk);
+			}, provider);
+
+			setLoading(false);
+
+		} catch (e) {
+			console.error('Error fetching streams:', e);
+			if (e.message === 'Unauthorized') {
+				// Перенаправляем на страницу входа или показываем сообщение
+				await authService.logout();
+				// Например, используйте React Router для перенаправления
+				// history.push('/login');
+			} else {
+				console.log('getOutlineStream: ', e);
+				// Обработка других ошибок
+			}
+			setLoading(false);
+		}
+	};
 
 	const nextStepHandler = async () => {
 		setLoading(true);
-		await updateBlogPostData(airId, {'AI Outline (Blogpost)': outline });
+		await updateBlogPostData(airId, {'AI Outline (Blogpost)': outline});
+
 		setSteps(null);
 		setTimeout(() => setSteps(steps += 1), 400);
 		setLoading(false);
@@ -26,18 +51,26 @@ const CosOutline = ({airId, setSteps, steps, setOutline, outline}) => {
 		setTimeout(() => setSteps(steps -= 1), 400);
 	};
 
-	// useEffect(() => {
-	// 	if (data) {
-	// 		setOutline(data?.content?.fields['AI Outline (Blogpost)']);
-	// 	}
-	// }, [data]);
+	useEffect(() => {
+		if (resultBoxRef.current) {
+			resultBoxRef.current.scrollTop = resultBoxRef.current.scrollHeight;
+		}
+	}, [outline]);
 
-
-	const [loading, setLoading] = useState(false);
 
 	return (
 		<Container sx={{position: 'relative'}}>
+			<Button sx={{
+				left: !outline ? '50%' : 0,
+				top: !outline ? '15rem' : 0,
+				transform: !outline ?'translateX(-50%)' : 'translateX(0)'
+			}}
+				variant={'outlined'}
+				color={'secondary'}
+				onClick={resultStream}
+			>Generate</Button>
 			<OutputsTextField
+				ref={resultBoxRef}
 				editable={edit}
 				value={outline}
 				title={'Outline'}
@@ -49,7 +82,7 @@ const CosOutline = ({airId, setSteps, steps, setOutline, outline}) => {
 				variant={'contained'}
 				color={'primary'}
 				sx={{width: '100%', marginTop: '3rem'}}
-				disabled={loading}
+				disabled={loading || !outline}
 			>Next step</Button>
 
 			<Button
@@ -63,6 +96,7 @@ const CosOutline = ({airId, setSteps, steps, setOutline, outline}) => {
 				isEdit={edit}
 				onClick={() => setEdit(old => !old)}
 			/>
+			{loading && <FullPageLoader/>}
 		</Container>
 	);
 };
