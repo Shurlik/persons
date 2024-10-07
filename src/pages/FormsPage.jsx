@@ -24,6 +24,8 @@ const FormsPage = () => {
 	const [prompt, setPrompt] = useState('');
 	const [final, setFinal] = useState('');
 
+	const [provider, setProvider] = useState('gpt');
+
 
 // 	const [research, setResearch] = useState(`1. Welcher Prozentsatz von Hunden über 10 Jahren an Krebs erkrankt?
 //
@@ -122,6 +124,7 @@ const FormsPage = () => {
 	const [selectedImageId, setSelectedImageId] = useState(null);
 
 
+
 	const handleChange = async (event) => {
 		setPerson(event.target.value);
 	};
@@ -198,17 +201,17 @@ const FormsPage = () => {
 			<CustomSlide
 				condition={steps === 3}
 			>
-				<CosOutline {...{airId, setSteps, steps, outline, setOutline, setFinal}} />
+				<CosOutline {...{airId, setSteps, steps, outline, setOutline, setFinal, provider}} />
 			</CustomSlide>
 			<CustomSlide
 				condition={steps === 4}
 			>
-				<CosOutputs {...{airId, setSteps, steps, final, setFinal}} />
+				<CosOutputs {...{airId, setSteps, steps, final, setFinal, provider}} />
 			</CustomSlide>
 			<CustomSlide
 				condition={steps === 5}
 			>
-				<CosImages {...{airId, setSteps, selectedImageId, setSelectedImageId, steps, prompt, setPrompt}} />
+				<CosImages {...{airId, setSteps, selectedImageId, setSelectedImageId, steps, prompt, setPrompt, provider}} />
 			</CustomSlide>
 			<CustomSlide
 				condition={steps === 6}

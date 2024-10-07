@@ -7,7 +7,7 @@ import {getArticleStream} from "../services/cos";
 import authService from "../services/auth";
 import FullPageLoader from "./FullPageLoader";
 
-const CosOutputs = ({airId, setSteps, steps, final, setFinal}) => {
+const CosOutputs = ({airId, setSteps, steps, final, setFinal, provider}) => {
 	const [edit, setEdit] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const resultBoxRef = useRef(null);
@@ -18,7 +18,7 @@ const CosOutputs = ({airId, setSteps, steps, final, setFinal}) => {
 		try {
 			await getArticleStream(airId, (chunk) => {
 				setFinal((prev) => prev + chunk);
-			});
+			}, provider);
 
 			setLoading(false);
 
@@ -58,12 +58,14 @@ const CosOutputs = ({airId, setSteps, steps, final, setFinal}) => {
 
 	return (
 		<Container sx={{position: 'relative'}}>
-			<Button
+			<Button sx={{
+				left: !final ? '50%' : 0,
+				top: !final ? '15rem' : 0,
+				transform: !final ?'translateX(-50%)' : 'translateX(0)'
+			}}
 				variant={'outlined'}
 				color={'secondary'}
-				onClick={async () => {
-					await resultStream();
-				}}
+				onClick={resultStream}
 			>Generate</Button>
 			<OutputsTextField
 				ref={resultBoxRef}

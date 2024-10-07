@@ -8,11 +8,16 @@ import Loader from "../Loader";
 import {toast} from "react-toastify";
 import Grid from '@mui/material/Grid2';
 import {colors} from "../../assets/styles/colors";
+import AssistantSelector from "../AssistantSelector";
 
-const BlogPostForm = ({person, selectedValues, setResearch, setSteps, setAirId, steps}) => {
+const BlogPostForm = ({person, selectedValues, setResearch, setSteps, setAirId, steps, provider, setProvider}) => {
 	const {handleSubmit, control, reset} = useForm();
 	const {data = [], error, isLoading, mutate} = useSWR('/lists', getLists);
 	const [loading, setLoading] = useState(false);
+
+	const handleChange = (event) => {
+		setProvider(event.target.value);
+	};
 
 	const onSubmit = async (data) => {
 		setLoading(true);
@@ -92,10 +97,19 @@ const BlogPostForm = ({person, selectedValues, setResearch, setSteps, setAirId, 
 
 	return (
 		<Container sx={{position: 'related'}}>
+			<Box sx={{
+				display: 'flex',
+				justifyContent: 'space-between'
+			}}>
 			<PageHeader
 				header={'New Blog Post Production'}
 				sx={{flexGrow: 1}}
 			/>
+			<AssistantSelector
+				value={provider}
+				onChange={handleChange}
+			/>
+			</Box>
 			<Box
 				sx={{
 					margin: '0 auto'

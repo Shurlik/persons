@@ -7,7 +7,7 @@ import {getOutlineStream} from "../services/cos";
 import authService from "../services/auth";
 import FullPageLoader from "./FullPageLoader";
 
-const CosOutline = ({airId, setSteps, steps, setOutline, outline, setFinal}) => {
+const CosOutline = ({airId, setSteps, steps, setOutline, outline, provider}) => {
 	const [loading, setLoading] = useState(false);
 	const [edit, setEdit] = useState(false);
 	const resultBoxRef = useRef(null);
@@ -18,7 +18,7 @@ const CosOutline = ({airId, setSteps, steps, setOutline, outline, setFinal}) => 
 		try {
 			await getOutlineStream(airId, (chunk) => {
 				setOutline((prev) => prev + chunk);
-			});
+			}, provider);
 
 			setLoading(false);
 
@@ -60,12 +60,14 @@ const CosOutline = ({airId, setSteps, steps, setOutline, outline, setFinal}) => 
 
 	return (
 		<Container sx={{position: 'relative'}}>
-			<Button
+			<Button sx={{
+				left: !outline ? '50%' : 0,
+				top: !outline ? '15rem' : 0,
+				transform: !outline ?'translateX(-50%)' : 'translateX(0)'
+			}}
 				variant={'outlined'}
 				color={'secondary'}
-				onClick={async () => {
-					await resultStream();
-				}}
+				onClick={resultStream}
 			>Generate</Button>
 			<OutputsTextField
 				ref={resultBoxRef}

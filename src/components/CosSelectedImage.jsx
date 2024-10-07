@@ -11,9 +11,9 @@ import ToggleEdit from "./ToggleEdit";
 import FullPageLoader from "./FullPageLoader";
 
 const CosSelectedImage = ({airId, selectedImageId, setSteps, steps, prompt, setPrompt}) => {
-	const {data = {}, error, isLoading, mutate} = useSWR(`/cos/content/${airId}`, () =>
-		getContent(airId)
-	);
+	// const {data = {}, error, isLoading, mutate} = useSWR(`/cos/content/${airId}`, () =>
+	// 	getContent(airId)
+	// );
 	const [edit, setEdit] = useState(false);
 
 	// const [prompt, setPrompt] = useState('');
@@ -35,10 +35,10 @@ const CosSelectedImage = ({airId, selectedImageId, setSteps, steps, prompt, setP
 	};
 
 	useEffect(() => {
-		if (data && selectedImageId?.description) {
-			setPrompt(data?.content?.fields['Thumbnail Prompt'] + '\n\n' + '!Important! additional information about Image: ' + selectedImageId?.description);
+		if (prompt && selectedImageId?.description) {
+			setPrompt(prompt + '\n\n' + selectedImageId?.description);
 		}
-	}, [data]);
+	}, []);
 
 	useEffect(() => {
 		if (!selectedImageId?.id) {
