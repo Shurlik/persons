@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import useSWR from "swr";
-import {getContent, getImages} from "../services/airtable";
+import {getImages} from "../services/airtable";
 import {Box, Button, Container, Typography} from "@mui/material";
 import {colors} from "../assets/styles/colors";
 import {Swiper, SwiperSlide} from 'swiper/react';
@@ -14,13 +14,41 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import Loader from "./Loader";
 import OutputsTextField from "./OutputsTextField";
 import ToggleEdit from "./ToggleEdit";
+import {getThumbnailStream} from "../services/cos";
+import authService from "../services/auth";
+import FullPageLoader from "./FullPageLoader";
 
-const CosImages = ({airId, selectedImageId, setSelectedImageId, setSteps, steps}) => {
-	const {data = {}, error, isLoading, mutate} = useSWR(`/cos/content/${airId}`, () =>
-		getContent(airId)
-	);
+const CosImages = ({airId, selectedImageId, setSelectedImageId, setSteps, steps, prompt, setPrompt, provider}) => {
+	const resultBoxRef = useRef(null);
 
 	const [edit, setEdit] = useState(false);
+	const [loading, setLoading] = useState(false);
+
+
+	const resultStream = async () => {
+		setLoading(true);
+		setPrompt('');
+		try {
+			await getThumbnailStream(airId, (chunk) => {
+				setPrompt((prev) => prev + chunk);
+			}, provider);
+
+			setLoading(false);
+
+		} catch (e) {
+			console.error('Error fetching streams:', e);
+			if (e.message === 'Unauthorized') {
+				// Перенаправляем на страницу входа или показываем сообщение
+				await authService.logout();
+				// Например, используйте React Router для перенаправления
+				// history.push('/login');
+			} else {
+				console.log('getOutlineStream: ', e);
+				// Обработка других ошибок
+			}
+			setLoading(false);
+		}
+	};
 
 	const {
 		data: images = [],
@@ -29,8 +57,6 @@ const CosImages = ({airId, selectedImageId, setSelectedImageId, setSteps, steps}
 		mutate: imgMutate
 	} = useSWR('/cos/images', () => getImages());
 
-	const [prompt, setPrompt] = useState('');
-	const [loading, setLoading] = useState(false);
 
 	const nextStepHandler = () => {
 		setLoading(true);
@@ -45,16 +71,27 @@ const CosImages = ({airId, selectedImageId, setSelectedImageId, setSteps, steps}
 	};
 
 	useEffect(() => {
-		if (data) {
-			setPrompt(data?.content?.fields['Thumbnail Prompt']);
+		if (resultBoxRef.current) {
+			resultBoxRef.current.scrollTop = resultBoxRef.current.scrollHeight;
 		}
-	}, [data]);
-
+	}, [prompt]);
 
 	return (
 		<Container sx={{position: 'relative'}}>
+			<Button sx={{
+				left: !prompt ? '50%' : 0,
+				top: !prompt ? '15rem' : 0,
+				transform: !prompt ?'translateX(-50%)' : 'translateX(0)'
+			}}
+				variant={'outlined'}
+				color={'secondary'}
+				onClick={async () => {
+					await resultStream();
+				}}
+			>Generate</Button>
 			<Box>
 				<OutputsTextField
+					ref={resultBoxRef}
 					editable={edit}
 					title={'Thumbnail Prompt'}
 					loading={loading}
@@ -113,7 +150,7 @@ const CosImages = ({airId, selectedImageId, setSelectedImageId, setSteps, steps}
 				variant={'contained'}
 				color={'primary'}
 				sx={{width: '100%', marginTop: '3rem'}}
-				disabled={loading}
+				disabled={loading || !prompt}
 			>Next step</Button>
 			<Button
 				onClick={previousStepHandler}
@@ -127,7 +164,7 @@ const CosImages = ({airId, selectedImageId, setSelectedImageId, setSteps, steps}
 					display: 'flex',
 					justifyContent: 'center',
 					alignItems: 'center',
-					position: 'absolute',
+					position: 'static',
 					top: 0,
 					bottom: 0,
 					left: 0,
@@ -141,6 +178,7 @@ const CosImages = ({airId, selectedImageId, setSelectedImageId, setSteps, steps}
 				isEdit={edit}
 				onClick={() => setEdit(old => !old)}
 			/>
+			{loading && <FullPageLoader/>}
 		</Container>
 	);
 };
