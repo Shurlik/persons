@@ -14,6 +14,7 @@ import ProfilePage from "../pages/ProfilePage";
 import AdminRoute from "./AdminRoute";
 import UsersPage from "../pages/UsersPage";
 import UserProfilePage from "../pages/UserProfilePage";
+import PromptsPage from "../pages/PromptsPage";
 
 
 const router = createBrowserRouter([
@@ -64,6 +65,10 @@ const router = createBrowserRouter([
 			{
 				path: "/users/:id",
 				element: <AdminRoute component={UserProfilePage}/>
+			},
+			{
+				path: "/prompts",
+				element: <AdminRoute component={PromptsPage}/>
 			}
 		]
 	},

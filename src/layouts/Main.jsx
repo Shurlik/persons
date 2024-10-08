@@ -28,7 +28,6 @@ const MainLayout = () => {
       >
         <Navigation />
       </Box>
-
       <Box sx={{ display: 'flex', flexGrow: 1, height: '100%', pt: '86px' }}>
         {/* Sidebar */}
         <Box

@@ -4,6 +4,7 @@ import {colors} from "../assets/styles/colors";
 import DropMenu from "./DropMenu";
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import FormatColorTextIcon from '@mui/icons-material/FormatColorText';
 import {useAuth} from "../contexts/AuthContext";
 import {useNavigate} from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -79,6 +80,7 @@ const UserMenuItem = ({onLogout}) => {
 				data={
 					[
 						{title: 'Users', icon: PeopleAltIcon, fn: () => navigate('/users'), admin: true},
+						{title: 'Prompts', icon: FormatColorTextIcon, fn: () => navigate('/prompts'), admin: true},
 						{title: 'Profile', icon: ManageAccountsIcon, fn: () => navigate('/profile')},
 						{title: 'Logout', icon: LogoutIcon, fn: onLogout}
 					]
