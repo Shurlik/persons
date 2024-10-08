@@ -50,6 +50,7 @@ export async function deleteRecord(id) {
 		throw error;
 	}
 }
+
 export async function deleteUser(id) {
 	try {
 		const response = await api.delete(`/users/profile/${id}`);
@@ -146,7 +147,7 @@ export async function getContent(id) {
 export async function getResearch(id) {
 	const source = axios.CancelToken.source();
 	try {
-		return await api.post(`/cos/research/${id}`,{}, { cancelToken: source.token });
+		return await api.post(`/cos/research/${id}`, {}, {cancelToken: source.token});
 	} catch (e) {
 		console.log('error: ', e);
 	}
@@ -155,15 +156,16 @@ export async function getResearch(id) {
 export async function getOutline(id) {
 	const source = axios.CancelToken.source();
 	try {
-		return await api.post(`/cos/outline/${id}`,{}, { cancelToken: source.token });
+		return await api.post(`/cos/outline/${id}`, {}, {cancelToken: source.token});
 	} catch (e) {
 		console.log('error: ', e);
 	}
 }
+
 export async function getArticle(id) {
 	const source = axios.CancelToken.source();
 	try {
-		return await api.post(`/cos/article/${id}`,{}, { cancelToken: source.token });
+		return await api.post(`/cos/article/${id}`, {}, {cancelToken: source.token});
 	} catch (e) {
 		console.log('error: ', e);
 	}
@@ -172,7 +174,7 @@ export async function getArticle(id) {
 export async function getThumbnail(id) {
 	const source = axios.CancelToken.source();
 	try {
-		return await api.post(`/cos/thumbnail/${id}`,{}, { cancelToken: source.token });
+		return await api.post(`/cos/thumbnail/${id}`, {}, {cancelToken: source.token});
 	} catch (e) {
 		console.log('error: ', e);
 	}
@@ -186,6 +188,16 @@ export async function getArticles() {
 		console.log('error: ', e);
 	}
 }
+
+export async function deleteArticle(id) {
+	try {
+		const response = await api.delete(`/cos/articles/${id}`);
+		return response.data;
+	} catch (e) {
+		console.log('error: ', e);
+	}
+}
+
 export async function getPrompts() {
 	try {
 		const response = await api.get(`/cos/prompts`);
@@ -200,7 +212,7 @@ export async function updatePrompt(id, data) {
 		const response = await api.put(`/cos/prompts/${id}`, data);
 		return response.data;
 	} catch (e) {
-	    console.log('error: ', e)
+		console.log('error: ', e);
 	}
 }
 

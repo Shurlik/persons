@@ -13,6 +13,8 @@ const CosOutline = ({airId, setSteps, steps, setOutline, outline, provider}) => 
 	const resultBoxRef = useRef(null);
 
 	const resultStream = async () => {
+
+
 		setLoading(true);
 		setOutline('');
 		try {

@@ -7,6 +7,7 @@ import listItemButton from "./listItemButton";
 import {tableCell, tableHead, tableRow} from './table';
 import {menu} from "./menu";
 import {customSelect, customSelectItem, customSelectMenu} from "./select";
+import dataGrid from "./dataGrid";
 
 const index = createTheme({
 	typography: {
@@ -77,6 +78,7 @@ const index = createTheme({
 		MuiMenu: menu,
 		MuiMenuItem: customSelectItem,
 		// MuiMenuItem: menuItem,
+		MuiDataGrid: dataGrid,
 		MuiSelect: {
 			...customSelect,
 			defaultProps: {

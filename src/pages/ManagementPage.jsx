@@ -1,13 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import useSWR from "swr";
-import {deleteRecord, getAllRecords, updateRecord, uploadFile} from "../services/airtable";
+import {deleteRecord, getAllRecords, uploadFile} from "../services/airtable";
 import {Box, Button, Container, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import PageHeader from "../components/PageHeader";
 import PersonsList from "../components/PersonsList";
-import {colors} from "../assets/styles/colors";
-import Loader from "../components/Loader";
+import FullPageLoader from "../components/FullPageLoader";
 
 const ManagementPage = () => {
 	const {data = [], error, isLoading, mutate} = useSWR('/persons', async () => await getAllRecords());
@@ -55,150 +54,45 @@ const ManagementPage = () => {
 		setLoading(false);
 	};
 
-	function handleFileChange(e) {
-		if (e.target.files) {
-			setFile(e.target.files[0]);
-		}
-	}
-
-
-	const handleViewDetails = () => {
-		setIsViewingDetails(true);
-	};
-
-	const handleCloseDetails = () => {
-		setIsViewingDetails(false);
-		setIsEditing(false);
-	};
-
-	const handleCloseEdit = () => {
-		// setIsEditing(false);
-		// setEditedFields(selectedPerson.fields);
-	};
-
-	const handleFieldChange = (field, value) => {
-		setEditedFields(prev => ({...prev, [field]: value}));
-	};
-
-	const handleSaveChanges = async () => {
-		setLoading(true);
-		try {
-			const data = await updateRecord(selectedPerson.id, editedFields);
-			await mutate();
-			setIsEditing(false);
-			setSelectedPerson(data);
-			setIsViewingDetails(false);
-		} catch (error) {
-			console.error("Error updating record:", error);
-		}
-		setLoading(false);
-	};
 
 	const groupDeleteHandler = async () => {
 		if (window.confirm("Are you sure you want to delete this persons?")) {
-			setLoading(true)
+			setLoading(true);
 			try {
 				for (const p of listPersonsToDelete) {
 					await deleteRecord(p);
 				}
 				await mutate();
-				toast.success('Deleted successfully!')
-				setListPersonsToDelete([])
-				setLoading(false)
+				toast.success('Deleted successfully!');
+				setListPersonsToDelete([]);
+				setLoading(false);
 			} catch (e) {
-				toast.error('Something goes wrong')
+				toast.error('Something goes wrong');
 				console.log('Pers del error: ', e);
 			} finally {
-				setLoading(false)
+				setLoading(false);
 			}
 		}
 	};
 
 	const handleDeletePerson = async (id) => {
 		if (window.confirm("Are you sure you want to delete this person?")) {
-			setLoading(true)
+			setLoading(true);
 			try {
 				await deleteRecord(id);
 				await mutate();
 				setSelectedPerson(null);
-				setLoading(false)
+				setLoading(false);
 			} catch (error) {
 				console.error("Error deleting record:", error);
 			} finally {
-				setLoading(false)
+				setLoading(false);
 			}
 		}
 	};
 
 	useEffect(() => setFile(null), [selectedPerson]);
 
-	const sections = [
-		{
-			title: "Demographic Data",
-			fields: ["Name",
-				"Age",
-				"Education level",
-				"Occupation",
-				"Income class",
-				"Relationship Status",
-				"Number of Kids",
-				"Place of residence"]
-		},
-		{
-			title: "Professional Information",
-			fields: ["Job title",
-				"Industry",
-				"Career stage",
-				"Working environment"]
-		},
-		{
-			title: "Psychographic Characteristics",
-			fields: ["Limbic Types",
-				"Enneagram",
-				"Myers-Briggs (MBTI)",
-				"DISG",
-				"Sinus-Milieus",
-				"Spiral Dynamics",
-				"Hobbies and Interests",
-				"TV Shows / Books"]
-		},
-		{
-			title: "Empathy Card",
-			fields: ["Empathy Card"]
-		},
-		{
-			title: "Values: What is important",
-			fields: ["Important Values"]
-		},
-		{
-			title: "Pain Points and Fears",
-			fields: ["Pain Points", "Fears"]
-		},
-		{
-			title: "Goals, Dreams, and Gains",
-			fields: ["Goals and Dreams", "Materialistic Gains", "Emotional Win"]
-		},
-		{
-			title: "Magical Solution",
-			fields: ["Magical Solution"]
-		},
-		{
-			title: "Brand",
-			fields: ["Brand-Values", "Brand-Examples", "Brand Archetype", "Brand-Magnet"]
-		},
-		{
-			title: "Elevator Pitch",
-			fields: ["Elevator Pitch"]
-		},
-		{
-			title: "Buying Behavior",
-			fields: ["Buying Behavior", "Buying Motives", "Buying Barriers"]
-		},
-		{
-			title: "Media Usage",
-			fields: ["Preferred communication channels", "Device usage", "Online behavior"]
-		}
-	];
 
 	if (isLoading) return <Typography>Loading...</Typography>;
 	if (error) return <Typography>Error loading data</Typography>;
@@ -235,19 +129,7 @@ const ManagementPage = () => {
 					setListPersonsToDelete={setListPersonsToDelete}
 				/>
 			</Box>
-			{loading && <Box
-				sx={{
-					display: 'flex',
-					justifyContent: 'center',
-					alignItems: 'center',
-					position: 'absolute',
-					top: 0,
-					bottom: 0,
-					left: 0,
-					right: 0,
-					backgroundColor: colors.black20
-				}}
-			><Loader/></Box>}
+			{loading && <FullPageLoader/>}
 		</Container>
 	);
 };

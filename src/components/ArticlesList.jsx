@@ -10,42 +10,26 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import officeBoy from "../assets/images/cartoon-office-boy.png";
 import {LINK} from "../services/variables";
 import {useNavigate} from "react-router-dom";
+import { DataGrid } from '@mui/x-data-grid';
 
-const simulateDownloadClick = (url) => {
-	const link = document.createElement('a');
-	link.href = url;
-	link.target = '_blank';
-	link.rel = 'noopener noreferrer';
-	document.body.appendChild(link);
-	link.click();
-	document.body.removeChild(link);
-};
-
-const PersonsList = ({
-	                     persons,
-	                     handleDeletePerson,
-	                     handleEditPerson,
-	                     listPersonsToDelete,
-	                     setListPersonsToDelete,
-	                     disabled
+const ArticlesList = ({
+	                     articles,
+	                     handleDeleteArticle,
+	                     listArticlesToDelete,
+	                     setListArticleToDelete,
+	                     disabled,
+	                      setSelected
                      }) => {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const [id, setId] = useState(null);
 	const open = Boolean(anchorEl);
 
-	const navigate = useNavigate();
-
-
-	const handleItemClick = (item) => {
-		const downloadUrl = `${LINK}/files/download/${id}`;
-		simulateDownloadClick(downloadUrl);
-		handleClose();
-	};
 
 	const handleClick = (event, id) => {
 		setAnchorEl(event.currentTarget);
 		setId(id);
 	};
+
 	const handleClose = () => {
 		setAnchorEl(null);
 		setId(null);
@@ -53,39 +37,29 @@ const PersonsList = ({
 
 	const onSelectChange = (checked, userId) => {
 		if (checked) {
-			listPersonsToDelete.push(userId);
-			setListPersonsToDelete([...listPersonsToDelete]);
+			listArticlesToDelete.push(userId);
+			setListArticleToDelete([...listArticlesToDelete]);
 		} else {
-			const filtered = listPersonsToDelete.filter(p => {
+			const filtered = listArticlesToDelete.filter(p => {
 				return p !== userId;
 			});
-			setListPersonsToDelete([...filtered]);
+			setListArticleToDelete([...filtered]);
 		}
 	};
 
 	const editHandler = () => {
-		// handleEditPerson(id);
-		navigate(`/persons/${id}`, {
-			state: {
-				edit: true
-			}
-		});
+
 	};
 
 	const downloadHandler = () => {
-		const downloadUrl = `${LINK}/files/download/${id}`;
-		simulateDownloadClick(downloadUrl);
-		handleClose();
 	};
+
 	const deleteHandler = () => {
-		handleDeletePerson(id);
 		setAnchorEl(null);
+		handleDeleteArticle(id);
 		setId(null);
 	};
 
-	const detailHandler = (id) => {
-		navigate(`/persons/${id}`);
-	};
 
 	const MENU_DATA = [
 		{title: 'Edit', icon: DriveFileRenameOutlineIcon, fn: editHandler},
@@ -94,12 +68,12 @@ const PersonsList = ({
 	];
 
 	const checkAllHandler = () => {
-		persons.forEach(p => listPersonsToDelete.push(p.id));
-		setListPersonsToDelete([...listPersonsToDelete]);
+		articles.forEach(p => listArticlesToDelete.push(p.id));
+		setListArticleToDelete([...listArticlesToDelete]);
 	};
 
 	const clearAllHandler = () => {
-		setListPersonsToDelete([]);
+		setListArticleToDelete([]);
 	};
 
 
@@ -107,7 +81,6 @@ const PersonsList = ({
 		event.target.checked ? checkAllHandler() : clearAllHandler();
 	};
 
-	console.log({persons});
 	return (
 		<TableContainer
 			sx={{backgroundColor: colors.background, borderRadius: '1.5rem', padding: '2rem'}}
@@ -117,7 +90,7 @@ const PersonsList = ({
 			>
 				<TableHead>
 					<TableRow>
-						<TableCell
+						<TableCell padding={'checkbox'}
 							sx={{borderBottom: `1px solid ${colors.grey3}`}}
 						> <Checkbox
 							disabled={disabled}
@@ -128,19 +101,13 @@ const PersonsList = ({
 								},
 							}}
 							// checked={true}
-							checked={!!listPersonsToDelete.length}
+							checked={!!listArticlesToDelete.length}
 
 							onChange={onMainSelectChange}
 						/></TableCell>
 						<TableCell
 							sx={{borderBottom: `1px solid ${colors.grey3}`}}
-						>Name</TableCell>
-						<TableCell
-							sx={{borderBottom: `1px solid ${colors.grey3}`}}
-						>Age</TableCell>
-						<TableCell
-							sx={{borderBottom: `1px solid ${colors.grey3}`}}
-						>Location</TableCell>
+						>Title</TableCell>
 						<TableCell
 							sx={{borderBottom: `1px solid ${colors.grey3}`}}
 						>Owner</TableCell>
@@ -154,11 +121,11 @@ const PersonsList = ({
 				</TableHead>
 				<TableBody>
 					{/*=======*/}
-					{persons.map((user) => (
+					{articles.map((article) => (
 						<TableRow
-							key={user.id}
+							key={article.id}
 						>
-							<TableCell>
+							<TableCell  padding={'checkbox'}>
 								<Checkbox
 									disabled={disabled}
 									sx={{
@@ -167,58 +134,34 @@ const PersonsList = ({
 											color: colors.white,
 										},
 									}}
-									checked={listPersonsToDelete.includes(user.id)}
-									onChange={(event) => onSelectChange(event.target.checked, user.id)}
+									checked={listArticlesToDelete.includes(article.id)}
+									onChange={(event) => onSelectChange(event.target.checked, article.id)}
 								/>
 							</TableCell>
 							<TableCell
 								// onClick={() => userDetailsHandler(user.id)}
 							>
-								<Box
-									sx={{
-										display: 'flex',
-										gap: '.5rem',
-										alignItems: 'center'
-									}}
-								>
-									<Box
-										sx={{
-											overflow: 'hidden',
-											borderRadius: '50%',
-											backgroundColor: colors.silver,
-											width: '1.8rem',
-											height: '1.8rem',
-											display: 'flex',
-											justifyContent: 'center',
-											alignItems: 'center',
-										}}
-									>
-										<Box
-											component={'img'}
-											alt={'logo'}
-											src={user.fields['User Image']?.length > 0 ? user.fields['User Image'][0]?.url : user.fields['Gender'] === 'Female' ? officeGirl : officeBoy}
-											sx={{width: '100%', height: '100%', objectFit: 'cover', filter: 'grayscale(100%)',}}
-										/>
-									</Box>{user?.fields.Name}</Box></TableCell>
-							<TableCell
-							>{user?.fields.Age}</TableCell>
-							<TableCell>{user?.fields.Country}</TableCell>
+									<Box>{article?.title}</Box>
+							</TableCell>
+
+
+
 							<TableCell>
-								{user?.user?.name}
+								{article?.user?.name}
 							</TableCell>
 							<TableCell>
 								<Button
 									disabled={disabled}
-									onClick={() => detailHandler(user.id)}
+									onClick={() => setSelected(article)}
 									variant={'outlined'}
 									color={'secondary'}
-								>View details
+								>View Article
 								</Button>
 							</TableCell>
 							<TableCell>
 								<MoreVertIcon
 									disabled={disabled}
-									onClick={(event) => handleClick(event, user.id)}
+									onClick={(event) => handleClick(event, article.id)}
 									sx={{
 										cursor: 'pointer'
 									}}
@@ -239,4 +182,4 @@ const PersonsList = ({
 	);
 };
 
-export default PersonsList;
+export default ArticlesList;

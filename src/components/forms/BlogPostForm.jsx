@@ -51,6 +51,8 @@ const BlogPostForm = ({person, selectedValues, setResearch, setSteps, setAirId, 
 			}
 		}
 
+		console.log({newForm});
+
 		try {
 			// const res = await startResearch({data: newForm});
 			const res = await uploadBlogPostData({data: newForm});
