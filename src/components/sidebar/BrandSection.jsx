@@ -13,16 +13,16 @@ export const BrandSection = ({ openItems, handleClick }) => {
       name: 'Persona',
       icon: <PersonOutlined style={{ fontSize: '16px' }} />,
       subItems: [
-        { name: 'Step by Step', link: '/', icon: <AutoMode style={{ fontSize: '15px' }} />, disabled: false },
+        { name: 'Step by Step', link: '/', icon: <AutoMode style={{ fontSize: '15px' }} />, disabled: true },
         { name: '1 Click Generation', link: '/', icon: <AdsClick style={{ fontSize: '15px' }} />, disabled: true },
-        { name: 'Analyzer', link: '/', icon: <StepsIcon />, disabled: false },
+        { name: 'Analyzer', link: '/', icon: <StepsIcon />, disabled: true },
       ],
     },
     {
       name: 'Brand',
       icon: <BrandIcon />,
       subItems: [
-        { name: 'Guidelines', link: '/', icon: <SubjectOutlined style={{ fontSize: '15px' }} />, disabled: false },
+        { name: 'Guidelines', link: '/', icon: <SubjectOutlined style={{ fontSize: '15px' }} />, disabled: true },
         { name: 'Analyzer', link: '/', icon: <AutoGraph style={{ fontSize: '15px' }} />, disabled: true },
       ],
     },

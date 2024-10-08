@@ -10,12 +10,12 @@ export const FunnelSection = () => {
   const location = useLocation();
 
   const funnelItems = [
-    { name: 'Strategy', link: '/', icon: <StrategyIcon />, disabled: false },
+    { name: 'Strategy', link: '/', icon: <StrategyIcon />, disabled: true },
     {
       name: 'Ads',
       icon: <AdsIcon />,
       subItems: [
-        { name: 'Facebook', link: '/', icon: <FacebookIcon />, disabled: false },
+        { name: 'Facebook', link: '/', icon: <FacebookIcon />, disabled: true },
         { name: 'Google', link: '/', icon: <GoogleIcon />, disabled: true },
         { name: 'Instagram', link: '/', icon: <InstIcon />, disabled: true },
         { name: 'LinkedIn', link: '/', icon: <LinkedInIcon />, disabled: true },

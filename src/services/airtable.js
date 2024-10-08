@@ -186,6 +186,23 @@ export async function getArticles() {
 		console.log('error: ', e);
 	}
 }
+export async function getPrompts() {
+	try {
+		const response = await api.get(`/cos/prompts`);
+		return response.data;
+	} catch (e) {
+		console.log('error: ', e);
+	}
+}
+
+export async function updatePrompt(id, data) {
+	try {
+		const response = await api.put(`/cos/prompts/${id}`, data);
+		return response.data;
+	} catch (e) {
+	    console.log('error: ', e)
+	}
+}
 
 export async function getImages() {
 	try {

@@ -11,10 +11,10 @@ export const SalesSection = () => {
   const location = useLocation();
 
   const salesItems = [
-    { name: 'Campaigns', link: '/', icon: <CampaignIcon />, disabled: false },
-    { name: 'Sales Letter', link: '/', icon: <Sales />, disabled: false },
+    { name: 'Campaigns', link: '/', icon: <CampaignIcon />, disabled: true },
+    { name: 'Sales Letter', link: '/', icon: <Sales />, disabled: true },
     { name: 'Sales Presentations', link: '/', icon: <Presentation />, disabled: true },
-    { name: 'Discovery Calls', link: '/', icon: <Phone style={{ fontSize: '15px' }} />, disabled: false },
+    { name: 'Discovery Calls', link: '/', icon: <Phone style={{ fontSize: '15px' }} />, disabled: true },
   ];
 
   const handleToggle = () => {
