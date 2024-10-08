@@ -16,7 +16,8 @@ const FullPageLoader = ({position}) => {
 				left: 0,
 				right: 0,
 				backgroundColor: colors.black20,
-				flexDirection: 'column'
+				flexDirection: 'column',
+				zIndex: 99999
 			}}
 		>
 			<Loader/></Box>

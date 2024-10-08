@@ -10,10 +10,15 @@ import FullPageLoader from "./FullPageLoader";
 import useSWRSubscription from "swr/subscription";
 
 const ResearchResult = ({research, setResearch, setSteps, airId, steps, setOutline}) => {
-	const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState(false);
 	const [edit, setEdit] = useState(false);
 	const resultBoxRef = useRef(null);
 
+	// useEffect(() => {
+	// 	if (airId) {
+	// 		setTimeout(async ()=>	await resultStream(), 3000)
+	// 	}
+	// }, [airId]);
 
 	const controllerRef = useRef(null);
 

@@ -1,7 +1,7 @@
 {
   "name": "persons",
   "homepage": "https://shurlik.github.io/persons/",
-  "version": "0.25.0",
+  "version": "0.26.0",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.13.3",
@@ -9,6 +9,7 @@
     "@hookform/resolvers": "^3.9.0",
     "@mui/icons-material": "^6.1.0",
     "@mui/material": "^6.1.0",
+    "@mui/x-data-grid": "^7.19.0",
     "@mui/x-date-pickers": "^7.16.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
