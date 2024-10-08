@@ -191,6 +191,7 @@ const FormsPage = () => {
 					setSteps={setSteps}
 					setAirId={setAirId}
 					steps={steps}
+					{...{provider, setProvider}}
 				/>
 			</CustomSlide>
 			<CustomSlide
