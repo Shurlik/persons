@@ -10,9 +10,9 @@ export const ContentMarketingSection = () => {
   const location = useLocation();
 
   const contentItems = [
-    { name: 'Editorial Plan', link: '/', icon: <StepsIcon />, disabled: false },
-    { name: 'Ideas', link: '/', icon: <IdeasIcon />, disabled: false },
-    { name: 'Articles', link: '/', icon: <ArticlesIcon />, disabled: true },
+    { name: 'Editorial Plan', link: '/', icon: <StepsIcon />, disabled: true },
+    { name: 'Ideas', link: '/', icon: <IdeasIcon />, disabled: true },
+    { name: 'Articles', link: '/articles', icon: <ArticlesIcon />, disabled: false },
     { name: 'Shortform Posts', link: '/', icon: <ShortformIcon />, disabled: true },
     { name: 'Podcast', link: '/', icon: <Podcast />, disabled: true },
     { name: 'YouTube', link: '/', icon: <YoutubeIcon />, disabled: true },

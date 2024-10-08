@@ -21,14 +21,19 @@ const Navigation = () => {
 		<Box
 			sx={{
 				margin: '0 auto',
-				padding: '1rem .5rem',
+				padding: '1rem 3rem',
 				display: 'flex',
 				alignItems: 'center',
 				justifyContent: 'space-between',
 				maxWidth: '100rem'
 			}}
 		>
-			<Box>
+			<Box
+				onClick={() => navigate('/')}
+				sx={{
+					cursor: 'pointer'
+				}}
+			>
 				<Box
 					component={'img'}
 					alt={'logo'}
@@ -37,7 +42,7 @@ const Navigation = () => {
 				/>
 			</Box>
 			<NavigationLinks/>
-			<UserMenuItem onLogout={()=>setModalOpen(true)}/>
+			<UserMenuItem onLogout={() => setModalOpen(true)}/>
 			<DialogLogout
 				onSubmit={logoutHandler}
 				onClose={() => setModalOpen(false)}

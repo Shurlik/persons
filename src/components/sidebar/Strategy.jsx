@@ -10,10 +10,10 @@ export const StrategySection = () => {
   const location = useLocation();
 
   const strategyItems = [
-    { name: '9 Steps', link: '/', icon: <StepsIcon />, disabled: false },
-    { name: 'Goals', link: '/', icon: <GoalsIcon />, disabled: false },
-    { name: 'KPI’s', link: '/', icon: <KpiIcon />, disabled: false },
-    { name: 'AI Assistant', link: '/', icon: <AIIcon />, disabled: false },
+    { name: '9 Steps', link: '#', icon: <StepsIcon />, disabled: true },
+    { name: 'Goals', link: '#', icon: <GoalsIcon />, disabled: true },
+    { name: 'KPI’s', link: '#', icon: <KpiIcon />, disabled: true },
+    { name: 'AI Assistant', link: '#', icon: <AIIcon />, disabled: true },
   ];
 
   const handleToggle = () => {

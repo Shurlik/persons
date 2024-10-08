@@ -7,33 +7,30 @@ import Loader from "../components/Loader";
 import FormattedTextDisplayArticle from "../components/FormattedTextDisplayArticle";
 import moment from "moment";
 
+export const localStyles = {
+	alignItems: "center", // Вместо alignVertical
+	borderRadius: '.4rem',
+	padding: '.6rem 0',
+	color: colors.mainGreen,
+	transition: '.5s',
+	'&:hover': {
+		backgroundColor: colors.backgroundMain,
+		color: colors.orange
+	},
+	'&.Mui-selected': {
+		backgroundColor: colors.backgroundMain,
+		color: colors.orange,
+		// paddingLeft: '.8rem',
+		'&:hover': {
+			backgroundColor: colors.backgroundMain, // Сохраняем белый фон при наведении на выбранный элемент
+		},
+	},
+};
+
 const ArticlesPage = () => {
 	const {data = [], error, isLoading, mutate} = useSWR('/cos/articles', () => getArticles());
 
-	const localStyles = {
-		alignItems: "center", // Вместо alignVertical
-		borderRadius: '.4rem',
-		padding: '.6rem 0',
-		color: colors.mainGreen,
-		transition: '.5s',
-		'&:hover': {
-			backgroundColor: colors.backgroundMain,
-			color: colors.orange
-		},
-		'&.Mui-selected': {
-			backgroundColor: colors.backgroundMain,
-			color: colors.orange,
-			// paddingLeft: '.8rem',
-			'&:hover': {
-				backgroundColor: colors.backgroundMain, // Сохраняем белый фон при наведении на выбранный элемент
-			},
-		},
-	};
-
-
-
 	const [selected, setSelected] = useState(null);
-
 
 	if (!data?.articles) {
 		return <Loader/>;
