@@ -1,21 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import Navigation from '../components/Navigation';
 import Sidebar from '../components/sidebar/Sidebar';
 import { colors } from '../assets/styles/colors';
+import useSidebar from '../hooks/sidebar';
 
 const MainLayout = () => {
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
-  const [isSidebarPinned, setSidebarPinned] = useState(false);
-
-  const toggleSidebar = () => {
-    setSidebarOpen((prevState) => !prevState);
-  };
-
-  const toggleSidebarPin = () => {
-    setSidebarPinned((prevState) => !prevState);
-  };
+  const {
+    isSidebarOpen,
+    isSidebarPinned,
+    toggleSidebar,
+    toggleSidebarPin,
+  } = useSidebar(); 
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden' }}>
@@ -43,7 +40,7 @@ const MainLayout = () => {
             transition: 'width 0.9s',
             overflowY: 'auto',
             height: 'calc(100vh - 86px)',
-            position: isSidebarPinned ? 'relative' : 'absolute', 
+            position: isSidebarPinned ? 'relative' : 'absolute',
             zIndex: isSidebarPinned ? '1' : '10',
           }}
         >

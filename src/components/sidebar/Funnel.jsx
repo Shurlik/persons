@@ -6,7 +6,7 @@ import { colors } from "../../assets/styles/colors";
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { funnelItems } from '../../services/routesList';
 
-export const FunnelSection = ({ toggleSidebar }) => {
+export const FunnelSection = ({ toggleSidebar, isPinned }) => {
   const [openItems, setOpenItems] = useState({ Funnel: true });
   const location = useLocation();
 
@@ -75,7 +75,7 @@ export const FunnelSection = ({ toggleSidebar }) => {
 
                       return (
                         <Link
-                          onClick={toggleSidebar}
+                          onClick={!isPinned && toggleSidebar}
                           key={subItem.name}
                           to={subItem.link}
                           style={{
