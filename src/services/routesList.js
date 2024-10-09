@@ -19,7 +19,7 @@ export const brandItems = [
 		name: 'Persona',
 		icon: <PersonOutlined style={{ fontSize: '16px' }} />,
 		subItems: [
-			{ name: 'Step by Step', link: '/', icon: <AutoMode style={{ fontSize: '15px' }} />, disabled: true },
+			{ name: 'Create Persona', link: '/create', icon: <PersonAddIcon style={{ fontSize: '15px' }} />, disabled: false },
 			{ name: '1 Click Generation', link: '/', icon: <AdsClick style={{ fontSize: '15px' }} />, disabled: true },
 			{ name: 'Analyzer', link: '/', icon: <StepsIcon />, disabled: true },
 			{ name: 'Management', link: '/management', icon: <ManageAccountsIcon sx={{fontSize: '15px'}} />, disabled: false },
