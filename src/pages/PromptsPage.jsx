@@ -19,6 +19,12 @@ import {colors} from "../assets/styles/colors";
 import {localStyles} from "./ArticlesPage";
 import {toast} from "react-toastify";
 import FullPageLoader from "../components/FullPageLoader";
+import PageHeader from "../components/PageHeader";
+import {paginationModel} from "../utils/helpers";
+import {DataGrid, GridActionsCellItem} from "@mui/x-data-grid";
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import moment from "moment/moment";
 
 const PromptsPage = () => {
 	const {data = [], error, isLoading, mutate} = useSWR('/cos/prompts', () => getPrompts());
@@ -61,51 +67,53 @@ const PromptsPage = () => {
 		setEditedContent('');
 	};
 
+	const columns = [
+		{field: 'title', headerName: 'Title', flex: 3},
+		{field: 'updated', headerName: 'Last update', flex: 1},
+		{
+			flex: 1,
+			field: 'view',
+			type: 'actions',
+			headerName: 'Click to View',
+			getActions: (params) => [
+				<GridActionsCellItem
+					icon={<RemoveRedEyeIcon sx={{color: colors.orange}}/>}
+					label='Action'
+					onClick={(event) => {
+						console.log({params});
+						event.stopPropagation(); // Предотвращаем выделение строки
+						const prompt = data.response?.find(prompt => prompt.id === params.id);
+						setSelected(prompt);
+					}}
+				/>
+			],
+		}
+	];
+
+	const rows = data.response.map((a, index) => ({
+		id: a.id,
+		title: a?.Name,
+		updated: moment(a.created).format('YYYY-MM-DD'),
+	}));
+
 	return (
 		<Container
 			sx={{
 				position: 'relative'
 			}}
 		>
-			<nav aria-label='main mailbox folders'>
-				<List
-					sx={{
-						// backgroundColor: colors.background,
-						borderRadius: '1rem',
-						height: '100%'
-					}}
-				>
-					{data.response
-						.sort((a, b) => a.Title.localeCompare(b.Title))
-						.map((prompt, index) => (
-							<Box key={prompt.Name + index}>
-								<ListItem
-									disablePadding
-								>
-									<ListItemButton
-										sx={localStyles}
-										selected={prompt.id === selected?.id}
-										onClick={() => setSelected(prompt)}
-									>
-										<ListItemText
-											primary={prompt.Title}
-											sx={{
-												'& .MuiListItemText-primary': {
-													fontSize: '1.5rem',
-													color: 'inherit', // Задайте нужный цвет
-												}
-											}}
-										/>
-									</ListItemButton>
-								</ListItem>
-								<Divider
-									color={colors.darkGrey42}
-									variant={'middle'}
-								/>
-							</Box>
-						))}
-				</List>
-			</nav>
+			<PageHeader header={'System Prompts'}/>
+			<DataGrid
+				disableColumnFilter
+				rows={rows}
+				columns={columns}
+				initialState={{pagination: {paginationModel}}}
+				pageSizeOptions={[10, 20]}
+				rowHeight={75}
+				disableColumnSelector
+				disableRowSelectionOnClick
+				disableMultipleRowSelection
+			/>
 			<Drawer
 				anchor={'right'}
 				open={!!selected}
@@ -156,7 +164,7 @@ const PromptsPage = () => {
 					>
 						<Typography
 							variant={'h3'}
-							sx={{color: colors.mainGreen, textAlign: 'center'}}
+							sx={{color: colors.mainGreen, textAlign: 'center', marginTop: '1rem'}}
 						>
 							{selected?.Title}
 						</Typography>
