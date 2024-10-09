@@ -4,37 +4,42 @@ const dataGrid = {
 	styleOverrides: {
 		root: {
 			backgroundColor: colors.background,
-			borderRadius: '1.5rem',
+			// borderRadius: '1.5rem',
 			border: 'none',
 			'& .MuiDataGrid-columnHeaders': {
 				backgroundColor: colors.background,
-				color: colors.white,
-				fontSize: '1.3rem',
-				fontWeight: 700,
+				// color: colors.white,
+				// fontSize: '1.3rem',
+				// fontWeight: 700,
 			},
 			'& .MuiDataGrid-columnHeader': {
-				backgroundColor: colors.orange,
+				backgroundColor: colors.background,
 				color: colors.white,
-				fontSize: '1.2rem',
+				fontSize: '1.8rem',
 				fontWeight: 700,
+				letterSpacing: 2,
+				fontFamily : 'Bebas Neue'
 			},
 			'& .MuiDataGrid-cell': {
-				borderBottom: `1px solid ${colors.grey3}`,
+				borderTop: `none`,
+				// borderBottom: `1px solid ${colors.darkGrey42}`,
 				color: colors.white,
 				whiteSpace: 'normal',
 				wordWrap: 'break-word',
 
-				fontSize: '1.1rem',
-				fontWeight: 500,
+				fontSize: '1rem',
+				fontWeight: '400',
 				'&:focus': {
 					outline: 'none', // Убираем стандартный фокус
 					border: `2px solid ${colors.orange}`, // Устанавливаем нужный цвет бордера
 				},
 			},
-			'& .MuiDataGrid-container--top':{
-				backgroundColor: colors.mainGreen,
+			'& .MuiDataGrid-container--top': {
+				// backgroundColor: colors.mainGreen,
 			},
 			'& .MuiDataGrid-row': {
+				borderBottom: `1px solid ${colors.darkGrey42}`,
+				borderTop: `none`,
 
 				'&:hover': {
 					backgroundColor: `${colors.grey3}30`,
@@ -63,12 +68,29 @@ const dataGrid = {
 			},
 			'& .MuiTablePagination-selectLabel, & .MuiTablePagination-displayedRows': {
 				color: colors.mainGreen,
+				marginBottom: 0
 			},
 			'& .MuiTablePagination-select': {
 				color: colors.orange,
 			},
 			'& .MuiTablePagination-actions': {
 				color: colors.mainGreen,
+			},
+			'& .MuiDataGrid-columnHeaderTitleContainer': {
+				// color: '#f50057', // Цвет текста заголовков
+			},
+			'& .MuiDataGrid-sortIcon': {
+				color: colors.orange, // Цвет иконки сортировки
+			},
+			'& .MuiDataGrid-menuIconButton': {
+				color: colors.orange, // Цвет иконки меню
+			},
+			'& .MuiDataGrid-filterIcon': {
+				color: colors.orange, // Цвет иконки фильтра
+			},
+			'& .MuiDataGrid-footerContainer': {
+				minHeight: '75px',
+				alignItems: 'center',// Устанавливаем минимальную высоту футера
 			},
 		},
 	},

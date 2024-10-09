@@ -16,6 +16,7 @@ import PageHeader from "../components/PageHeader";
 import {toast} from "react-toastify";
 import FullPageLoader from "../components/FullPageLoader";
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import {paginationModel} from "../utils/helpers";
 
 export const localStyles = {
 	alignItems: "center", // Вместо alignVertical
@@ -177,7 +178,6 @@ const ArticlesPage = () => {
 		created: moment(a.created).format('YYYY-MM-DD'),
 	}));
 
-	const paginationModel = {page: 0, pageSize: 10};
 
 	const MENU_DATA = [
 		{title: 'Edit', icon: DriveFileRenameOutlineIcon, fn: editHandler},
@@ -202,6 +202,8 @@ const ArticlesPage = () => {
 				>Delete selected</Button>}
 			</Box>
 			<DataGrid
+				disableColumnFilter
+				rowSelectionModel={listArticlesToDelete}
 				rows={rows}
 				columns={columns}
 				initialState={{pagination: {paginationModel}}}
@@ -215,46 +217,6 @@ const ArticlesPage = () => {
 					handleSelectionChange(newSelection);
 				}}
 			/>
-			{/*<ArticlesList {...{articles, listArticlesToDelete, setListArticleToDelete, setSelected}}/>*/}
-			{/*	<nav aria-label='main mailbox folders'>*/}
-			{/*		<List*/}
-			{/*			sx={{*/}
-			{/*				// backgroundColor: colors.background,*/}
-			{/*				borderRadius: '1rem',*/}
-			{/*				height: '100%'*/}
-			{/*			}}*/}
-			{/*		>*/}
-			{/*			{articles.sort((a, b) => {*/}
-			{/*				return moment(a.created) - moment(b.created);*/}
-			{/*			}).map((article, index) => (*/}
-			{/*				<Box key={article.title + index}>*/}
-			{/*			<ListItem*/}
-			{/*				disablePadding*/}
-			{/*			>*/}
-			{/*				<ListItemButton*/}
-			{/*					sx={localStyles}*/}
-			{/*					selected={article.id === selected?.id}*/}
-			{/*					onClick={() => setSelected(article)}*/}
-			{/*				>*/}
-			{/*					<ListItemText*/}
-			{/*						primary={article.title}*/}
-			{/*						sx={{*/}
-			{/*							'& .MuiListItemText-primary': {*/}
-			{/*								fontSize: '1.5rem',*/}
-			{/*								color: 'inherit', // Задайте нужный цвет*/}
-			{/*							}*/}
-			{/*						}}*/}
-			{/*					/>*/}
-			{/*				</ListItemButton>*/}
-			{/*			</ListItem>*/}
-			{/*			<Divider*/}
-			{/*				color={colors.darkGrey42}*/}
-			{/*				variant={'middle'}*/}
-			{/*			/>*/}
-			{/*		</Box>*/}
-			{/*		))}*/}
-			{/*	</List>*/}
-			{/*</nav>*/}
 			<Drawer
 				anchor={'right'}
 				open={!!selected}

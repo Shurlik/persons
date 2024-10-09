@@ -12,7 +12,7 @@ const AssistantSelector = ({value, onChange}) => {
 			}}
 		>
 			<Typography
-				variant={'h6'}
+				variant={'span'}
 				sx={{
 					color: colors.white,
 				}}

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import useSWR from "swr";
-import {deleteUser, getUsers} from "../services/airtable";
-import {Box, Container} from "@mui/material";
+import {deleteArticle, deleteUser, getUsers} from "../services/airtable";
+import {Box, Button, Container} from "@mui/material";
 import PageHeader from "../components/PageHeader";
 import {colors} from "../assets/styles/colors";
 import Loader from "../components/Loader";
@@ -19,6 +19,8 @@ const UsersPage = () => {
 	const openModalHandler = () => {
 		setModalOpen(true);
 	};
+
+	const [usersToDelete, setUsersToDelete] = useState([]);
 
 	const handleDeleteUser = async (id) => {
 		if (window.confirm("Are you sure you want to delete this person?")) {
@@ -38,6 +40,29 @@ const UsersPage = () => {
 		}
 	};
 
+	const groupDeleteHandler = async () => {
+		if (!usersToDelete?.length) {
+			return;
+		}
+		if (window.confirm("Are you sure you want to delete this Articles?")) {
+			setLoading(true);
+			try {
+				for (const p of usersToDelete) {
+					await deleteUser(p);
+				}
+				await mutate();
+				toast.success('Deleted successfully!');
+				setUsersToDelete([]);
+				setLoading(false);
+			} catch (e) {
+				toast.error('Something goes wrong');
+				console.log('User del error: ', e);
+			} finally {
+				setLoading(false);
+			}
+		}
+	};
+
 	return (
 		<Container>
 			<Box
@@ -48,6 +73,11 @@ const UsersPage = () => {
 				}}
 			>
 				<PageHeader header={'Manage Users'}/>
+				{usersToDelete.length > 0 && <Button
+					variant={'contained'}
+					color={'primary'}
+					onClick={groupDeleteHandler}
+				>Delete selected</Button>}
 				<Box
 					onClick={openModalHandler}
 					sx={{
@@ -77,6 +107,7 @@ const UsersPage = () => {
 					disabled={loading}
 					users={data?.response}
 					handleDeleteUser={handleDeleteUser}
+					{...{usersToDelete, setUsersToDelete}}
 				/>}
 			</Box>
 			{loading && <Box
