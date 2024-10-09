@@ -2,24 +2,19 @@ import React, {useState} from "react";
 import {Box, Button, Checkbox, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {colors} from "../assets/styles/colors";
-import officeGirl from "../assets/images/cartoon-office-girl.png";
 import DropMenu from "./DropMenu";
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import DownloadIcon from '@mui/icons-material/Download';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
-import officeBoy from "../assets/images/cartoon-office-boy.png";
-import {LINK} from "../services/variables";
-import {useNavigate} from "react-router-dom";
-import { DataGrid } from '@mui/x-data-grid';
 
 const ArticlesList = ({
-	                     articles,
-	                     handleDeleteArticle,
-	                     listArticlesToDelete,
-	                     setListArticleToDelete,
-	                     disabled,
+	                      articles,
+	                      handleDeleteArticle,
+	                      listArticlesToDelete,
+	                      setListArticleToDelete,
+	                      disabled,
 	                      setSelected
-                     }) => {
+                      }) => {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const [id, setId] = useState(null);
 	const open = Boolean(anchorEl);
@@ -90,7 +85,8 @@ const ArticlesList = ({
 			>
 				<TableHead>
 					<TableRow>
-						<TableCell padding={'checkbox'}
+						<TableCell
+							padding={'checkbox'}
 							sx={{borderBottom: `1px solid ${colors.grey3}`}}
 						> <Checkbox
 							disabled={disabled}
@@ -125,7 +121,7 @@ const ArticlesList = ({
 						<TableRow
 							key={article.id}
 						>
-							<TableCell  padding={'checkbox'}>
+							<TableCell padding={'checkbox'}>
 								<Checkbox
 									disabled={disabled}
 									sx={{
@@ -141,9 +137,8 @@ const ArticlesList = ({
 							<TableCell
 								// onClick={() => userDetailsHandler(user.id)}
 							>
-									<Box>{article?.title}</Box>
+								<Box>{article?.title}</Box>
 							</TableCell>
-
 
 
 							<TableCell>

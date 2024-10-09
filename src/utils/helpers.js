@@ -17,3 +17,5 @@ export function smoothOutput(text, onData) {
 		outputNextChunk();
 	});
 }
+
+export const paginationModel = {page: 0, pageSize: 10};

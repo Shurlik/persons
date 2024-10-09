@@ -19,15 +19,15 @@ const FormattedTextDisplay = ({children, custom, ref}) => {
 				components={{
 					h1: ({node, ...props}) => <Typography
 						variant='h2' {...props}
-						sx={{margin: 0, color: colors.black, fontSize: '1.7rem'}}
+						sx={{margin: 0, color: colors.black, fontSize: '1.7rem', fontFamily: 'Rajdhani'}}
 					/>,
 					h2: ({node, ...props}) => <Typography
 						variant='h3' {...props}
-						sx={{margin: 0, color: colors.black, fontSize: '1.5rem'}}
+						sx={{margin: 0, color: colors.black, fontSize: '1.5rem', fontFamily: 'Rajdhani'}}
 					/>,
 					h3: ({node, ...props}) => <Typography
 						variant='h4' {...props}
-						sx={{margin: 0, color: colors.black, fontSize: '1.4rem'}}
+						sx={{margin: 0, color: colors.black, fontSize: '1.4rem', fontFamily: 'Rajdhani'}}
 					/>,
 					p: ({node, ...props}) => <Typography
 						variant='body1' {...props}
