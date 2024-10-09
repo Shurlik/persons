@@ -1,23 +1,14 @@
 import { Box, List, ListItem, Typography, Collapse } from "@mui/material";
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { colors } from "../../assets/styles/colors";
-import { ArticlesIcon, IdeasIcon, NewsIcon, Podcast, ShortformIcon, StepsIcon, YoutubeIcon } from "../Icons";
+import { ArticlesIcon} from "../Icons";
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { contentItems } from "../../services/routesList";
 
-export const ContentMarketingSection = () => {
+export const ContentMarketingSection = ({ toggleSidebar }) => {
   const [isOpen, setIsOpen] = useState(true);
   const location = useLocation();
-
-  const contentItems = [
-    { name: 'Editorial Plan', link: '/', icon: <StepsIcon />, disabled: true },
-    { name: 'Ideas', link: '/', icon: <IdeasIcon />, disabled: true },
-    { name: 'Articles', link: '/articles', icon: <ArticlesIcon />, disabled: false },
-    { name: 'Shortform Posts', link: '/', icon: <ShortformIcon />, disabled: true },
-    { name: 'Podcast', link: '/', icon: <Podcast />, disabled: true },
-    { name: 'YouTube', link: '/', icon: <YoutubeIcon />, disabled: true },
-    { name: 'Newsletter', link: '/', icon: <NewsIcon />, disabled: true },
-  ];
 
   const handleToggle = () => {
     setIsOpen((prevOpen) => !prevOpen);
@@ -59,6 +50,7 @@ export const ContentMarketingSection = () => {
 
             return (
               <Link
+                onClick={toggleSidebar}
                 key={item.name}
                 to={item.link}
                 style={{

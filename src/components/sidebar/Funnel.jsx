@@ -1,31 +1,14 @@
 import { Link, useLocation } from 'react-router-dom';
-import { AdsIcon, Email, FacebookIcon, GoogleIcon, InstIcon, LandingIcon, LeadIcon, LinkedInIcon, StrategyIcon, XIcon } from '../Icons';
+import { AdsIcon } from '../Icons';
 import { Box, Collapse, List, ListItem, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { colors } from "../../assets/styles/colors";
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import { funnelItems } from '../../services/routesList';
 
-export const FunnelSection = () => {
+export const FunnelSection = ({ toggleSidebar }) => {
   const [openItems, setOpenItems] = useState({ Funnel: true });
   const location = useLocation();
-
-  const funnelItems = [
-    { name: 'Strategy', link: '/', icon: <StrategyIcon />, disabled: true },
-    {
-      name: 'Ads',
-      icon: <AdsIcon />,
-      subItems: [
-        { name: 'Facebook', link: '/', icon: <FacebookIcon />, disabled: true },
-        { name: 'Google', link: '/', icon: <GoogleIcon />, disabled: true },
-        { name: 'Instagram', link: '/', icon: <InstIcon />, disabled: true },
-        { name: 'LinkedIn', link: '/', icon: <LinkedInIcon />, disabled: true },
-        { name: 'X', link: '/', icon: <XIcon />, disabled: true },
-      ],
-    },
-    { name: 'Lead Magnet', link: '/lead-magnet', icon: <LeadIcon />, disabled: true },
-    { name: 'E-Mail Sequence', link: '/email-sequence', icon: <Email />, disabled: true },
-    { name: 'Landing Pages', link: '/landing-pages', icon: <LandingIcon />, disabled: true },
-  ];
 
   const handleToggle = (itemName) => {
     setOpenItems((prevOpenItems) => ({
@@ -71,19 +54,18 @@ export const FunnelSection = () => {
                     borderRadius: '4px',
                     padding: '8px 12px',
                     cursor: 'pointer',
-                    backgroundColor: colors.mainGreen,
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
                   }}
                 >
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', color: colors.white }}>
                     {item.icon}
-                    <Typography sx={{ fontWeight: '700', marginLeft: '8px', fontSize: '14px', color: colors.black }}>
+                    <Typography sx={{ fontWeight: '700', marginLeft: '8px', fontSize: '14px', color: colors.white }}>
                       {item.name}
                     </Typography>
                   </Box>
-                  {openItems[item.name] ? <ExpandLess sx={{ color: colors.black }} /> : <ExpandMore sx={{ color: colors.black }} />}
+                  {openItems[item.name] ? <ExpandLess sx={{ color: colors.white }} /> : <ExpandMore sx={{ color: colors.white }} />}
                 </Box>
                 <Collapse in={openItems[item.name]} timeout="auto" unmountOnExit>
                   <List component="div" sx={{ paddingLeft: '16px', backgroundColor: colors.greybg, borderRadius: '4px' }}>
@@ -93,6 +75,7 @@ export const FunnelSection = () => {
 
                       return (
                         <Link
+                          onClick={toggleSidebar}
                           key={subItem.name}
                           to={subItem.link}
                           style={{
@@ -134,6 +117,7 @@ export const FunnelSection = () => {
               </React.Fragment>
             ) : (
               <Link
+                onClick={toggleSidebar}
                 key={`${index}-${item.name}`}
                 to={item.link}
                 style={{

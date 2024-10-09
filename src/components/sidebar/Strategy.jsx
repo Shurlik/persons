@@ -1,20 +1,14 @@
 import { Box, List, ListItem, Typography, Collapse } from "@mui/material";
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { colors } from "../../assets/styles/colors";
-import { AIIcon, GoalsIcon, KpiIcon, StepsIcon, StrategyIcon } from "../Icons";
+import { StrategyIcon } from "../Icons";
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { strategyItems } from "../../services/routesList";
 
-export const StrategySection = () => {
+export const StrategySection = ({ toggleSidebar }) => {
   const [isOpen, setIsOpen] = useState(true);
   const location = useLocation();
-
-  const strategyItems = [
-    { name: '9 Steps', link: '#', icon: <StepsIcon />, disabled: true },
-    { name: 'Goals', link: '#', icon: <GoalsIcon />, disabled: true },
-    { name: 'KPI’s', link: '#', icon: <KpiIcon />, disabled: true },
-    { name: 'AI Assistant', link: '#', icon: <AIIcon />, disabled: true },
-  ];
 
   const handleToggle = () => {
     setIsOpen((prevOpen) => !prevOpen);
@@ -52,6 +46,7 @@ export const StrategySection = () => {
 
             return (
               <Link
+                onClick={toggleSidebar}
                 key={item.name}
                 to={item.link}
                 style={{

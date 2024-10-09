@@ -1,38 +1,32 @@
-import { AdsClick, AutoGraph, AutoMode, ExpandLess, ExpandMore, PersonOutlined, SubjectOutlined } from "@mui/icons-material";
-import { BrandIcon, StepsIcon } from "../Icons";
+import { ExpandLess, ExpandMore, Highlight } from "@mui/icons-material";
 import { Box, Collapse, List, ListItem, Typography } from "@mui/material";
 import { Link, useLocation } from 'react-router-dom';
-import React from "react";
+import React, { useState } from "react";
 import { colors } from "../../assets/styles/colors";
+import { brandItems } from "../../services/routesList";
 
-export const BrandSection = ({ openItems, handleClick }) => {
+export const BrandSection = ({ toggleSidebar }) => {
   const location = useLocation();
+  const [openItems, setOpenItems] = useState({});
 
-  const brandItems = [
-    {
-      name: 'Persona',
-      icon: <PersonOutlined style={{ fontSize: '16px' }} />,
-      subItems: [
-        { name: 'Step by Step', link: '/', icon: <AutoMode style={{ fontSize: '15px' }} />, disabled: true },
-        { name: '1 Click Generation', link: '/', icon: <AdsClick style={{ fontSize: '15px' }} />, disabled: true },
-        { name: 'Analyzer', link: '/', icon: <StepsIcon />, disabled: true },
-      ],
-    },
-    {
-      name: 'Brand',
-      icon: <BrandIcon />,
-      subItems: [
-        { name: 'Guidelines', link: '/', icon: <SubjectOutlined style={{ fontSize: '15px' }} />, disabled: true },
-        { name: 'Analyzer', link: '/', icon: <AutoGraph style={{ fontSize: '15px' }} />, disabled: true },
-      ],
-    },
-  ];
+  const handleClick = (title) => {
+    setOpenItems((prevState) => ({
+      ...prevState,
+      [title]: !prevState[title],
+    }));
+  };
 
   const isActive = (path) => location.pathname === path;
 
   return (
     <Box sx={{ paddingBottom: '120px', width: '100%' }}>
-      <Typography sx={{ color: colors.white, marginBottom: '8px', mt: '10px', fontWeight: 'bold', borderTop: `1px solid ${colors.darkGrayMain}`, paddingTop: '16px' }}>
+      <Typography sx={{
+        color: colors.black, marginBottom: '8px', mt: '10px', fontWeight: 'bold', borderTop: `1px solid ${colors.darkGrayMain}`, paddingTop: '16px', backgroundColor: colors.mainGreen, borderRadius: '4px',
+        padding: '8px 12px',
+        cursor: 'pointer',
+        width: 'calc(100% - 24px)',
+      }}>
+        <Highlight sx={{ fontSize: '15px', marginRight: '8px' }} />
         Brand
       </Typography>
       {brandItems.map((item) => (
@@ -44,8 +38,7 @@ export const BrandSection = ({ openItems, handleClick }) => {
               padding: '8px 12px',
               cursor: 'pointer',
               width: 'calc(100% - 24px)',
-              color: colors.black,
-              backgroundColor: colors.mainGreen,
+              color: colors.white,
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
@@ -68,6 +61,7 @@ export const BrandSection = ({ openItems, handleClick }) => {
 
                 return (
                   <Link
+                    onClick={toggleSidebar}
                     key={subItem.name}
                     to={subItem.link}
                     style={{
