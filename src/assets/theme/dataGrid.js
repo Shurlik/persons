@@ -15,10 +15,10 @@ const dataGrid = {
 			'& .MuiDataGrid-columnHeader': {
 				backgroundColor: colors.background,
 				color: colors.white,
-				fontSize: '1.8rem',
+				fontSize: '1.4rem',
 				fontWeight: 700,
-				letterSpacing: 2,
-				fontFamily : 'Bebas Neue'
+				letterSpacing: 2.5,
+				fontFamily : 'Bebas Neue',
 			},
 			'& .MuiDataGrid-cell': {
 				borderTop: `none`,
