@@ -1,21 +1,13 @@
 import { Box, List, ListItem, Typography, Collapse } from "@mui/material";
 import { ExpandLess, ExpandMore, TrendingUp } from '@mui/icons-material';
 import { colors } from "../../assets/styles/colors";
-import { CampaignIcon, Presentation, Sales } from "../Icons";
-import { Phone } from "@mui/icons-material";
 import React, { useState } from 'react';
 import { Link, useLocation } from "react-router-dom";
+import { salesItems } from "../../services/routesList";
 
-export const SalesSection = () => {
+export const SalesSection = ({toggleSidebar}) => {
   const [isOpen, setIsOpen] = useState(true);
   const location = useLocation();
-
-  const salesItems = [
-    { name: 'Campaigns', link: '/', icon: <CampaignIcon />, disabled: true },
-    { name: 'Sales Letter', link: '/', icon: <Sales />, disabled: true },
-    { name: 'Sales Presentations', link: '/', icon: <Presentation />, disabled: true },
-    { name: 'Discovery Calls', link: '/', icon: <Phone style={{ fontSize: '15px' }} />, disabled: true },
-  ];
 
   const handleToggle = () => {
     setIsOpen((prevOpen) => !prevOpen);
@@ -57,6 +49,7 @@ export const SalesSection = () => {
 
             return (
               <Link
+                onClick={toggleSidebar}
                 key={item.name}
                 to={item.link}
                 style={{

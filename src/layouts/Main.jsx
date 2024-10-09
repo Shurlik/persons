@@ -6,10 +6,15 @@ import Sidebar from '../components/sidebar/Sidebar';
 import { colors } from '../assets/styles/colors';
 
 const MainLayout = () => {
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [isSidebarPinned, setSidebarPinned] = useState(false);
 
   const toggleSidebar = () => {
     setSidebarOpen((prevState) => !prevState);
+  };
+
+  const toggleSidebarPin = () => {
+    setSidebarPinned((prevState) => !prevState);
   };
 
   return (
@@ -33,14 +38,21 @@ const MainLayout = () => {
         {/* Sidebar */}
         <Box
           sx={{
-            width: isSidebarOpen ? '300px' : '60px',
-            minWidth: isSidebarOpen ? '300px': '60px',
-            transition: 'width 0.3s',
+            width: isSidebarOpen ? (isSidebarPinned ? '300px' : '60px') : '0px',
+            minWidth: isSidebarOpen ? (isSidebarPinned ? '300px' : '60px') : '0px',
+            transition: 'width 0.9s',
             overflowY: 'auto',
             height: 'calc(100vh - 86px)',
+            position: isSidebarPinned ? 'relative' : 'absolute', 
+            zIndex: isSidebarPinned ? '1' : '10',
           }}
         >
-          <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+          <Sidebar 
+            isOpen={isSidebarOpen} 
+            toggleSidebar={toggleSidebar} 
+            toggleSidebarPin={toggleSidebarPin} 
+            isPinned={isSidebarPinned} 
+          />
         </Box>
 
         {/* Main content area */}
@@ -49,10 +61,10 @@ const MainLayout = () => {
             flexGrow: 1,
             overflow: 'auto',
             backgroundColor: colors.backgroundMain,
-            paddingLeft: isSidebarOpen ? '24px' : '8px',
+            paddingLeft: isSidebarOpen ? (isSidebarPinned ? '24px' : '60px') : '60px',
             transition: 'padding-left 0.3s',
             paddingBottom: '120px',
-            width:'100%'
+            width: '100%',
           }}
         >
           <Outlet />
