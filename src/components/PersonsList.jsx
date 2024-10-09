@@ -1,15 +1,17 @@
 import React, {useState} from "react";
-import {Box, Button, Checkbox, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
+import {Box, Button} from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {colors} from "../assets/styles/colors";
-import officeGirl from "../assets/images/cartoon-office-girl.png";
 import DropMenu from "./DropMenu";
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import DownloadIcon from '@mui/icons-material/Download';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
-import officeBoy from "../assets/images/cartoon-office-boy.png";
 import {LINK} from "../services/variables";
 import {useNavigate} from "react-router-dom";
+import {DataGrid, GridActionsCellItem} from "@mui/x-data-grid";
+import {paginationModel} from "../utils/helpers";
+import officeGirl from '../assets/images/cartoon-office-girl.png';
+import officeBoy from '../assets/images/cartoon-office-boy.png';
 
 const simulateDownloadClick = (url) => {
 	const link = document.createElement('a');
@@ -46,25 +48,13 @@ const PersonsList = ({
 		setAnchorEl(event.currentTarget);
 		setId(id);
 	};
+
 	const handleClose = () => {
 		setAnchorEl(null);
 		setId(null);
 	};
 
-	const onSelectChange = (checked, userId) => {
-		if (checked) {
-			listPersonsToDelete.push(userId);
-			setListPersonsToDelete([...listPersonsToDelete]);
-		} else {
-			const filtered = listPersonsToDelete.filter(p => {
-				return p !== userId;
-			});
-			setListPersonsToDelete([...filtered]);
-		}
-	};
-
 	const editHandler = () => {
-		// handleEditPerson(id);
 		navigate(`/persons/${id}`, {
 			state: {
 				edit: true
@@ -77,9 +67,10 @@ const PersonsList = ({
 		simulateDownloadClick(downloadUrl);
 		handleClose();
 	};
+
 	const deleteHandler = () => {
-		setAnchorEl(null);
 		handleDeletePerson(id);
+		setAnchorEl(null);
 		setId(null);
 	};
 
@@ -93,135 +84,106 @@ const PersonsList = ({
 		{title: 'Delete', icon: DeleteOutlinedIcon, fn: deleteHandler, color: colors.red},
 	];
 
-	const checkAllHandler = () => {
-		persons.forEach(p => listPersonsToDelete.push(p.id));
-		setListPersonsToDelete([...listPersonsToDelete]);
+	const data = persons.map(p => ({
+		id: p.id,
+		name: p.fields['Name'],
+		age: p.fields['Age'],
+		location: p.fields['Country'],
+		owner: p.user.name,
+		image: p.fields['User Image']?.length > 0 ? p.fields['User Image'][0]?.url : p.fields['Gender'] === 'Female' ? officeGirl : officeBoy
+	}));
+
+	const columns = [
+		{
+			field: 'image', headerName: 'Image', flex: 2,
+			headerAlign: 'center',
+			renderCell: (params) => {
+				return <Box
+					sx={{
+						display: 'flex',
+						justifyContent: 'center',
+						alignItems: 'center',
+						width: '100%',
+						height: '100%'
+					}}
+				>
+					<Box
+						sx={{
+							overflow: 'hidden',
+							borderRadius: '50%',
+							backgroundColor: colors.silver,
+							width: '3.5rem',
+							height: '3.5rem',
+						}}
+					>
+						<Box
+							component={'img'}
+							alt={'logo'}
+							src={params.value}
+							sx={{width: '100%', height: '100%', objectFit: 'cover', filter: 'grayscale(100%)',}}
+						/>
+					</Box>
+				</Box>;
+			}
+		},
+		{field: 'name', headerName: 'Name', flex: 2},
+		{field: 'age', headerName: 'Age', flex: 1, type: 'number'},
+		{field: 'location', headerName: 'Location', flex: 3},
+		{field: 'owner', headerName: 'Owner', flex: 2},
+		{
+			field: 'action', headerName: 'Actions', flex: 2,
+			type: 'actions',
+			renderCell: (params) =>( <Button
+				disabled={disabled}
+				onClick={() => detailHandler(params.id)}
+				variant={'outlined'}
+				color={'secondary'}
+			>View details
+			</Button>)
+		},
+		{
+			field: 'button', headerName: '', flex: 1,
+			type: 'actions',
+			getActions: (params) => [
+				<GridActionsCellItem
+					icon={<MoreVertIcon sx={{color: colors.orange}}/>}
+					label='Action'
+					onClick={(event) => handleClick(event, params.id)}
+				/>
+			],
+		},
+	];
+
+	const rows = data?.map(u => ({
+		id: u.id,
+		name: u.name,
+		age: u.age,
+		location: u.location,
+		owner: u.owner,
+		image: u.image
+	}));
+
+	const handleSelectionChange = (data) => {
+		setListPersonsToDelete([...data]);
 	};
-
-	const clearAllHandler = () => {
-		setListPersonsToDelete([]);
-	};
-
-
-	const onMainSelectChange = (event) => {
-		event.target.checked ? checkAllHandler() : clearAllHandler();
-	};
-
 
 	return (
-		<TableContainer
-			sx={{backgroundColor: colors.background, borderRadius: '1.5rem', padding: '2rem'}}
-		>
-			<Table
-				aria-label='simple table'
-			>
-				<TableHead>
-					<TableRow>
-						<TableCell
-							sx={{borderBottom: `1px solid ${colors.grey3}`}}
-						> <Checkbox
-							disabled={disabled}
-							sx={{
-								color: colors.white,
-								'&.Mui-checked': {
-									color: colors.white,
-								},
-							}}
-							// checked={true}
-							checked={!!listPersonsToDelete.length}
-
-							onChange={onMainSelectChange}
-						/></TableCell>
-						<TableCell
-							sx={{borderBottom: `1px solid ${colors.grey3}`}}
-						>Name</TableCell>
-						<TableCell
-							sx={{borderBottom: `1px solid ${colors.grey3}`}}
-						>Age</TableCell>
-						<TableCell
-							sx={{borderBottom: `1px solid ${colors.grey3}`}}
-						>Location</TableCell>
-						<TableCell
-							sx={{borderBottom: `1px solid ${colors.grey3}`}}
-						>Action</TableCell>
-						<TableCell
-							sx={{borderBottom: `1px solid ${colors.grey3}`}}
-						></TableCell>
-					</TableRow>
-				</TableHead>
-				<TableBody>
-					{/*=======*/}
-					{persons.map((user) => (
-						<TableRow
-							key={user.id}
-						>
-							<TableCell>
-								<Checkbox
-									disabled={disabled}
-									sx={{
-										color: colors.white,
-										'&.Mui-checked': {
-											color: colors.white,
-										},
-									}}
-									checked={listPersonsToDelete.includes(user.id)}
-									onChange={(event) => onSelectChange(event.target.checked, user.id)}
-								/>
-							</TableCell>
-							<TableCell
-								// onClick={() => userDetailsHandler(user.id)}
-							>
-								<Box
-									sx={{
-										display: 'flex',
-										gap: '.5rem',
-										alignItems: 'center'
-									}}
-								>
-									<Box
-										sx={{
-											overflow: 'hidden',
-											borderRadius: '50%',
-											backgroundColor: colors.silver,
-											width: '1.8rem',
-											height: '1.8rem',
-											display: 'flex',
-											justifyContent: 'center',
-											alignItems: 'center',
-										}}
-									>
-										<Box
-											component={'img'}
-											alt={'logo'}
-											src={user.fields['User Image']?.length > 0 ? user.fields['User Image'][0]?.url : user.fields['Gender'] === 'Female' ? officeGirl : officeBoy}
-											sx={{width: '100%', height: '100%', objectFit: 'cover', filter: 'grayscale(100%)',}}
-										/>
-									</Box>{user?.fields.Name}</Box></TableCell>
-							<TableCell
-							>{user?.fields.Age}</TableCell>
-							<TableCell>{user?.fields.Country}</TableCell>
-							<TableCell>
-								<Button
-									disabled={disabled}
-									onClick={() => detailHandler(user.id)}
-									variant={'outlined'}
-									color={'secondary'}
-								>View details
-								</Button>
-							</TableCell>
-							<TableCell>
-								<MoreVertIcon
-									disabled={disabled}
-									onClick={(event) => handleClick(event, user.id)}
-									sx={{
-										cursor: 'pointer'
-									}}
-								/></TableCell>
-
-						</TableRow>
-					))}
-				</TableBody>
-			</Table>
+		<Box sx={{width: '100%'}}>
+			<DataGrid
+				disableColumnFilter
+				rowSelectionModel={listPersonsToDelete}
+				rows={rows}
+				columns={columns}
+				initialState={{pagination: {paginationModel}}}
+				pageSizeOptions={[10, 20]}
+				checkboxSelection
+				rowHeight={75}
+				disableColumnSelector
+				disableRowSelectionOnClick
+				onRowSelectionModelChange={(newSelection) => {
+					handleSelectionChange(newSelection);
+				}}
+			/>
 			<DropMenu
 				disabled={disabled}
 				onClose={handleClose}
@@ -229,7 +191,7 @@ const PersonsList = ({
 				data={MENU_DATA}
 				anchorEl={anchorEl}
 			/>
-		</TableContainer>
+		</Box>
 	);
 };
 
