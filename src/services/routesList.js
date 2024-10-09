@@ -3,13 +3,14 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import DynamicFormIcon from '@mui/icons-material/DynamicForm';
 import { Phone, AdsClick, AutoGraph, AutoMode, PersonOutlined, SubjectOutlined } from "@mui/icons-material";
 import { CampaignIcon, Presentation, Sales, BrandIcon, ArticlesIcon, IdeasIcon, NewsIcon, Podcast, ShortformIcon, StepsIcon, YoutubeIcon, Email, FacebookIcon, GoogleIcon, InstIcon, LandingIcon, LeadIcon, LinkedInIcon, StrategyIcon, XIcon, AIIcon, GoalsIcon, KpiIcon, } from "../components/Icons";
+import FormatIndentIncreaseIcon from '@mui/icons-material/FormatIndentIncrease';
 
 import { TrackChanges } from '@mui/icons-material';
 export default [
 	// {name: 'Home', href: '/persons', icon: PeopleAltIcon},
-	{name: 'Create Persona', href: '/create', icon: PersonAddIcon},
-	{name: 'Management', href: '/management', icon: ManageAccountsIcon},
-	{name: 'Forms', href: '/forms', icon: DynamicFormIcon},
+	// {name: 'Create Persona', href: '/create', icon: PersonAddIcon},
+	// {name: 'Management', href: '/management', icon: ManageAccountsIcon},
+	// {name: 'Forms', href: '/forms', icon: DynamicFormIcon},
 	// {name: 'Articles', href: '/articles', icon: NewspaperIcon},
 ];
 
@@ -21,6 +22,7 @@ export const brandItems = [
 			{ name: 'Step by Step', link: '/', icon: <AutoMode style={{ fontSize: '15px' }} />, disabled: true },
 			{ name: '1 Click Generation', link: '/', icon: <AdsClick style={{ fontSize: '15px' }} />, disabled: true },
 			{ name: 'Analyzer', link: '/', icon: <StepsIcon />, disabled: true },
+			{ name: 'Management', link: '/management', icon: <ManageAccountsIcon sx={{fontSize: '15px'}} />, disabled: false },
 		],
 	},
 	{
@@ -36,11 +38,18 @@ export const brandItems = [
 export const contentItems = [
 	{ name: 'Editorial Plan', link: '/', icon: <StepsIcon />, disabled: true },
 	{ name: 'Ideas', link: '/', icon: <IdeasIcon />, disabled: true },
-	{ name: 'Articles', link: '/articles', icon: <ArticlesIcon />, disabled: false },
-	{ name: 'Shortform Posts', link: '/', icon: <ShortformIcon />, disabled: true },
+	{ name: 'Create Articles', link: '/forms', icon: <ArticlesIcon />, disabled: false },
+	{ name: 'Shor-form Posts', link: '/', icon: <ShortformIcon />, disabled: true },
 	{ name: 'Podcast', link: '/', icon: <Podcast />, disabled: true },
 	{ name: 'YouTube', link: '/', icon: <YoutubeIcon />, disabled: true },
-	{ name: 'Newsletter', link: '/', icon: <NewsIcon />, disabled: true },
+	{name: 'Newsletter', link: '/', icon: <NewsIcon/>, disabled: true},
+	{
+		name: 'Depot', link: '/articles', icon: <FormatIndentIncreaseIcon
+			sx={{
+				width: '18px', height: '18px'
+			}}
+		/>, disabled: false
+	},
 ];
 
 export const funnelItems = [
