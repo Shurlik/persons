@@ -1,12 +1,12 @@
 import { Box, List, ListItem, Typography, Collapse } from "@mui/material";
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { colors } from "../../assets/styles/colors";
-import { ArticlesIcon} from "../Icons";
+import { ArticlesIcon } from "../Icons";
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { contentItems } from "../../services/routesList";
 
-export const ContentMarketingSection = ({ toggleSidebar }) => {
+export const ContentMarketingSection = ({ toggleSidebar, isPinned }) => {
   const [isOpen, setIsOpen] = useState(true);
   const location = useLocation();
 
@@ -50,7 +50,7 @@ export const ContentMarketingSection = ({ toggleSidebar }) => {
 
             return (
               <Link
-                onClick={toggleSidebar}
+                onClick={!isPinned && toggleSidebar}
                 key={item.name}
                 to={item.link}
                 style={{

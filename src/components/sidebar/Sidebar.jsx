@@ -1,5 +1,5 @@
-import React, {  useRef } from 'react';
-import { Box, Button, Drawer } from '@mui/material';
+import React, { useRef } from 'react';
+import { Box, Button, Drawer, IconButton } from '@mui/material';
 import { colors } from '../../assets/styles/colors';
 import { SalesSection } from './SalesSection';
 import { ContentMarketingSection } from './ContentMarketingSection';
@@ -41,7 +41,7 @@ const Sidebar = ({ isOpen, toggleSidebar, toggleSidebarPin, isPinned }) => {
         sx={{
           width: isOpen ? drawerWidth : collapsedWidth,
           flexShrink: 0,
-          transition: 'width 0.3s',
+          transition: 'width 0.5s ease',
           '& .MuiDrawer-paper': {
             width: isOpen ? drawerWidth : collapsedWidth,
             top: '86px',
@@ -52,6 +52,7 @@ const Sidebar = ({ isOpen, toggleSidebar, toggleSidebarPin, isPinned }) => {
               display: 'none',
             },
             borderRight: `1px solid ${colors.darkGrey42} !important`,
+            transition: 'width 0.5s ease',
           },
         }}
         ref={sidebarRef}
@@ -70,62 +71,70 @@ const Sidebar = ({ isOpen, toggleSidebar, toggleSidebarPin, isPinned }) => {
             position: 'relative',
           }}
         >
-          <Box sx={{ display: 'flex' }}>
-            <Button
-              onClick={toggleSidebar}
-              sx={{
-                backgroundColor: isOpen ? colors.greyhover : 'transparent',
-                color: colors.white,
-                padding: '8px',
-                borderRadius: '8px',
-                maxHeight: '40px',
-                mt: '8px',
-                width: isOpen ? '160px' : '60px',
-                mr: isOpen ? '10px' : '0px',
-                display: 'flex',
-                alignItems: 'center',
-                transition: 'background-color 0.3s, border-radius 0.3s, padding 0.3s',
-                '&:hover': {
-                  backgroundColor: isOpen ? colors.orangeDark : colors.greyhover,
-                },
-              }}
-            >
-              {isOpen ? (
-                <ArrowBack sx={{ marginLeft: 'auto' }} />
-              ) : (
-                <MenuIcon />
-              )}
-            </Button>
+          <Button
+            onClick={toggleSidebar}
+            sx={{
+              backgroundColor: 'transparent',
+              color: colors.white,
+              padding: '8px',
+              borderRadius: '8px',
+              maxHeight: '40px',
+              mt: '8px',
+              width: isOpen ? '160px' : '60px',
+              mr: isOpen ? '10px' : '0px',
+              display: isOpen ? 'none' : 'flex',
+              alignItems: 'center',
+              transition: 'background-color 0.3s, border-radius 0.3s, padding 0.3s',
+              '&:hover': {
+                backgroundColor: isOpen ? colors.orangeDark : colors.greyhover,
+              },
+            }}
+          >
+            {isOpen ? (
+              <ArrowBack sx={{ marginLeft: 'auto' }} />
+            ) : (
+              <MenuIcon />
+            )}
+          </Button>
 
-            <Button
-              onClick={toggleSidebarPin}
-              sx={{
-                backgroundColor: colors.greyhover,
-                color: colors.white,
-                padding: '8px',
-                borderRadius: '8px',
-                display: isOpen ? 'flex' : 'none',
-                alignItems: 'center',
-                marginTop: '8px',
-                transition: 'background-color 0.3s',
-                '&:hover': {
-                  backgroundColor: colors.orangeDark,
-                },
-              }}
-            >
-              {isPinned ? <PushPinIcon /> : <PushPinOutlinedIcon />}
-            </Button>
+          <IconButton
+            onClick={toggleSidebarPin}
+            sx={{
+              backgroundColor: 'transparent',
+              color: colors.white,
+              padding: '5px',
+              borderRadius: '8px',
+              display: isOpen ? 'flex' : 'none',
+              alignItems: 'center',
+              marginTop: '8px',
+              marginLeft: 'auto',
+              transition: 'background-color 0.3s',
+              '&:hover': {
+                backgroundColor: colors.orangeDark,
+              },
+            }}
+          >
+            {isPinned ? <PushPinIcon /> : <PushPinOutlinedIcon />}
+          </IconButton>
+
+          <Box
+            sx={{
+              transition: 'opacity 2s ease',
+              opacity: isOpen ? 1 : 0,
+              pointerEvents: isOpen ? 'auto' : 'none',
+              width: '250px'
+            }}
+          >
+            {isOpen && (
+              <>
+                <StrategySection toggleSidebar={toggleSidebar} isPinned={isPinned} />
+                <FunnelSection toggleSidebar={toggleSidebar} isPinned={isPinned}/>
+                <SalesSection toggleSidebar={toggleSidebar}  isPinned={isPinned}/>
+                <ContentMarketingSection toggleSidebar={toggleSidebar} isPinned={isPinned}/>
+                <BrandSection toggleSidebar={toggleSidebar} isPinned={isPinned}/>
+              </>
+            )}
           </Box>
-
-          {isOpen && (
-            <>
-              <StrategySection toggleSidebar={toggleSidebar} />
-              <FunnelSection toggleSidebar={toggleSidebar} />
-              <SalesSection toggleSidebar={toggleSidebar} />
-              <ContentMarketingSection toggleSidebar={toggleSidebar} />
-              <BrandSection toggleSidebar={toggleSidebar} />
-            </>
-          )}
         </Box>
       </Drawer>
     </Box>
