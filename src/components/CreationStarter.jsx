@@ -123,7 +123,6 @@ const CreationStarter = ({onFinish, setShowStart}) => {
 		>
 			<Box
 				sx={{
-					backgroundColor: colors.background,
 					display: 'flex',
 					justifyContent: 'center',
 					// alignItems: 'center',
@@ -163,7 +162,8 @@ const CreationStarter = ({onFinish, setShowStart}) => {
 									height: '100%',
 									display: 'flex',
 									justifyContent: 'center',
-									alignItems: 'center'
+									alignItems: 'center',
+									backgroundColor: colors.black
 								}}
 							>
 								{previewUrl ? <Box
@@ -198,7 +198,6 @@ const CreationStarter = ({onFinish, setShowStart}) => {
 							>Choose a file or drag & drop it here</Typography>
 							<Typography
 								sx={{
-									color: colors.grayC4,
 									fontSize: '.7rem',
 									marginTop: '.5rem'
 								}}

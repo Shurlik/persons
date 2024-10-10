@@ -15,13 +15,13 @@ export const customSelect = {
 	styleOverrides: {
 		select: {
 			borderBottomWidth: 1,
-			backgroundColor: colors.white,
+			backgroundColor: colors.whiteGrey,
 			borderRadius: '.5rem',
-			color: colors.black,
+			color: colors.blackPermanet,
 			// padding: '.8rem .3rem',
 			'&:focus': {
 				borderBottomWidth: 0,
-				backgroundColor: colors.white,
+				backgroundColor: colors.whiteGrey,
 			},
 			'&:before': { borderBottom: 'none' },
 			'&:after': { borderBottom: 'none' },
@@ -37,9 +37,9 @@ export const customSelect = {
 			'&:hover .MuiOutlinedInput-notchedOutline': {
 				// border: 'none',
 			},
-			'&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-				border: `1px solid ${colors.orange50},`
-			},
+			// '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+			// border: `1px solid ${colors.orange50},`
+			// },
 		},
 	},
 };
@@ -47,15 +47,16 @@ export const customSelect = {
 export const customSelectItem = {
 	styleOverrides: {
 		root: {
-			backgroundColor: colors.white,
-			color: colors.black,
+			backgroundColor: colors.whiteGrey,
+			color: colors.blackPermanet,
 			'&:hover': {
-				backgroundColor: colors.white,
+				backgroundColor: colors.whiteGrey,
 				color: colors.orange
 			},
 			'&.Mui-selected': {
-				backgroundColor: colors.white,
+				backgroundColor: colors.silver,
 				color: colors.orange,
+				borderRadius:'4px',
 				'&:hover': {
 					backgroundColor: colors.silver,
 				},
@@ -67,7 +68,7 @@ export const customSelectItem = {
 export const customSelectMenu = {
 	styleOverrides: {
 		paper: {
-			backgroundColor: colors.white,
+			backgroundColor: colors.whiteGrey,
 			borderRadius: '.5rem',
 			border: 'none',
 			boxShadow: '0px 5px 5px -3px rgba(0,0,0,0.2), 0px 8px 10px 1px rgba(0,0,0,0.14), 0px 3px 14px 2px rgba(0,0,0,0.12)',

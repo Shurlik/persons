@@ -3,7 +3,7 @@ import {colors} from "../styles/colors";
 export const inputOutlinedStyles = {
 	styleOverrides: {
 		root: {
-			backgroundColor: colors.white,
+			backgroundColor: colors.whiteGrey,
 			padding: '16px',
 			borderRadius: '8px',
 			'& .MuiOutlinedInput-notchedOutline': {
@@ -20,8 +20,9 @@ export const inputOutlinedStyles = {
 			},
 		},
 		input: {
-			color: colors.black,
+			color: colors.blackPermanet,
 			padding: 0,
+			fontSize: '16px',
 			'&::placeholder': {
 				color: colors.darkGrayMain, // Принудительно применяем тёмный цвет
 			},

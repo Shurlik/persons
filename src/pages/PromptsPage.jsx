@@ -179,7 +179,7 @@ const PromptsPage = () => {
 									sx={{
 										marginTop: '2rem',
 										'& .MuiInputBase-input': {
-											color: colors.black,
+											color: colors.blackPermanet,
 										},
 										'& .MuiOutlinedInput-root': {
 											'& fieldset': {

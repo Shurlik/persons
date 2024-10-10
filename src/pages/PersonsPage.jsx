@@ -198,7 +198,7 @@ const Persons = () => {
 					ref={resultBoxRef}
 					sx={{
 						marginTop: '3rem',
-						backgroundColor: colors.white,
+						backgroundColor: colors.whitePermanet,
 						maxHeight: '20rem',
 						minHeight: '2rem',
 						borderRadius: '12px',

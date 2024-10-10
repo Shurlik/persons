@@ -100,7 +100,6 @@ const PersonDetailTextSection = ({ title, subtitles, content, isEditing, onChang
 									sx={{
 										marginTop: '0.5rem',
 										width: '50%',
-										backgroundColor: colors.background,
 										// color: '#ffffff',
 										border: `1px solid ${colors.gray40}`,
 										borderRadius: '8px',

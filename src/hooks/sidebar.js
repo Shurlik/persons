@@ -6,14 +6,13 @@ const useSidebar = () => {
   });
 
   const [isSidebarOpen, setSidebarOpen] = useState(() => {
-    const isPinned = JSON.parse(localStorage.getItem('isSidebarPinned'));
-    return isPinned || false;
+    return JSON.parse(localStorage.getItem('isSidebarOpen')) || false;
   });
 
   const toggleSidebar = () => {
     setSidebarOpen((prevState) => {
       const newState = !prevState;
-      localStorage.setItem('isSidebarOpen', JSON.stringify(newState)); 
+      localStorage.setItem('isSidebarOpen', JSON.stringify(newState));
       return newState;
     });
   };

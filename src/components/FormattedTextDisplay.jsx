@@ -33,11 +33,11 @@ const FormattedTextDisplay = ({children, custom}) => {
 					/>,
 					p: ({node, ...props}) => <Typography
 						variant='body1' {...props}
-						sx={{color: custom ? custom : colors.black, margin: 0}}
+						sx={{color: custom ? custom : colors.blackPermanet, margin: 0}}
 					/>,
 					li: ({node, ...props}) => <Typography
 						variant='body1' {...props}
-						sx={{color: custom ? custom : colors.black, margin: 0,}}
+						sx={{color: custom ? custom : colors.blackPermanet, margin: 0,}}
 					/>,
 					strong: ({node, ...props}) => <strong style={{color: colors.orange, padding: 0, margin: 0}} {...props} />,
 					em: ({node, ...props}) => <em style={{color: colors.orange}} {...props} />,
