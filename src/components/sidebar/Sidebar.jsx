@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Box, Button, Drawer, IconButton } from '@mui/material';
 import { colors } from '../../assets/styles/colors';
 import { SalesSection } from './SalesSection';
@@ -17,19 +17,36 @@ const collapsedWidth = 60;
 const Sidebar = ({ isOpen, toggleSidebar, toggleSidebarPin, isPinned }) => {
   const sidebarRef = useRef(null);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target) &&
+        isOpen &&
+        !isPinned
+      ) {
+        toggleSidebar();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen, isPinned, toggleSidebar]);
+
   return (
     <Box sx={{ display: 'flex' }}>
       {/* Overlay */}
       {isOpen && !isPinned && (
         <Box
-          onClick={toggleSidebar}
           sx={{
             position: 'fixed',
             top: 0,
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            backgroundColor: 'rgba(0, 0, 0, 0.4)',
             zIndex: 1,
           }}
         />
@@ -41,7 +58,8 @@ const Sidebar = ({ isOpen, toggleSidebar, toggleSidebarPin, isPinned }) => {
         sx={{
           width: isOpen ? drawerWidth : collapsedWidth,
           flexShrink: 0,
-          transition: 'width 0.5s ease',
+          transition: 'width 0.3s ease',
+          zIndex: 2,
           '& .MuiDrawer-paper': {
             width: isOpen ? drawerWidth : collapsedWidth,
             top: '86px',
@@ -52,7 +70,8 @@ const Sidebar = ({ isOpen, toggleSidebar, toggleSidebarPin, isPinned }) => {
               display: 'none',
             },
             borderRight: `1px solid ${colors.darkGrey42} !important`,
-            transition: 'width 0.5s ease',
+            transition: 'width 0.3s ease',
+            boxShadow: '7px 0px 31px 5px rgb(0 0 0 / 5%)',
           },
         }}
         ref={sidebarRef}
@@ -119,7 +138,7 @@ const Sidebar = ({ isOpen, toggleSidebar, toggleSidebarPin, isPinned }) => {
 
           <Box
             sx={{
-              transition: 'opacity 2s ease',
+              transition: 'opacity 0.5s ease',
               opacity: isOpen ? 1 : 0,
               pointerEvents: isOpen ? 'auto' : 'none',
               width: '250px'

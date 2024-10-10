@@ -30,7 +30,9 @@ const PersonCard = ({person, isSelected, onSelectChange}) => {
 	};
 
 	return (
-		<Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+		<Box sx={{
+			display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: `0px 4px 12px 0px ${colors.boxShadowLight}`,borderRadius:'25px',
+		}}>
 			<Box
 				onMouseEnter={handleMouseEnter}
 				onMouseLeave={handleMouseLeave}

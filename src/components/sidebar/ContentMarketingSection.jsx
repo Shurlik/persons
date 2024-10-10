@@ -69,7 +69,7 @@ export const ContentMarketingSection = ({ toggleSidebar, isPinned }) => {
                     color: isLinkActive ? colors.orange : isDisabled ? colors.grey : 'inherit',
                     '&:hover': {
                       backgroundColor: isDisabled ? 'transparent' : colors.greyhover,
-                      color: isDisabled ? colors.grey : colors.white,
+                      color: isDisabled ? colors.grey : colors.orange,
                     },
                     opacity: isDisabled ? 0.5 : 1,
                     padding: '8px 12px',

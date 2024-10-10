@@ -65,9 +65,9 @@ export const funnelItems = [
 			{ name: 'X', link: '/', icon: <XIcon />, disabled: true },
 		],
 	},
-	{ name: 'Lead Magnet', link: '/lead-magnet', icon: <LeadIcon />, disabled: true },
-	{ name: 'E-Mail Sequence', link: '/email-sequence', icon: <Email />, disabled: true },
-	{ name: 'Landing Pages', link: '/landing-pages', icon: <LandingIcon />, disabled: true },
+	{ name: 'Lead Magnet', link: '/', icon: <LeadIcon />, disabled: true },
+	{ name: 'E-Mail Sequence', link: '/', icon: <Email />, disabled: true },
+	{ name: 'Landing Pages', link: '/', icon: <LandingIcon />, disabled: true },
 ];
 
 export const salesItems = [

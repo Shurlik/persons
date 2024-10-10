@@ -3,9 +3,10 @@ import {Box} from "@mui/material";
 import NavigationLinks from "./NavigationLinks";
 import DialogLogout from "./DialogLogout";
 import authService from "../services/auth";
-import {useNavigate} from "react-router-dom";
-import Logo from "../assets/images/kivi-logo.png";
+import { useNavigate } from "react-router-dom";
 import UserMenuItem from "./UserMenuItem";
+import { LogoIcon } from './Icons';
+import { ThemeSwitcher } from './ThemeSwitcher';
 
 const Navigation = () => {
 
@@ -25,7 +26,8 @@ const Navigation = () => {
 				display: 'flex',
 				alignItems: 'center',
 				justifyContent: 'space-between',
-				maxWidth: '100rem'
+				maxWidth: '100rem',
+				boxShadow: '7px 0px 31px 5px rgb(0 0 0 / 5%)',
 			}}
 		>
 			<Box
@@ -34,20 +36,20 @@ const Navigation = () => {
 					cursor: 'pointer'
 				}}
 			>
-				<Box
-					component={'img'}
-					alt={'logo'}
-					src={Logo}
-					sx={{maxWidth: '6rem'}}
-				/>
+				<LogoIcon />
 			</Box>
-			<NavigationLinks/>
-			<UserMenuItem onLogout={() => setModalOpen(true)}/>
-			<DialogLogout
-				onSubmit={logoutHandler}
-				onClose={() => setModalOpen(false)}
-				isOpen={modalOpen}
-			/>
+			<NavigationLinks />
+			<Box sx={{ display: 'flex' }}>
+				<ThemeSwitcher />
+				<Box>
+					<UserMenuItem onLogout={() => setModalOpen(true)} />
+					<DialogLogout
+						onSubmit={logoutHandler}
+						onClose={() => setModalOpen(false)}
+						isOpen={modalOpen}
+					/>
+				</Box>
+			</Box>
 		</Box>
 	);
 };
