@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 export const ThemeSwitcher = () => {
   const [theme, setTheme] = useState(() => {
     const savedTheme = localStorage.getItem('theme');
-    return savedTheme ? savedTheme : 'light';
+    return savedTheme ? savedTheme : 'dark';
   });
 
   const toggleTheme = () => {
