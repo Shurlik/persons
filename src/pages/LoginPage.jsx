@@ -1,4 +1,3 @@
-// src/components/Login.js
 import React, {useEffect, useRef, useState} from 'react';
 import gsap from 'gsap';
 import {useAuth} from '../contexts/AuthContext';
@@ -6,18 +5,27 @@ import {useNavigate} from 'react-router-dom';
 import {Box, Button, Typography} from "@mui/material";
 import LoginIcon from '@mui/icons-material/Login';
 import DialogLogin from "../components/DialogLogin";
-import {colors} from "../assets/styles/colors";
-import Logo from "../assets/images/kivi-logo.png";
-import {TextPlugin} from "gsap/TextPlugin"
+import { colors } from "../assets/styles/colors";
+import { TextPlugin } from "gsap/TextPlugin"
+import { LogoIconXL } from '../components/Icons';
 
 const LoginPage = () => {
-	const {login} = useAuth();
+	const { login } = useAuth();
 	const navigate = useNavigate();
 	const [showLogin, setShowLogin] = useState(false);
 	const textRef = useRef(null);
 	const textRef2 = useRef(null);
 	const titleRef = useRef(null);
 	const textUnderRef = useRef(null);
+
+	const [theme, setTheme] = useState(() => {
+    const savedTheme = localStorage.getItem('theme');
+    return savedTheme ? savedTheme : 'dark';
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
 
 	const handleSubmit = async (username, password) => {
 		try {
@@ -88,13 +96,7 @@ const LoginPage = () => {
 			>
 				Welcome to
 			</Typography>
-			<Box
-				ref={titleRef}
-				component={'img'}
-				alt={'logo'}
-				src={Logo}
-				sx={{maxWidth: '30rem'}}
-			/>
+			<LogoIconXL />
 			<Typography
 				id={'texttest'}
 				ref={textUnderRef}
