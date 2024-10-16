@@ -34,7 +34,8 @@ const BlogPostForm = ({person, selectedValues, setResearch, setSteps, setAirId, 
 			"Secondary Keyword": data.secondaryKeyword,
 			"Primary Keyword": data.primaryKeyword,
 			"Writing Brand Voice": 'Friendly',
-			"Persona data": aboutUser
+			"Persona data": aboutUser,
+			"personId": person.id
 		};
 
 		if (!newForm['Blogpost Template Prompts'].length) {
@@ -50,8 +51,6 @@ const BlogPostForm = ({person, selectedValues, setResearch, setSteps, setAirId, 
 				return;
 			}
 		}
-
-		console.log({newForm});
 
 		try {
 			// const res = await startResearch({data: newForm});

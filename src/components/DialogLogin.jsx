@@ -31,7 +31,6 @@ const DialogLogin = ({onSubmit, onClose, isOpen}) => {
 				toast.error('Please enter a valid login and password');
 				return;
 			}
-			console.log(username, password);
 			await onSubmit(username, password);
 		} catch (e) {
 			console.log('error: ', e);
