@@ -80,7 +80,6 @@ const PromptsPage = () => {
 					icon={<RemoveRedEyeIcon sx={{color: colors.orange}}/>}
 					label='Action'
 					onClick={(event) => {
-						console.log({params});
 						event.stopPropagation(); // Предотвращаем выделение строки
 						const prompt = data.response?.find(prompt => prompt.id === params.id);
 						setSelected(prompt);
