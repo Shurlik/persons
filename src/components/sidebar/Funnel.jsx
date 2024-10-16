@@ -1,12 +1,11 @@
 import { Link, useLocation } from 'react-router-dom';
-import { AdsIcon } from '../Icons';
 import { Box, Collapse, List, ListItem, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { colors } from "../../assets/styles/colors";
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import { ExpandLess, ExpandMore, ZoomOutMap } from '@mui/icons-material';
 import { funnelItems } from '../../services/routesList';
 
-export const FunnelSection = ({ toggleSidebar }) => {
+export const FunnelSection = ({ toggleSidebar, isPinned }) => {
   const [openItems, setOpenItems] = useState({ Funnel: true });
   const location = useLocation();
 
@@ -35,7 +34,7 @@ export const FunnelSection = ({ toggleSidebar }) => {
         }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <AdsIcon />
+          <ZoomOutMap sx={{fontSize:'15px', color:colors.black}}/>
           <Typography sx={{ fontWeight: '700', marginLeft: '8px', fontSize: '14px', color: colors.black }}>
             Funnel
           </Typography>
@@ -75,7 +74,7 @@ export const FunnelSection = ({ toggleSidebar }) => {
 
                       return (
                         <Link
-                          onClick={toggleSidebar}
+                          onClick={!isPinned && toggleSidebar}
                           key={subItem.name}
                           to={subItem.link}
                           style={{

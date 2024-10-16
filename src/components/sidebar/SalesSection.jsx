@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { Link, useLocation } from "react-router-dom";
 import { salesItems } from "../../services/routesList";
 
-export const SalesSection = ({toggleSidebar}) => {
+export const SalesSection = ({ toggleSidebar, isPinned }) => {
   const [isOpen, setIsOpen] = useState(true);
   const location = useLocation();
 
@@ -49,7 +49,7 @@ export const SalesSection = ({toggleSidebar}) => {
 
             return (
               <Link
-                onClick={toggleSidebar}
+                onClick={!isPinned && toggleSidebar}
                 key={item.name}
                 to={item.link}
                 style={{

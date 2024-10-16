@@ -36,6 +36,7 @@ const FormattedTextDisplay = ({children, custom, ref}) => {
 					a: ({node, ...props}) => <Typography
 						variant='a' {...props}
 						sx={{color: custom ? custom : colors.orange2, margin: 0}}
+						target='_blank'
 					/>,
 					li: ({node, ...props}) => <Typography
 						variant='body1' {...props}

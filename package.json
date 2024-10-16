@@ -1,7 +1,7 @@
 {
   "name": "persons",
   "homepage": "https://shurlik.github.io/persons/",
-  "version": "0.28.0",
+  "version": "0.30.0",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.13.3",

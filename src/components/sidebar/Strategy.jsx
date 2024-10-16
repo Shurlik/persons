@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { strategyItems } from "../../services/routesList";
 
-export const StrategySection = ({ toggleSidebar }) => {
+export const StrategySection = ({ toggleSidebar, isPinned }) => {
   const [isOpen, setIsOpen] = useState(true);
   const location = useLocation();
 
@@ -46,7 +46,7 @@ export const StrategySection = ({ toggleSidebar }) => {
 
             return (
               <Link
-                onClick={toggleSidebar}
+                onClick={!isPinned && toggleSidebar}
                 key={item.name}
                 to={item.link}
                 style={{

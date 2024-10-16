@@ -24,13 +24,13 @@ export default {
 			},
 		},
 		outlinedPrimary: {
-			color: colors.silver,
+			color: colors.silverLight,
 			border: `1px solid ${colors.mainGreen}`,
 			padding:'.6rem 1.5rem',
 			fontSize: '1rem',
 			fontWeight: 'bold',
 			'&:hover': {
-				backgroundColor: colors.silver,
+				backgroundColor: colors.silverLight,
 				color: colors.black,
 				border: `1px solid ${colors.silver}`,
 			},
