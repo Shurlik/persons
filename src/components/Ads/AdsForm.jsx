@@ -25,8 +25,6 @@ const AdsForm = ({createBenefits, setFormData, loading}) => {
 	const location = useLocation();
 	const ad = location?.state?.ad;
 
-	console.log({ad});
-
 	const {control, handleSubmit, formState: {errors}} = useForm({
 		resolver: yupResolver(schema),
 		defaultValues: {

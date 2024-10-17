@@ -14,7 +14,7 @@ const AdsResult = ({result, setResult, loading, formData, setLoading}) => {
 
 	const saveHandler = async () => {
 		setLoading(true)
-		const data = {content: result, ad: formData.ad, personId: formData.personId};
+		const data = {content: result, ad: formData.ad, personId: formData.personId, name: formData.name};
 		try {
 			await addAds(data);
 			toast.success('Added');
