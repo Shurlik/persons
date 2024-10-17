@@ -22,6 +22,7 @@ const AdsPage = ({ad}) => {
 	const navigate = useNavigate();
 
 	const columns = [
+		{field: 'title', headerName: 'Title', flex: 2},
 		{field: 'content', headerName: 'Content', flex: 2},
 		{
 			flex: 1,
@@ -50,12 +51,13 @@ const AdsPage = ({ad}) => {
 			headerName: 'Updated at',
 			flex: 1
 		},
-		{field: 'person', headerName: 'Person', flex: 1},
+		{field: 'person', headerName: 'Person', flex: 2},
 	];
 
 	const rows = data?.response.map((a, index) => ({
 		id: a.id,
-		content: `${a?.content?.slice(0, 100)}...`,
+		title: a?.title,
+		content: `${a?.content?.slice(0, 20)}...`,
 		updated: moment(a.created).format('YYYY-MM-DD'),
 		created: moment(a.created).format('YYYY-MM-DD'),
 		Ad: a?.ad,
