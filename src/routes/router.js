@@ -15,6 +15,8 @@ import AdminRoute from "./AdminRoute";
 import UsersPage from "../pages/UsersPage";
 import UserProfilePage from "../pages/UserProfilePage";
 import PromptsPage from "../pages/PromptsPage";
+import AdsPage from "../pages/AdsPage";
+import CreateAdsPage from "../pages/CreateAdsPage";
 
 
 const router = createBrowserRouter([
@@ -63,12 +65,32 @@ const router = createBrowserRouter([
 				element: <AdminRoute component={UsersPage}/>
 			},
 			{
-				path: "/users/:id",
-				element: <AdminRoute component={UserProfilePage}/>
+				path: "/ads/facebook",
+				element: <AdsPage ad={'facebook'} />
 			},
 			{
-				path: "/prompts",
-				element: <AdminRoute component={PromptsPage}/>
+				path: "/ads/google",
+				element: <AdsPage ad={'google'} />
+			},
+			{
+				path: "/ads/instagram",
+				element: <AdsPage ad={'instagram'} />
+			},
+			{
+				path: "/ads/linkedin",
+				element: <AdsPage ad={'linkedin'} />
+			},
+			{
+				path: "/ads/x",
+				element: <AdsPage ad={'x'} />
+			},
+			{
+				path: "/ads/pinterest",
+				element: <AdsPage ad={'pinterest'} />
+			},
+			{
+				path: "/ads/create",
+				element: <CreateAdsPage />
 			}
 		]
 	},
