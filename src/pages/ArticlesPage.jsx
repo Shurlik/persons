@@ -1,10 +1,9 @@
 import React, {useState} from 'react';
 import useSWR from "swr";
 import {deleteArticle, getArticles} from "../services/airtable";
-import {Box, Button, Container, Drawer, Typography} from "@mui/material";
+import {Box, Button, Container} from "@mui/material";
 import {colors} from "../assets/styles/colors";
 import Loader from "../components/Loader";
-import FormattedTextDisplayArticle from "../components/FormattedTextDisplayArticle";
 import moment from "moment";
 import {DataGrid, GridActionsCellItem} from "@mui/x-data-grid";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -18,6 +17,8 @@ import FullPageLoader from "../components/FullPageLoader";
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import {paginationModel} from "../utils/helpers";
 import DrawerContentDisplay from "../components/DrawerContentDisplay";
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import {useNavigate} from "react-router-dom";
 
 export const localStyles = {
 	alignItems: "center", // Вместо alignVertical
@@ -40,6 +41,8 @@ export const localStyles = {
 };
 
 const ArticlesPage = () => {
+	const navigate = useNavigate()
+
 	const {data = [], error, isLoading, mutate} = useSWR('/cos/articles', () => getArticles());
 
 	const [listArticlesToDelete, setListArticleToDelete] = useState([]);
@@ -179,10 +182,16 @@ const ArticlesPage = () => {
 		created: moment(a.created).format('YYYY-MM-DD'),
 	}));
 
+	const shortsHandler = () => {
+		navigate('/shorts/create', {
+			state: {articleId: id}
+		})
+	};
 
 	const MENU_DATA = [
-		{title: 'Edit', icon: DriveFileRenameOutlineIcon, fn: editHandler},
-		{title: 'Download', icon: DownloadIcon, fn: downloadHandler},
+		{title: 'Create Shorts', icon: NoteAddIcon, fn: shortsHandler},
+		{title: 'Edit', icon: DriveFileRenameOutlineIcon, fn: editHandler, disabled: true},
+		{title: 'Download', icon: DownloadIcon, fn: downloadHandler, disabled: true},
 		{title: 'Delete', icon: DeleteOutlinedIcon, fn: handleDeleteArticle, color: colors.red},
 	];
 

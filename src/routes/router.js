@@ -17,6 +17,8 @@ import UserProfilePage from "../pages/UserProfilePage";
 import PromptsPage from "../pages/PromptsPage";
 import AdsPage from "../pages/AdsPage";
 import CreateAdsPage from "../pages/CreateAdsPage";
+import CreateShortsPage from "../pages/CreateShortsPage";
+import ShortsPage from "../pages/ShortsPage";
 
 
 const router = createBrowserRouter([
@@ -91,6 +93,14 @@ const router = createBrowserRouter([
 			{
 				path: "/ads/create",
 				element: <CreateAdsPage />
+			},
+			{
+				path: "/shorts/create",
+				element: <CreateShortsPage />
+			},
+			{
+				path: "/shorts",
+				element: <ShortsPage />
 			}
 		]
 	},
