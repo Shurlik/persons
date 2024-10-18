@@ -21,6 +21,7 @@ const DropMenu = ({open, onClose, data, anchorEl, disabled, isAdmin}) => {
 				const Icon = d.icon;
 				const fn = d.fn;
 				return <MenuItem
+					disabled={d?.disabled}
 					sx={{
 						color: colors.white,
 						backgroundColor: colors.backgroundMain,

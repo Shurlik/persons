@@ -4,7 +4,6 @@ import {DataGrid, GridActionsCellItem} from "@mui/x-data-grid";
 import {paginationModel} from "../utils/helpers";
 import moment from "moment/moment";
 import useSWR from "swr";
-import {deleteAd, getAds} from "../services/ads";
 import PageHeader from "../components/PageHeader";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import {colors} from "../assets/styles/colors";
@@ -12,9 +11,10 @@ import DrawerContentDisplay from "../components/DrawerContentDisplay";
 import {toast} from "react-toastify";
 import FullPageLoader from "../components/FullPageLoader";
 import {useNavigate} from "react-router-dom";
+import {deleteShorts, getShorts} from "../services/shorts";
 
-const AdsPage = ({ad}) => {
-	const {data = {response: []}, error, isLoading, mutate} = useSWR(`/ads?ad=${ad}`, () => getAds(ad));
+const ShortsPage = () => {
+	const {data = [], error, isLoading, mutate} = useSWR(`/shorts`, () => getShorts());
 	const [selected, setSelected] = useState(null);
 	const [listToDelete, setListToDelete] = useState([]);
 	const [loading, setLoading] = React.useState(false);
@@ -22,8 +22,8 @@ const AdsPage = ({ad}) => {
 	const navigate = useNavigate();
 
 	const columns = [
-		{field: 'title', headerName: 'Title', flex: 2},
-		{field: 'content', headerName: 'Content', flex: 2},
+		// {field: 'title', headerName: 'Title', flex: 2},
+		{field: 'article', headerName: 'Shorts for Article', flex: 5},
 		{
 			flex: 1,
 			field: 'view',
@@ -35,7 +35,7 @@ const AdsPage = ({ad}) => {
 					label='Action'
 					onClick={(event) => {
 						event.stopPropagation(); // Предотвращаем выделение строки
-						const record = data?.response?.find(d => d.id === params.id);
+						const record = data?.find(d => d.id === params.id);
 						setSelected(record);
 					}}
 				/>
@@ -51,17 +51,13 @@ const AdsPage = ({ad}) => {
 			headerName: 'Updated at',
 			flex: 1
 		},
-		{field: 'person', headerName: 'Person', flex: 2},
 	];
 
-	const rows = data?.response.map((a, index) => ({
+	const rows = data?.map((a, index) => ({
 		id: a.id,
-		title: a?.title,
-		content: `${a?.content?.slice(0, 20)}...`,
+		article: `${a?.articleTitle?.[0]}`,
 		updated: moment(a.created).format('YYYY-MM-DD'),
 		created: moment(a.created).format('YYYY-MM-DD'),
-		Ad: a?.ad,
-		person: a?.person,
 
 	}));
 
@@ -77,7 +73,7 @@ const AdsPage = ({ad}) => {
 			setLoading(true);
 			try {
 				for (const id of listToDelete) {
-					await deleteAd(id);
+					await deleteShorts(id);
 				}
 				await mutate();
 				toast.success('Deleted successfully!');
@@ -92,9 +88,7 @@ const AdsPage = ({ad}) => {
 		}
 	};
 
-	const createHandler = () => navigate('/ads/create', {
-		state: {ad}
-	});
+	const createHandler = () => navigate('/shorts/create');
 
 	return (
 		<Container>
@@ -105,7 +99,7 @@ const AdsPage = ({ad}) => {
 					alignItems: 'center'
 				}}
 			>
-				<PageHeader header={`${ad} Ads`}/>
+				<PageHeader header={`Short-form Posts`}/>
 				{listToDelete.length > 0 && <Button
 					variant={'contained'}
 					color={'primary'}
@@ -115,7 +109,7 @@ const AdsPage = ({ad}) => {
 					variant={'contained'}
 					color={'primary'}
 					onClick={createHandler}
-				>{`Create ${ad} ads`}</Button>
+				>{`Create Short posts`}</Button>
 			</Box>
 			<DataGrid
 				disableColumnFilter
@@ -140,4 +134,4 @@ const AdsPage = ({ad}) => {
 	);
 };
 
-export default AdsPage;
+export default ShortsPage;

@@ -13,7 +13,7 @@ import {useLocation} from "react-router-dom";
 const schema = yup.object().shape({
 	personId: yup.string().required('Persona is required'),
 	ad: yup.string().required('Ads is required'),
-	name: yup.string().required('Name of the lead magnet is required'),
+	title: yup.string().required('Name of the lead magnet is required'),
 	content: yup.string().required('Content is required'),
 	propose: yup.string().required('Core Value Proposition is required'),
 	format: yup.string().required('Format is required'),
@@ -30,7 +30,7 @@ const AdsForm = ({createBenefits, setFormData, loading}) => {
 		defaultValues: {
 			ad: ad || '',
 			model: 'gpt',
-			name: '',
+			title: '',
 			content: '',
 			propose: '',
 			format: '',
@@ -179,7 +179,7 @@ const AdsForm = ({createBenefits, setFormData, loading}) => {
 						Name of the lead magnet*
 					</Typography>
 					<Controller
-						name='name'
+						name='title'
 						control={control}
 						render={({field}) => (
 							<TextField
@@ -187,8 +187,8 @@ const AdsForm = ({createBenefits, setFormData, loading}) => {
 								{...field}
 								variant='outlined'
 								fullWidth
-								error={!!errors.name}
-								helperText={errors.name?.message}
+								error={!!errors.title}
+								helperText={errors.title?.message}
 								sx={{mb: 2}}
 							/>
 						)}
