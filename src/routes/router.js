@@ -63,6 +63,10 @@ const router = createBrowserRouter([
 				element: <ProfilePage/>
 			},
 			{
+				path: "/prompts",
+				element: <PromptsPage/>
+			},
+			{
 				path: "/users",
 				element: <AdminRoute component={UsersPage}/>
 			},
