@@ -2,29 +2,30 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Box, Button, Container} from "@mui/material";
 import OutputsTextField from "../OutputsTextField";
 import ToggleEdit from "../ToggleEdit";
-import {addAds} from "../../services/ads";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
+import {addShorts} from "../../services/shorts";
 
-const AdsResult = ({result, setResult, loading, formData, setLoading}) => {
+const ShortsResult = ({result, setResult, loading, formData, setLoading}) => {
 	const resultBoxRef = useRef(null);
 	const [edit, setEdit] = useState(false);
 
 	const navigate = useNavigate();
 
 	const saveHandler = async () => {
-		setLoading(true)
-		const data = {content: result, ad: formData.ad, personId: formData.personId, name: formData.name};
+		setLoading(true);
+		const tt = [formData.article]
+		const data = {content: result, article: tt};
 		try {
-			await addAds(data);
+			await addShorts(data);
 			toast.success('Added');
-			navigate(`/ads/${formData.ad}`, {replace: true});
-			setLoading(false)
+			navigate(`/shorts`, {replace: true});
+			setLoading(false);
 		} catch (e) {
 			console.log('error: ', e);
-			setLoading(false)
+			setLoading(false);
 		}
-		setLoading(false)
+		setLoading(false);
 	};
 
 	useEffect(() => {
@@ -81,4 +82,4 @@ const AdsResult = ({result, setResult, loading, formData, setLoading}) => {
 		;
 };
 
-export default AdsResult;
+export default ShortsResult;

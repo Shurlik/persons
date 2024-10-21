@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Container} from "@mui/material";
 import AdsForm from "../components/Ads/AdsForm";
-import {getBenefitsStream, getResultStream} from "../services/airtable";
+import {getBenefitsStream, getResultStream} from "../services/ads";
 import {toast} from "react-toastify";
 import AdsBenefits from "../components/Ads/AdsBenefits";
 import FullPageLoader from "../components/FullPageLoader";
@@ -20,8 +20,6 @@ const CreateAdsPage = () => {
 			await getBenefitsStream(data, (chunk) => {
 				setBenefits((prev) => prev + chunk);
 			});
-			// toast.success('Added')
-			// navigate(`/${data.ad}`)
 			setLoading(false)
 		} catch (e) {
 			toast.error('Something goes wrong')
@@ -29,7 +27,6 @@ const CreateAdsPage = () => {
 			setLoading(false)
 		}
 		setLoading(false)
-		console.log(data);
 	}
 
 	const createResult = async (data) => {
@@ -47,9 +44,7 @@ const CreateAdsPage = () => {
 			setLoading(false)
 		}
 		setLoading(false)
-		console.log(data);
 	}
-
 
 	return (
 		<Container>

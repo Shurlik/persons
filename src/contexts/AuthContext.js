@@ -92,7 +92,7 @@ export const AuthProvider = ({ children }) => {
 		const interceptor = api.interceptors.response.use(
 			(response) => response,
 			async (error) => {
-				console.log({error}, 1);
+				console.log({error});
 				if (error.response && error.response.status === 401 && user) {
 					await logout();
 				}

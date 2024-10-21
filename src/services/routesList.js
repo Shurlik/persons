@@ -63,7 +63,7 @@ export const contentItems = [
 	{name: 'Editorial Plan', link: '/', icon: <StepsIcon/>, disabled: true},
 	{name: 'Ideas', link: '/', icon: <IdeasIcon/>, disabled: true},
 	{name: 'Create Articles', link: '/forms', icon: <ArticlesIcon/>, disabled: false},
-	{name: 'Shor-form Posts', link: '/', icon: <ShortformIcon/>, disabled: true},
+	{name: 'Short-form Posts', link: '/shorts', icon: <ShortformIcon/>, disabled: false},
 	{name: 'Podcast', link: '/', icon: <Podcast/>, disabled: true},
 	{name: 'YouTube', link: '/', icon: <YoutubeIcon/>, disabled: true},
 	{name: 'Newsletter', link: '/', icon: <NewsIcon/>, disabled: true},

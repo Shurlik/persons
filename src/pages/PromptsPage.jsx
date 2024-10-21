@@ -25,6 +25,8 @@ import {DataGrid, GridActionsCellItem} from "@mui/x-data-grid";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import moment from "moment/moment";
+import FormattedTextDisplayOutline from "../components/FormattedTextDisplayOutline";
+import FormattedTextDisplayArticle from "../components/FormattedTextDisplayArticle";
 
 const PromptsPage = () => {
 	const {data = [], error, isLoading, mutate} = useSWR('/cos/prompts', () => getPrompts());
@@ -222,6 +224,9 @@ const PromptsPage = () => {
 								>
 									{selected?.Content}
 								</Typography>
+								{/*<FormattedTextDisplayArticle>*/}
+								{/*	{selected?.Content}*/}
+								{/*</FormattedTextDisplayArticle>*/}
 								<Button
 									onClick={handleEdit}
 									sx={{
