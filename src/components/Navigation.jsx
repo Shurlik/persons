@@ -26,8 +26,6 @@ const Navigation = () => {
 				display: 'flex',
 				alignItems: 'center',
 				justifyContent: 'space-between',
-				maxWidth: '100rem',
-				boxShadow: '7px 0px 31px 5px rgb(0 0 0 / 5%)',
 			}}
 		>
 			<Box
