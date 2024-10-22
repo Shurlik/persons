@@ -26,8 +26,6 @@ const CreateAdsPage = () => {
 
 	const createBenefits = async (data) => {
 		setLoading(true)
-
-
 		try {
 			await getBenefitsStream(data, (chunk) => {
 				setBenefits((prev) => prev + chunk);
@@ -102,6 +100,7 @@ const CreateAdsPage = () => {
 					setSelectedValues={setSelectedValues}
 					setSteps={setSteps}
 					steps={steps}
+					formData={formData}
 				/>}
 			</CustomSlide>
 			<CustomSlide

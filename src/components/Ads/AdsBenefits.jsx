@@ -16,7 +16,7 @@ const AdsBenefits = ({benefits, setBenefits, loading, createResult, formData, se
 	const getResultHandler = async () => {
 		setSteps(null);
 		setTimeout(() => setSteps(steps += 1), 350);
-		const starterString = person ? `Name: ${person?.fields?.Name};\nAge: ${person?.fields?.Age};\nGender: ${person?.fields?.Gender};\nPlace of residence: ${person?.fields['Place of residence']};\nJob title: ${person?.fields['Job title']};\n` : "";
+		const starterString = person ? `Name: ${person?.fields?.Name};Age: ${person?.fields?.Age};\nGender: ${person?.fields?.Gender};\nPlace of residence: ${person?.fields['Place of residence']};\nJob title: ${person?.fields['Job title']};\n` : "";
 		const personData = selectedValues.reduce((acc, curr) => acc + `${curr}: ${person?.fields[curr]};\n`, starterString);
 
 		const data = {benefits, personId: person.id, ad: formData.ad, model: formData.model, personData };
