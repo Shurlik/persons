@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Box, Button, TextField, Typography} from "@mui/material";
 import {colors} from "../assets/styles/colors";
 import imageAdd from "../assets/images/imageAdd.png";
-import VisuallyHiddenInput from "./VisuallyHiddenInput";
+import VisuallyHiddenInput from "./services/VisuallyHiddenInput";
 import {loginInputStyles} from "../services/inputStyles";
 import GenderButton from "./GenderButton";
 import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";

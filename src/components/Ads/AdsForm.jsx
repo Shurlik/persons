@@ -1,8 +1,5 @@
 import React from 'react';
 import {Box, Button, FormControl, MenuItem, Select, TextField, Typography} from "@mui/material";
-import Loader from "../Loader";
-import useSWR from "swr";
-import {getAllRecords} from "../../services/airtable";
 import PageHeader from "../PageHeader";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {Controller, useForm} from "react-hook-form";
@@ -11,7 +8,6 @@ import {colors} from "../../assets/styles/colors";
 import {useLocation} from "react-router-dom";
 
 const schema = yup.object().shape({
-	personId: yup.string().required('Persona is required'),
 	ad: yup.string().required('Ads is required'),
 	title: yup.string().required('Name of the lead magnet is required'),
 	content: yup.string().required('Content is required'),
@@ -21,11 +17,11 @@ const schema = yup.object().shape({
 	model: yup.string().required('AI model is required'),
 });
 
-const AdsForm = ({createBenefits, setFormData, loading}) => {
+const AdsForm = ({createBenefits, setFormData, loading, setSteps,steps}) => {
 	const location = useLocation();
 	const ad = location?.state?.ad;
 
-	const {control, handleSubmit, formState: {errors}} = useForm({
+	const {control, reset, handleSubmit, formState: {errors}} = useForm({
 		resolver: yupResolver(schema),
 		defaultValues: {
 			ad: ad || '',
@@ -39,15 +35,15 @@ const AdsForm = ({createBenefits, setFormData, loading}) => {
 		},
 	});
 
-	const {data = [], error, isLoading, mutate} = useSWR('/persons', () => getAllRecords());
+	// const {data = [], error, isLoading, mutate} = useSWR('/persons', () => getAllRecords());
 
+	//
+	// const persons = !isLoading ? data.map((p) => <MenuItem
+	// 	key={p?.id}
+	// 	value={p.id}
+	// >{p?.fields?.Name}</MenuItem>) : <MenuItem value={null}><Loader/></MenuItem>;
 
-	const persons = !isLoading ? data.map((p) => <MenuItem
-		key={p?.id}
-		value={p.id}
-	>{p?.fields?.Name}</MenuItem>) : <MenuItem value={null}><Loader/></MenuItem>;
-
-	const ads = !isLoading ? [
+	const ads = [
 		{name: "Facebook", value: 'facebook'},
 		{name: "Google", value: 'google'},
 		{name: "Instagram", value: 'instagram'},
@@ -57,11 +53,19 @@ const AdsForm = ({createBenefits, setFormData, loading}) => {
 	].map((p) => <MenuItem
 		key={p.name}
 		value={p.value}
-	>{p.name}</MenuItem>) : <MenuItem value={null}><Loader/></MenuItem>;
+	>{p.name}</MenuItem>);
 
 	const onSubmit = async (data) => {
 		setFormData(data);
+		setSteps(null);
+		setTimeout(() => setSteps(steps + 1), 350);
 		await createBenefits(data);
+	};
+
+	const previousStepHandler = () => {
+		reset()
+		setSteps(null);
+		setTimeout(() => setSteps(steps -= 1), 400);
 	};
 
 	return (
@@ -104,36 +108,36 @@ const AdsForm = ({createBenefits, setFormData, loading}) => {
 					gap: '3rem'
 				}}
 			>
-				<Box sx={{width: '100%'}}>
-					<Typography
-						variant='subtitle1'
-						gutterBottom
-					>
-						Select Persona*
-					</Typography>
-					<FormControl
-						fullWidth
-						variant='outlined'
-						sx={{mb: 2}}
-					>
-						<Controller
-							name='personId'
-							control={control}
-							render={({field}) => (
-								<Select
-									disabled={loading} {...field}
-									error={!!errors.personId}
-								>
-									<MenuItem value={``}>
-										<em>None</em>
-									</MenuItem>
-									{persons}
-								</Select>
-							)}
-						/>
-						{errors.personId && <Typography color='error'>{errors.personId.message}</Typography>}
-					</FormControl>
-				</Box>
+				{/*<Box sx={{width: '100%'}}>*/}
+				{/*	<Typography*/}
+				{/*		variant='subtitle1'*/}
+				{/*		gutterBottom*/}
+				{/*	>*/}
+				{/*		Select Persona**/}
+				{/*	</Typography>*/}
+				{/*	<FormControl*/}
+				{/*		fullWidth*/}
+				{/*		variant='outlined'*/}
+				{/*		sx={{mb: 2}}*/}
+				{/*	>*/}
+				{/*		<Controller*/}
+				{/*			name='personId'*/}
+				{/*			control={control}*/}
+				{/*			render={({field}) => (*/}
+				{/*				<Select*/}
+				{/*					disabled={loading} {...field}*/}
+				{/*					error={!!errors.personId}*/}
+				{/*				>*/}
+				{/*					<MenuItem value={``}>*/}
+				{/*						<em>None</em>*/}
+				{/*					</MenuItem>*/}
+				{/*					{persons}*/}
+				{/*				</Select>*/}
+				{/*			)}*/}
+				{/*		/>*/}
+				{/*		{errors.personId && <Typography color='error'>{errors.personId.message}</Typography>}*/}
+				{/*	</FormControl>*/}
+				{/*</Box>*/}
 				<Box sx={{width: '100%'}}>
 					<Typography
 						variant='subtitle1'
@@ -294,6 +298,13 @@ const AdsForm = ({createBenefits, setFormData, loading}) => {
 			>
 				Submit
 			</Button>
+			<Button
+				onClick={previousStepHandler}
+				variant={'outlined'}
+				color={'primary'}
+				sx={{width: '100%', marginTop: '1rem'}}
+				disabled={loading}
+			>Previous step</Button>
 		</Box>
 	);
 };

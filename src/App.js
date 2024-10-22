@@ -10,7 +10,7 @@ import {LocalizationProvider} from '@mui/x-date-pickers';
 import {AdapterMoment} from '@mui/x-date-pickers/AdapterMoment';
 import theme from './assets/theme'
 import {colors} from "./assets/styles/colors";
-import Version from "./components/Version";
+import Version from "./components/services/Version";
 
 
 function App() {

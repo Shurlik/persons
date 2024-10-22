@@ -1,7 +1,7 @@
 import React from 'react';
 import {Box, Drawer, Typography} from "@mui/material";
 import {colors} from "../assets/styles/colors";
-import FormattedTextDisplayArticle from "./FormattedTextDisplayArticle";
+import FormattedTextDisplayArticle from "./services/FormattedTextDisplayArticle";
 
 const DrawerContentDisplay = ({selected, setSelected}) => {
 	return (

@@ -1,12 +1,12 @@
 import React from 'react';
 import {Box, Typography} from "@mui/material";
-import {colors} from "../assets/styles/colors";
+import {colors} from "../../assets/styles/colors";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 
-const ToggleEdit = ({onClick, isEdit}) => {
+const ToggleEdit = ({onClick, isEdit, loading}) => {
 	return (
 		<Box
-			onClick={onClick}
+			onClick={loading ? undefined : onClick}
 			sx={{
 				position: 'absolute',
 				top: '-10px',
