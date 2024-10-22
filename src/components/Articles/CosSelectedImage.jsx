@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import useSWR from "swr";
-import {getContent, updateBlogPostData} from "../services/airtable";
+import {getContent, updateBlogPostData} from "../../services/airtable";
 import {Box, Button, Container} from "@mui/material";
-import {colors} from "../assets/styles/colors";
-import Loader from "./Loader";
-import OutputsTextField from "./OutputsTextField";
-import PageHeader from "./PageHeader";
+import {colors} from "../../assets/styles/colors";
+import Loader from "../Loader";
+import OutputsTextField from "../OutputsTextField";
+import PageHeader from "../PageHeader";
 import axios from "axios";
-import ToggleEdit from "./ToggleEdit";
-import FullPageLoader from "./FullPageLoader";
+import ToggleEdit from "../services/ToggleEdit";
+import FullPageLoader from "../FullPageLoader";
 
 const CosSelectedImage = ({airId, selectedImageId, setSteps, steps, prompt, setPrompt}) => {
 	// const {data = {}, error, isLoading, mutate} = useSWR(`/cos/content/${airId}`, () =>

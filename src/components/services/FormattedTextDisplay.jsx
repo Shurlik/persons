@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import {Box, Typography} from '@mui/material';
-import {colors} from "../assets/styles/colors";
+import {colors} from "../../assets/styles/colors";
 
 const FormattedTextDisplay = ({children, custom}) => {
 	return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Box, FormControl, MenuItem, Select, Typography} from "@mui/material";
-import {colors} from "../assets/styles/colors";
+import {colors} from "../../assets/styles/colors";
 
 const AssistantSelector = ({value, onChange}) => {
 	return (

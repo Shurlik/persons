@@ -8,7 +8,7 @@ import ManagementPage from "../pages/ManagementPage";
 import PrivateRoute from "./PrivateRoute";
 import LoginPage from "../pages/LoginPage";
 import CreatePage from "../pages/CreatePage";
-import FormsPage from "../pages/FormsPage";
+import ArticleCreatePage from "../pages/ArticleCreatePage";
 import ArticlesPage from "../pages/ArticlesPage";
 import ProfilePage from "../pages/ProfilePage";
 import AdminRoute from "./AdminRoute";
@@ -52,7 +52,7 @@ const router = createBrowserRouter([
 			},
 			{
 				path: "/forms",
-				element: <FormsPage/>
+				element: <ArticleCreatePage/>
 			},
 			{
 				path: "/articles",

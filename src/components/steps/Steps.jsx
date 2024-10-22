@@ -1,11 +1,11 @@
 import React from 'react';
 import {Box, Button, Step, StepIcon, StepLabel, Stepper, Typography} from "@mui/material";
-import {colors} from "../assets/styles/colors";
+import {colors} from "../../assets/styles/colors";
 import {styled} from "@mui/material/styles";
 import useSWR from "swr";
-import {getRecordById} from "../services/airtable";
-import personData from "../utils/personData";
-import Loader from "./Loader";
+import {getRecordById} from "../../services/airtable";
+import personData from "../../utils/personData";
+import Loader from "../Loader";
 import {useNavigate} from "react-router-dom";
 import Markdown from 'react-markdown';
 

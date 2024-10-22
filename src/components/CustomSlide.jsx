@@ -1,7 +1,7 @@
 import React from 'react';
 import {Box, Slide} from "@mui/material";
 import {colors} from "../assets/styles/colors";
-import CosImages from "./CosImages";
+import CosImages from "./Articles/CosImages";
 
 const CustomSlide = ({children, condition}) => {
 	return (

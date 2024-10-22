@@ -10,7 +10,7 @@ import Loader from "../Loader";
 import useSWR from "swr";
 import {getArticles} from "../../services/airtable";
 
-const ShortsForm = ({loading, setFormData, createShorts}) => {
+const ShortsForm = ({loading, setFormData, createShorts, steps, setSteps, selectedValues, person}) => {
 	const location = useLocation();
 	const articleId = location?.state?.articleId;
 	const [showOptions, setShowOptions] = useState(false);
@@ -38,7 +38,7 @@ const ShortsForm = ({loading, setFormData, createShorts}) => {
 
 	const actionsList = ['Comment', 'Like and subscribe', 'Get the Lead magnet', 'Learn about an offer'];
 
-	const {control, handleSubmit, formState: {errors}} = useForm({
+	const {control, reset, handleSubmit, formState: {errors}} = useForm({
 		resolver: yupResolver(schema),
 		defaultValues: {
 			textStyle: '',
@@ -63,6 +63,10 @@ const ShortsForm = ({loading, setFormData, createShorts}) => {
 			if (!showOptions) {
 				data.personActionDetails = '';
 			}
+			const starterString = person ? `Name: ${person?.fields?.Name};\nAge: ${person?.fields?.Age};\nGender: ${person?.fields?.Gender};\nPlace of residence: ${person?.fields['Place of residence']};\nJob title: ${person?.fields['Job title']};\n` : "";
+			data.personData = selectedValues.reduce((acc, curr) => acc + `${curr}: ${person?.fields[curr]};\n`, starterString)
+			setSteps(null);
+			setTimeout(() => setSteps(steps += 1), 350);
 			setFormData(data);
 			await createShorts(data);
 		} catch (e) {
@@ -76,7 +80,11 @@ const ShortsForm = ({loading, setFormData, createShorts}) => {
 		value={p}
 	>{p}</MenuItem>);
 
-	// console.log(showOptions);
+	const previousStepHandler = () => {
+		reset()
+		setSteps(null);
+		setTimeout(() => setSteps(steps -= 1), 400);
+	};
 
 	return (
 		<Box
@@ -365,7 +373,10 @@ const ShortsForm = ({loading, setFormData, createShorts}) => {
 			</Box>
 			<Box
 				sx={{
-					padding: '3rem 0'
+					padding: '3rem 0',
+					display: 'flex',
+					flexDirection: 'column',
+					gap: '2rem'
 				}}
 			>
 				<Button
@@ -376,6 +387,15 @@ const ShortsForm = ({loading, setFormData, createShorts}) => {
 					disabled={loading}
 				>
 					Submit
+				</Button>
+				<Button
+					disabled={loading}
+					onClick={previousStepHandler}
+					variant='outlined'
+					color='primary'
+					fullWidth
+				>
+					Return
 				</Button>
 			</Box>
 		</Box>

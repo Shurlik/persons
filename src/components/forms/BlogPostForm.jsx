@@ -3,14 +3,14 @@ import {Controller, useForm} from 'react-hook-form';
 import {Box, Button, Container, FormControl, MenuItem, Select, TextField, Typography,} from '@mui/material';
 import PageHeader from "../PageHeader";
 import useSWR from "swr";
-import {getLists, getResearch, uploadBlogPostData} from "../../services/airtable";
+import {getLists, uploadBlogPostData} from "../../services/airtable";
 import Loader from "../Loader";
 import {toast} from "react-toastify";
 import Grid from '@mui/material/Grid2';
 import {colors} from "../../assets/styles/colors";
-import AssistantSelector from "../AssistantSelector";
+import AssistantSelector from "../services/AssistantSelector";
 
-const BlogPostForm = ({person, selectedValues, setResearch, setSteps, setAirId, steps, provider, setProvider}) => {
+const BlogPostForm = ({person, selectedValues, setResearch, setSteps, setAirId, steps, provider, setProvider, researchStream}) => {
 	const {handleSubmit, control, reset} = useForm();
 	const {data = [], error, isLoading, mutate} = useSWR('/lists', getLists);
 	const [loading, setLoading] = useState(false);
@@ -53,23 +53,18 @@ const BlogPostForm = ({person, selectedValues, setResearch, setSteps, setAirId, 
 		}
 
 		try {
-			// const res = await startResearch({data: newForm});
 			const res = await uploadBlogPostData({data: newForm});
 			setAirId(res.postData.id);
-			// const result = await getResearch(res.postData.id);
-			// const result = await axios(`https://hook.eu2.make.com/4kwge4k6ylha37wca5joxqz19ab4icys?record_id=${res.postData.id}`);
-			// setResearch(result.data);
 			setSteps(null);
 			setTimeout(() => setSteps(steps += 1), 350);
-			// reset();
-			toast.success('Success!');
+			await researchStream(res.postData.id)
+			setLoading(false);
 		} catch (e) {
 			toast.error('Something goes wrong!');
 			console.log('Form adding error: ', e);
 		} finally {
 			setLoading(false);
 		}
-
 	};
 
 	const previousStepHandler = () => {

@@ -1,12 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Box, Button, Container} from "@mui/material";
 import OutputsTextField from "../OutputsTextField";
-import ToggleEdit from "../ToggleEdit";
+import ToggleEdit from "../services/ToggleEdit";
 import {addAds} from "../../services/ads";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 
-const AdsResult = ({result, setResult, loading, formData, setLoading}) => {
+const AdsResult = ({result, setResult, loading, formData, setLoading, steps, setSteps}) => {
 	const resultBoxRef = useRef(null);
 	const [edit, setEdit] = useState(false);
 
@@ -32,6 +32,12 @@ const AdsResult = ({result, setResult, loading, formData, setLoading}) => {
 			resultBoxRef.current.scrollTop = resultBoxRef.current.scrollHeight;
 		}
 	}, [result]);
+
+	const previousStepHandler = () => {
+		setResult('')
+		setSteps(null);
+		setTimeout(() => setSteps(steps - 1), 400);
+	};
 
 	return (
 		<Container sx={{position: 'relative'}}>
@@ -64,7 +70,7 @@ const AdsResult = ({result, setResult, loading, formData, setLoading}) => {
 					Submit
 				</Button>
 				<Button
-					onClick={() => setResult('')}
+					onClick={previousStepHandler}
 					variant='outlined'
 					color='primary'
 					fullWidth
