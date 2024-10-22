@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import {Box, Typography} from '@mui/material';
-import {colors} from "../assets/styles/colors";
+import {colors} from "../../assets/styles/colors";
+import FullPageLoader from "../FullPageLoader";
 
 const FormattedTextDisplay = ({children, custom, ref}) => {
 	return (
@@ -12,7 +13,8 @@ const FormattedTextDisplay = ({children, custom, ref}) => {
 				'& h3': {marginTop: '12px', marginBottom: '8px'},
 				'& hr': {margin: '12px 0', border: 'none', borderTop: `1px solid ${colors.silver}`},
 				height: '100%',
-				overflow: 'auto'
+				overflow: 'auto',
+				position: 'relative',
 			}}
 		>
 			<ReactMarkdown
@@ -48,6 +50,7 @@ const FormattedTextDisplay = ({children, custom, ref}) => {
 			>
 				{children}
 			</ReactMarkdown>
+
 		</Box>
 	);
 };

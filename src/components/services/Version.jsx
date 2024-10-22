@@ -1,8 +1,8 @@
 import React from 'react';
-import packageJson from '../../package.json';
-import {LINK} from '../services/variables';
+import packageJson from '../../../package.json';
+import {LINK} from '../../services/variables';
 import {Box, Typography} from "@mui/material";
-import {colors} from "../assets/styles/colors";
+import {colors} from "../../assets/styles/colors";
 
 const serverType = LINK === 'http://localhost:8080' ? 'Local' : 'Remote';
 

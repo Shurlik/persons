@@ -4,7 +4,7 @@ import {colors} from "../assets/styles/colors";
 import PersonCardHead from "./PersonCardHead";
 import officeGirl from "../assets/images/cartoon-office-girl.png";
 import officeBoy from "../assets/images/cartoon-office-boy.png";
-import FormattedTextDisplay from "./FormattedTextDisplayPersDetails";
+import FormattedTextDisplay from "./services/FormattedTextDisplayPersDetails";
 const ADD_DATA = ['Limbic Types', 'Important Values', 'Pain Points', 'Fears', 'Goals and Dreams', 'Materialistic Gains', 'Emotional Win'];
 
 

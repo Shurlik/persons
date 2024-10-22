@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import {Box, Button, Checkbox, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import {colors} from "../assets/styles/colors";
-import DropMenu from "./DropMenu";
+import {colors} from "../../assets/styles/colors";
+import DropMenu from "../DropMenu";
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import DownloadIcon from '@mui/icons-material/Download';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';

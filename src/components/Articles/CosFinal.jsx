@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import useSWR from "swr";
-import {getContent, updateBlogPostData} from "../services/airtable";
+import {getContent, updateBlogPostData} from "../../services/airtable";
 import {Box, Button, Container, ImageList, ImageListItem} from "@mui/material";
-import {colors} from "../assets/styles/colors";
+import {colors} from "../../assets/styles/colors";
 import {toast} from "react-toastify";
-import Loader from "./Loader";
+import Loader from "../Loader";
 import {useNavigate} from "react-router-dom";
-import PageHeader from "./PageHeader";
-import OutputsTextField from "./OutputsTextField";
+import PageHeader from "../PageHeader";
+import OutputsTextField from "../OutputsTextField";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import ToggleEdit from "./ToggleEdit";
+import ToggleEdit from "../services/ToggleEdit";
 
 const CosFinal = ({airId, selectedImageId, steps, setSteps}) => {
 	const {data = {}, error, isLoading, mutate} = useSWR(`/cos/content/${airId}`, () =>

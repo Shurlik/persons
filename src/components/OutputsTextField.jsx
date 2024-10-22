@@ -1,8 +1,9 @@
 import React, {forwardRef} from 'react';
 import {Box, TextField} from "@mui/material";
 import PageHeader from "./PageHeader";
-import FormattedTextDisplayOutline from "./FormattedTextDisplayOutline";
+import FormattedTextDisplayOutline from "./services/FormattedTextDisplayOutline";
 import {colors} from "../assets/styles/colors";
+import FullPageLoader from "./FullPageLoader";
 
 const OutputsTextField = forwardRef(({value, title, loading, onChange, editable}, ref) => {
 	return (
@@ -24,7 +25,6 @@ const OutputsTextField = forwardRef(({value, title, loading, onChange, editable}
 					multiline
 					rows={25}
 					required
-					// disabled
 					disabled={loading}
 					value={value}
 					onChange={onChange}
@@ -38,12 +38,14 @@ const OutputsTextField = forwardRef(({value, title, loading, onChange, editable}
 						maxHeight: '50vh',
 						minHeight: '300px',
 						border: `1px solid ${colors.orange50}`,
-						overflow: 'auto'
+						overflow: 'auto',
+						position: 'relative'
 					}}
 				>
 					<FormattedTextDisplayOutline>
 						{value}
 					</FormattedTextDisplayOutline>
+					{/*{loading && <FullPageLoader position={'absolute'}/>}*/}
 				</Box>
 			}
 		</Box>

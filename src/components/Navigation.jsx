@@ -6,7 +6,7 @@ import authService from "../services/auth";
 import { useNavigate } from "react-router-dom";
 import UserMenuItem from "./UserMenuItem";
 import { LogoIcon } from './Icons';
-import { ThemeSwitcher } from './ThemeSwitcher';
+import { ThemeSwitcher } from './services/ThemeSwitcher';
 
 const Navigation = () => {
 

@@ -3,7 +3,7 @@ import {Box, Button} from '@mui/material';
 import personData from "../utils/personData";
 import {colors} from "../assets/styles/colors";
 import UserCreateSimple from "../components/UserCreateSimple";
-import Steps from "../components/Steps";
+import Steps from "../components/steps/Steps";
 import {updateRecord} from "../services/airtable";
 import {useLocation, useNavigate} from "react-router-dom";
 import {fullPersData, personaKeys} from "../utils/fullPersData";

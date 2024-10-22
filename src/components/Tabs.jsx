@@ -4,7 +4,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import {styled} from '@mui/material/styles';
-import FormattedTextDisplay from "./FormattedTextDisplay";
+import FormattedTextDisplay from "./services/FormattedTextDisplay";
 
 const AntTabs = styled(Tabs)({
 	'& .MuiTabs-indicator': {

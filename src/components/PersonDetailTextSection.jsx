@@ -1,7 +1,7 @@
 import React from 'react';
 import {Box, Typography, TextField, Select, MenuItem} from '@mui/material';
 import { colors } from '../assets/styles/colors';
-import FormattedTextDisplay from './FormattedTextDisplayPersDetails';
+import FormattedTextDisplay from './services/FormattedTextDisplayPersDetails';
 import {loginInputStyles} from "../services/inputStyles";
 
 const fieldTypes = {

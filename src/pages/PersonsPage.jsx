@@ -4,14 +4,14 @@ import {getAllRecords} from "../services/airtable";
 import {Box, Button, IconButton, Snackbar, TextField, Typography} from "@mui/material";
 import PersonCard from "../components/PersonCard";
 import {askGpt, askGptStream} from "../services/chatGpt";
-import FormattedTextDisplay from "../components/FormattedTextDisplay";
+import FormattedTextDisplay from "../components/services/FormattedTextDisplay";
 import Loader from "../components/Loader";
 import {colors} from "../assets/styles/colors";
 import {askClaude, askClaudeStream} from "../services/claude";
 import {toast} from "react-toastify";
 import authService from "../services/auth";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import AssistantSelector from "../components/AssistantSelector";
+import AssistantSelector from "../components/services/AssistantSelector";
 
 const Persons = () => {
 	const {data = [], error, isLoading, mutate} = useSWR('/persons', () => getAllRecords());

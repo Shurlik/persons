@@ -5,7 +5,7 @@ import {colors} from "../assets/styles/colors";
 import {createUser, uploadFile} from "../services/airtable";
 import {toast} from "react-toastify";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import VisuallyHiddenInput from "./VisuallyHiddenInput";
+import VisuallyHiddenInput from "./services/VisuallyHiddenInput";
 
 const StyledTextField = styled(TextField)(({theme}) => ({
 	backgroundColor: colors.white,
