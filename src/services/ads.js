@@ -11,6 +11,24 @@ export async function getAds(ad) {
 	}
 }
 
+export async function getLeadMagnets() {
+	try {
+		const response = await api.get(`/ads/leadmagnets`);
+		return response.data;
+	} catch (e) {
+		console.log('error: ', e);
+	}
+}
+
+export async function getOffers() {
+	try {
+		const response = await api.get(`/ads/offers`);
+		return response.data;
+	} catch (e) {
+		console.log('error: ', e);
+	}
+}
+
 export async function addAds(data) {
 	try {
 		const response = await api.post(`/ads`, {...data});
