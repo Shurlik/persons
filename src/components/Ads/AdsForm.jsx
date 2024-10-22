@@ -6,6 +6,7 @@ import {Controller, useForm} from "react-hook-form";
 import * as yup from "yup";
 import {colors} from "../../assets/styles/colors";
 import {useLocation} from "react-router-dom";
+import CustomSelect from '../CustomSelect';
 
 const schema = yup.object().shape({
 	ad: yup.string().required('Ads is required'),
@@ -16,6 +17,11 @@ const schema = yup.object().shape({
 	keyword: yup.string(),
 	model: yup.string().required('AI model is required'),
 });
+
+const options = [
+	{ value: 'gpt', label: 'Chat GPT' },
+	{ value: 'claude', label: 'Claude' },
+];
 
 const AdsForm = ({createBenefits, setFormData, loading, setSteps,steps}) => {
 	const location = useLocation();
@@ -44,16 +50,14 @@ const AdsForm = ({createBenefits, setFormData, loading, setSteps,steps}) => {
 	// >{p?.fields?.Name}</MenuItem>) : <MenuItem value={null}><Loader/></MenuItem>;
 
 	const ads = [
-		{name: "Facebook", value: 'facebook'},
-		{name: "Google", value: 'google'},
-		{name: "Instagram", value: 'instagram'},
-		{name: "LinkedIn", value: 'linkedin'},
-		{name: "X", value: 'x'},
-		{name: "Pinterest", value: 'pinterest'}
-	].map((p) => <MenuItem
-		key={p.name}
-		value={p.value}
-	>{p.name}</MenuItem>);
+		{ label: "Facebook", value: 'facebook' },
+		{ label: "Google", value: 'google' },
+		{ label: "Instagram", value: 'instagram' },
+		{ label: "LinkedIn", value: 'linkedin' },
+		{ label: "X", value: 'x' },
+		{ label: "Pinterest", value: 'pinterest' }
+	];
+	
 
 	const onSubmit = async (data) => {
 		setFormData(data);
@@ -78,26 +82,36 @@ const AdsForm = ({createBenefits, setFormData, loading, setSteps,steps}) => {
 				header={'Create Ads Benefits'}
 				sx={{flexGrow: 1}}
 			/>
-			<Typography
-				variant={'span'}
-				sx={{
-					color: colors.white,
-				}}
-			>Model*: </Typography>
-			<Controller
-				name='model'
-				control={control}
-				render={({field}) => (
-					<Select
-						disabled={loading}
-						{...field}
-						error={!!errors.model}
-					>
-						<MenuItem value={'gpt'}>Chat GPT</MenuItem>
-						<MenuItem value={'claude'}>Claude</MenuItem>
-					</Select>
+			<Box sx={{display:'flex',flexDirection:'column', maxWidth:'200px'}}>
+				<Typography
+					variant={'span'}
+					sx={{
+						color: colors.white,
+						mb:'10px'
+					}}
+					>Model*:
+				</Typography>
+				<Controller
+					name="model"
+					control={control}
+					render={({ field }) => (
+						<CustomSelect
+							{...field}
+							disabled={loading}
+							options={options}
+							label="Choose Model"
+							onChange={(value) => field.onChange(value)}
+							sx={{
+								error: !!errors.model,
+								width: '200px',
+							}}
+						/>
+					)}
+				/>
+				{errors.model && (
+					<Typography color="error">{errors.model.message}</Typography>
 				)}
-			/>
+			</Box>
 			{errors.model && <Typography color='error'>{errors.model.message}</Typography>}
 			<Box
 				sx={{
@@ -153,13 +167,14 @@ const AdsForm = ({createBenefits, setFormData, loading, setSteps,steps}) => {
 						<Controller
 							name='ad'
 							control={control}
-							render={({field}) => (
-								<Select disabled={loading || !!ad} {...field}>
-									<MenuItem value={``}>
-										<em>None</em>
-									</MenuItem>
-									{ads}
-								</Select>
+							render={({ field }) => (
+								<CustomSelect
+									{...field}
+									disabled={loading || !!ad}
+									options={ads}
+									label="Choose Ads"
+									onChange={(value) => field.onChange(value)}
+								/>
 							)}
 						/>
 						{errors.ad && <Typography color='error'>{errors.ad.message}</Typography>}

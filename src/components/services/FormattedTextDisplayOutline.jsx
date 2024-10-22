@@ -21,19 +21,19 @@ const FormattedTextDisplay = ({children, custom, ref}) => {
 				components={{
 					h1: ({node, ...props}) => <Typography
 						variant='h2' {...props}
-						sx={{margin: 0, color: colors.black, fontSize: '1.7rem', fontFamily: 'Rajdhani'}}
+						sx={{margin: 0, color: colors.white, fontSize: '1.7rem', fontFamily: 'Rajdhani'}}
 					/>,
 					h2: ({node, ...props}) => <Typography
 						variant='h3' {...props}
-						sx={{margin: 0, color: colors.black, fontSize: '1.5rem', fontFamily: 'Rajdhani'}}
+						sx={{margin: 0, color: colors.white, fontSize: '1.5rem', fontFamily: 'Rajdhani'}}
 					/>,
 					h3: ({node, ...props}) => <Typography
 						variant='h4' {...props}
-						sx={{margin: 0, color: colors.black, fontSize: '1.4rem', fontFamily: 'Rajdhani'}}
+						sx={{margin: 0, color: colors.white, fontSize: '1.4rem', fontFamily: 'Rajdhani'}}
 					/>,
 					p: ({node, ...props}) => <Typography
 						variant='body1' {...props}
-						sx={{color: custom ? custom : colors.black, margin: 0}}
+						sx={{color: custom ? custom : colors.white, margin: 0}}
 					/>,
 					a: ({node, ...props}) => <Typography
 						variant='a' {...props}
@@ -42,10 +42,10 @@ const FormattedTextDisplay = ({children, custom, ref}) => {
 					/>,
 					li: ({node, ...props}) => <Typography
 						variant='body1' {...props}
-						sx={{color: custom ? custom : colors.black, margin: 0,}}
+						sx={{color: custom ? custom : colors.white, margin: 0,}}
 					/>,
-					strong: ({node, ...props}) => <strong style={{color: colors.black, padding: 0, margin: 0, fontWeight: '700'}} {...props} />,
-					em: ({node, ...props}) => <em style={{color: colors.black, fontWeight: '600'}} {...props} />,
+					strong: ({node, ...props}) => <strong style={{color: colors.white, padding: 0, margin: 0, fontWeight: '700'}} {...props} />,
+					em: ({node, ...props}) => <em style={{color: colors.white, fontWeight: '600'}} {...props} />,
 				}}
 			>
 				{children}
