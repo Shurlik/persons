@@ -221,7 +221,7 @@ export async function getThumbnailStream(id, onData, provider) {
 
 
 
-export async function getResearchStream(id, onData, signal, provider) {
+export async function getResearchStream(id, onData) {
 	try {
 		let token = authService.getAccessToken();
 		let headers = {
@@ -235,7 +235,7 @@ export async function getResearchStream(id, onData, signal, provider) {
 		let response = await fetch(`${LINK}/perp/research/stream/${id}`, {
 			method: 'GET',
 			headers: headers,
-			signal: signal, // Добавляем signal для возможности прерывания
+			// signal: signal, // Добавляем signal для возможности прерывания
 		});
 
 		if (!response.ok) {
@@ -247,7 +247,7 @@ export async function getResearchStream(id, onData, signal, provider) {
 						response = await fetch(`${LINK}/perp/research/stream/${id}`, {
 							method: 'GET',
 							headers: headers,
-							signal: signal, // Добавляем signal и для повторного запроса
+							// signal: signal, // Добавляем signal и для повторного запроса
 						});
 						if (!response.ok) {
 							throw new Error('Network response was not ok after token refresh');
@@ -286,11 +286,6 @@ export async function getResearchStream(id, onData, signal, provider) {
 				}
 			}
 
-			// Проверяем, не был ли отменен запрос
-			if (signal && signal.aborted) {
-				reader.cancel();
-				throw new DOMException('Aborted', 'AbortError');
-			}
 		}
 
 		return accumulatedText;

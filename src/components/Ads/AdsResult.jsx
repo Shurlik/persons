@@ -48,6 +48,7 @@ const AdsResult = ({result, setResult, loading, formData, setLoading, steps, set
 				title={'Final result'}
 				loading={loading}
 				onChange={(event) => setResult(event.target.value)}
+				noBorder
 			/>
 			<ToggleEdit
 				isEdit={edit}

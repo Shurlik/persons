@@ -3,6 +3,7 @@ import {Box, FormControl, MenuItem, Select, Typography} from "@mui/material";
 import {Controller} from "react-hook-form";
 import useSWR from "swr";
 import {getOffers} from "../../services/ads";
+import CustomSelect from "../CustomSelect";
 
 const AdsOfferSelector = ({control, errors, loading}) => {
 
@@ -13,10 +14,21 @@ const AdsOfferSelector = ({control, errors, loading}) => {
 		mutate
 	} = useSWR('/offers', getOffers);
 
-	const items = data.map((o, i) => <MenuItem
-		key={o.title + i}
-		value={o.title}
-	>{o.title}</MenuItem>);
+	// const items = data.map((o, i) => <MenuItem
+	// 	key={o.title + i}
+	// 	value={o.title}
+	// >{o.title}</MenuItem>);
+
+
+	const items = !isLoading
+		? [
+			{ label: 'None', value: '' },
+			...data.map((o) => ({
+				label: o.title,
+				value: o.title
+			}))
+		]
+		: [{ label: 'Loading...', value: '' }];
 
 	return (
 		<Box sx={{width: '100%', marginTop: '1rem'}}>
@@ -35,15 +47,20 @@ const AdsOfferSelector = ({control, errors, loading}) => {
 					name={'offerOld'}
 					control={control}
 					render={({field}) => (
-						<Select
-							disabled={loading} {...field}
-							error={!!errors.offer}
-						>
-							<MenuItem value={``}>
-								<em>None</em>
-							</MenuItem>
-							{items}
-						</Select>
+						<CustomSelect
+							fullWidth
+							// label="Person"
+							options={items}
+						/>
+						// <Select
+						// 	disabled={loading} {...field}
+						// 	error={!!errors.offer}
+						// >
+						// 	<MenuItem value={``}>
+						// 		<em>None</em>
+						// 	</MenuItem>
+						// 	{items}
+						// </Select>
 					)}
 				/>
 				{errors.offer && <Typography color='error'>{errors.offer.message}</Typography>}
