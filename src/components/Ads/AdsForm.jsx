@@ -46,7 +46,8 @@ const AdsForm = ({createBenefits, setFormData, loading, setSteps, steps, formDat
 			personId: '',
 			offer: '',
 			lm: '',
-			additionalInfo: ''
+			additionalInfo: '',
+			offerOld: ''
 		},
 	});
 
@@ -226,7 +227,7 @@ const AdsForm = ({createBenefits, setFormData, loading, setSteps, steps, formDat
 			>
 				<MenuItem
 					value={``}
-				>Custom Lead Magnet</MenuItem>
+				>Own Topic</MenuItem>
 				<MenuItem value={'offer'}>Offer</MenuItem>
 				<MenuItem value={'lm'}>Lead Magnet</MenuItem>
 			</Select>

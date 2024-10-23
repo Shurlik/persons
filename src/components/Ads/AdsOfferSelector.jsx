@@ -15,7 +15,7 @@ const AdsOfferSelector = ({control, errors, loading}) => {
 
 	const items = data.map((o, i) => <MenuItem
 		key={o.title + i}
-		value={`Goal: ${o.goal}|||Methods: ${o.methods}|||Benefits: ${o.benefits}`}
+		value={o.title}
 	>{o.title}</MenuItem>);
 
 	return (
@@ -32,7 +32,7 @@ const AdsOfferSelector = ({control, errors, loading}) => {
 				sx={{mb: 2}}
 			>
 				<Controller
-					name={'offer'}
+					name={'offerOld'}
 					control={control}
 					render={({field}) => (
 						<Select
