@@ -3,6 +3,7 @@ import {Box, FormControl, MenuItem, Select, Typography} from "@mui/material";
 import {Controller} from "react-hook-form";
 import useSWR from "swr";
 import {getLeadMagnets} from "../../services/ads";
+import CustomSelect from "../CustomSelect";
 
 const AdsLeadMagnetSelector = ({control, errors, loading}) => {
 
@@ -13,10 +14,20 @@ const AdsLeadMagnetSelector = ({control, errors, loading}) => {
 		mutate
 	} = useSWR('/lm', getLeadMagnets);
 
-	const items = data.map((o, i) => <MenuItem
-		key={o.title + i}
-		value={`Content: ${o.content}|||Proposition: ${o.proposition}|||Format: ${o.format}`}
-	>{o.title}</MenuItem>);
+	// const items = data.map((o, i) => <MenuItem
+	// 	key={o.title + i}
+	// 	value={`Content: ${o.content}|||Proposition: ${o.proposition}|||Format: ${o.format}`}
+	// >{o.title}</MenuItem>);
+
+	const items = !isLoading
+		? [
+			{ label: 'None', value: '' },
+			...data.map((o) => ({
+				label: o.title,
+				value: `Content: ${o.content}|||Proposition: ${o.proposition}|||Format: ${o.format}`
+			}))
+		]
+		: [{ label: 'Loading...', value: '' }];
 
 	return (
 		<Box sx={{width: '100%', marginTop: '1rem'}}>
@@ -35,15 +46,20 @@ const AdsLeadMagnetSelector = ({control, errors, loading}) => {
 					name={'lm'}
 					control={control}
 					render={({field}) => (
-						<Select
-							disabled={loading} {...field}
-							error={!!errors.lm}
-						>
-							<MenuItem value={``}>
-								<em>None</em>
-							</MenuItem>
-							{items}
-						</Select>
+						<CustomSelect
+							fullWidth
+							// label="Person"
+							options={items}
+						/>
+						// <Select
+						// 	disabled={loading} {...field}
+						// 	error={!!errors.lm}
+						// >
+						// 	<MenuItem value={``}>
+						// 		<em>None</em>
+						// 	</MenuItem>
+						// 	{items}
+						// </Select>
 					)}
 				/>
 				{errors.lm && <Typography color='error'>{errors.lm.message}</Typography>}

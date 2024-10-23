@@ -17,7 +17,7 @@ const ResearchResult = ({research, setResearch, setSteps, airId, steps, loading,
 				await updateBlogPostData(airId, data);
 				toast.success('Success!');
 				setSteps(null);
-				setTimeout(() => setSteps(steps => steps + 1), 350);
+				setTimeout(() => setSteps(steps + 1), 350);
 				await outlineStream()
 				setLoading(false);
 			} catch (e) {
@@ -30,7 +30,7 @@ const ResearchResult = ({research, setResearch, setSteps, airId, steps, loading,
 
 		const previousStepHandler = () => {
 			setSteps(null);
-			setTimeout(() => setSteps(steps => steps - 1), 400);
+			setTimeout(() => setSteps(steps - 1), 400);
 		};
 
 		useEffect(() => {

@@ -8,6 +8,7 @@ import {colors} from "../../assets/styles/colors";
 import {useLocation} from "react-router-dom";
 import AdsLeadMagnetSelector from "./AdsLeadMagnetSelector";
 import AdsOfferSelector from "./AdsOfferSelector";
+import CustomSelect from "../CustomSelect";
 
 const schema1 = yup.object().shape({
 	ad: yup.string().required('Ads is required'),
@@ -51,19 +52,30 @@ const AdsForm = ({createBenefits, setFormData, loading, setSteps, steps, formDat
 		},
 	});
 
+	// const ads = [
+	// 	{name: "Facebook", value: 'facebook'},
+	// 	{name: "Google", value: 'google'},
+	// 	{name: "Instagram", value: 'instagram'},
+	// 	{name: "LinkedIn", value: 'linkedin'},
+	// 	{name: "X", value: 'x'},
+	// 	{name: "Pinterest", value: 'pinterest'}
+	// ]
+	// 	.map((p) => <MenuItem
+	// 	key={p.name}
+	// 	value={p.value}
+	// >{p.name}</MenuItem>);
+
 	const ads = [
-		{name: "Facebook", value: 'facebook'},
-		{name: "Google", value: 'google'},
-		{name: "Instagram", value: 'instagram'},
-		{name: "LinkedIn", value: 'linkedin'},
-		{name: "X", value: 'x'},
-		{name: "Pinterest", value: 'pinterest'}
-	].map((p) => <MenuItem
-		key={p.name}
-		value={p.value}
-	>{p.name}</MenuItem>);
+		{ label: "Facebook", value: 'facebook' },
+		{ label: "Google", value: 'google' },
+		{ label: "Instagram", value: 'instagram' },
+		{ label: "LinkedIn", value: 'linkedin' },
+		{ label: "X", value: 'x' },
+		{ label: "Pinterest", value: 'pinterest' }
+	];
 
 	const onSubmit = async (data) => {
+		console.log({data});
 		setFormData(data);
 		setSteps(null);
 		setTimeout(() => setSteps(steps + 1), 350);
@@ -77,6 +89,16 @@ const AdsForm = ({createBenefits, setFormData, loading, setSteps, steps, formDat
 		setTimeout(() => setSteps(steps -= 1), 400);
 	};
 
+	const options = [
+		{ value: 'gpt', label: 'Chat GPT' },
+		{ value: 'claude', label: 'Claude' },
+	];
+
+	const variants = [
+		{ value: '', label: 'Own Topic' },
+		{ value: 'offer', label: 'Offer' },
+		{ value: 'lm', label: 'Lead Magnet' },
+	];
 
 	return (
 		<Box
@@ -106,14 +128,25 @@ const AdsForm = ({createBenefits, setFormData, loading, setSteps, steps, formDat
 						name='model'
 						control={control}
 						render={({field}) => (
-							<Select
-								disabled={loading}
+							<CustomSelect
 								{...field}
-								error={!!errors.model}
-							>
-								<MenuItem value={'gpt'}>Chat GPT</MenuItem>
-								<MenuItem value={'claude'}>Claude</MenuItem>
-							</Select>
+								disabled={loading}
+								options={options}
+								label="Choose Model"
+								onChange={(value) => field.onChange(value)}
+								sx={{
+									error: !!errors.model,
+									width: '200px',
+								}}
+							/>
+							// <Select
+							// 	disabled={loading}
+							// 	{...field}
+							// 	error={!!errors.model}
+							// >
+							// 	<MenuItem value={'gpt'}>Chat GPT</MenuItem>
+							// 	<MenuItem value={'claude'}>Claude</MenuItem>
+							// </Select>
 						)}
 					/>
 					{errors.model && <Typography color='error'>{errors.model.message}</Typography>}
@@ -145,12 +178,19 @@ const AdsForm = ({createBenefits, setFormData, loading, setSteps, steps, formDat
 								name='ad'
 								control={control}
 								render={({field}) => (
-									<Select disabled={loading || !!ad} {...field}>
-										<MenuItem value={``}>
-											<em>None</em>
-										</MenuItem>
-										{ads}
-									</Select>
+									// <Select disabled={loading || !!ad} {...field}>
+									// 	<MenuItem value={``}>
+									// 		<em>None</em>
+									// 	</MenuItem>
+									// 	{ads}
+									// </Select>
+									<CustomSelect
+										{...field}
+										disabled={loading || !!ad}
+										options={ads}
+										label="Choose Ads"
+										onChange={(value) => field.onChange(value)}
+									/>
 								)}
 							/>
 							{errors.ad && <Typography color='error'>{errors.ad.message}</Typography>}

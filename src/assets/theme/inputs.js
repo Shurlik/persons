@@ -3,6 +3,7 @@ import {colors} from "../styles/colors";
 export const inputOutlinedStyles = {
 	styleOverrides: {
 		root: {
+			boxShadow: 'none',
 			backgroundColor: colors.whiteGrey,
 			padding: '16px',
 			borderRadius: '8px',
@@ -34,6 +35,7 @@ export const inputOutlinedStyles = {
 export const inputStyles = {
 	styleOverrides: {
 		root: {
+			boxShadow: 'none',
 			backgroundColor: colors.background,
 			'& .MuiInput-root': {
 				color: colors.white, // Цвет текста
