@@ -32,7 +32,7 @@ const OutputsTextField = forwardRef(({value, title, loading, onChange, editable}
 				<Box
 					ref={ref}
 					sx={{
-						backgroundColor: colors.white,
+						backgroundColor: colors.black,
 						padding: '24px',
 						borderRadius: '1rem',
 						maxHeight: '50vh',
