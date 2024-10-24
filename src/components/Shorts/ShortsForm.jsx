@@ -3,12 +3,12 @@ import {useLocation} from "react-router-dom";
 import * as yup from "yup";
 import {Controller, useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
-import {Box, Button, FormControl, MenuItem, Select, TextField, Typography} from "@mui/material";
+import {Box, Button, FormControl, TextField, Typography} from "@mui/material";
 import {toast} from "react-toastify";
 import PageHeader from "../PageHeader";
-import Loader from "../Loader";
 import useSWR from "swr";
 import {getArticles} from "../../services/airtable";
+import CustomSelect from "../CustomSelect";
 
 const ShortsForm = ({loading, setFormData, createShorts, steps, setSteps, selectedValues, person}) => {
 	const location = useLocation();
@@ -17,14 +17,24 @@ const ShortsForm = ({loading, setFormData, createShorts, steps, setSteps, select
 
 	const {data = [], error, isLoading, mutate} = useSWR(articleId ? null : '/cos/articles', () => getArticles());
 
-	const articles = !articleId ?
-		!isLoading
-			? data?.articles.map((p) => <MenuItem
-				key={p?.id}
-				value={p?.id}
-			>{p?.fields?.['Blog Title']}</MenuItem>)
-			: <MenuItem value={null}><Loader/></MenuItem>
-		: null;
+	// const articles = !articleId ?
+	// 	!isLoading
+	// 		? data?.articles.map((p) => <MenuItem
+	// 			key={p?.id}
+	// 			value={p?.id}
+	// 		>{p?.fields?.['Blog Title']}</MenuItem>)
+	// 		: <MenuItem value={null}><Loader/></MenuItem>
+	// 	: null;
+
+	const articles = !isLoading
+		? [
+			{label: 'None', value: ''},
+			...data?.articles.map((p) => ({
+				label: p?.fields?.['Blog Title'],
+				value: p?.id
+			}))
+		]
+		: [{label: 'Loading...', value: ''}];
 
 	const schema = yup.object().shape({
 		textStyle: yup.string().required('Required'),
@@ -64,7 +74,7 @@ const ShortsForm = ({loading, setFormData, createShorts, steps, setSteps, select
 				data.personActionDetails = '';
 			}
 			const starterString = person ? `Name: ${person?.fields?.Name};\nAge: ${person?.fields?.Age};\nGender: ${person?.fields?.Gender};\nPlace of residence: ${person?.fields['Place of residence']};\nJob title: ${person?.fields['Job title']};\n` : "";
-			data.personData = selectedValues.reduce((acc, curr) => acc + `${curr}: ${person?.fields[curr]};\n`, starterString)
+			data.personData = selectedValues.reduce((acc, curr) => acc + `${curr}: ${person?.fields[curr]};\n`, starterString);
 			setSteps(null);
 			setTimeout(() => setSteps(steps += 1), 350);
 			setFormData(data);
@@ -75,16 +85,21 @@ const ShortsForm = ({loading, setFormData, createShorts, steps, setSteps, select
 	};
 
 
-	const actions = actionsList.map((p) => <MenuItem
-		key={p}
-		value={p}
-	>{p}</MenuItem>);
+	const actions = actionsList.map((p) => ({
+		label: p,
+		value: p
+	}));
 
 	const previousStepHandler = () => {
-		reset()
+		reset();
 		setSteps(null);
 		setTimeout(() => setSteps(steps -= 1), 400);
 	};
+
+	const options = [
+		{value: 'gpt', label: 'Chat GPT'},
+		{value: 'claude', label: 'Claude'},
+	];
 
 	return (
 		<Box
@@ -102,25 +117,25 @@ const ShortsForm = ({loading, setFormData, createShorts, steps, setSteps, select
 					gap: '1rem'
 				}}
 			>
-				<Box>
+				<Box sx={{width: '20rem'}}>
 					<Typography
 						variant='subtitle1'
 						gutterBottom
 					>Model*: </Typography>
 					<Controller
-
 						name='model'
 						control={control}
 						render={({field}) => (
-							<Select
-								sx={{width: '20rem'}}
-								disabled={loading}
+							<CustomSelect
 								{...field}
-								error={!!errors.model}
-							>
-								<MenuItem value={'gpt'}>Chat GPT</MenuItem>
-								<MenuItem value={'claude'}>Claude</MenuItem>
-							</Select>
+								disabled={loading}
+								options={options}
+								label='Choose Model'
+								onChange={(value) => field.onChange(value)}
+								sx={{
+									error: !!errors.model
+								}}
+							/>
 						)}
 					/>
 					{errors.model && <Typography color='error'>{errors.model.message}</Typography>}
@@ -141,15 +156,15 @@ const ShortsForm = ({loading, setFormData, createShorts, steps, setSteps, select
 							name='article'
 							control={control}
 							render={({field}) => (
-								<Select
-									disabled={loading} {...field}
-									error={!!errors.article}
-								>
-									<MenuItem value={``}>
-										<em>None</em>
-									</MenuItem>
-									{articles}
-								</Select>
+								<CustomSelect
+									{...field}
+									disabled={loading}
+									options={articles}
+									onChange={(value) => field.onChange(value)}
+									sx={{
+										error: !!errors.article,
+									}}
+								/>
 							)}
 						/>
 						{errors.article && <Typography color='error'>{errors.article.message}</Typography>}
@@ -183,24 +198,21 @@ const ShortsForm = ({loading, setFormData, createShorts, steps, setSteps, select
 								name='personAction'
 								control={control}
 								render={({field: {onChange, value, ...rest}}) => (
-									<Select
+									<CustomSelect
 										disabled={loading}
-										error={!!errors.personAction}
-										// helperText={errors.personAction?.message}
+										options={actions}
 										value={value}
 										onChange={(event) => {
-											const selectedValue = event.target.value;
+											const selectedValue = event;
 											onChange(selectedValue);
 											selectedValue === 'Get the Lead magnet' || selectedValue === 'Learn about an offer'
 												? setShowOptions(true)
 												: setShowOptions(false);
 										}}
-									>
-										<MenuItem value={``}>
-											<em>None</em>
-										</MenuItem>
-										{actions}
-									</Select>
+										sx={{
+											error: !!errors.personAction
+										}}
+									/>
 								)}
 							/>
 							{errors.personAction && <Typography color='error'>{errors.personAction.message}</Typography>}
@@ -225,7 +237,14 @@ const ShortsForm = ({loading, setFormData, createShorts, steps, setSteps, select
 									{...field}
 									variant='outlined'
 									fullWidth
-									sx={{mb: 2}}
+									sx={{
+										mb: 2,
+										'& .MuiOutlinedInput-root': {
+											'&.Mui-focused': {
+												backgroundColor: 'white'
+											}
+										}
+									}}
 								/>
 							)}
 						/>
@@ -249,7 +268,12 @@ const ShortsForm = ({loading, setFormData, createShorts, steps, setSteps, select
 								fullWidth
 								error={!!errors.textStyle}
 								helperText={errors.textStyle?.message}
-								sx={{mb: 2}}
+								sx={{mb: 2,
+									'& .MuiOutlinedInput-root': {
+										'&.Mui-focused': {
+											backgroundColor: 'white'
+										}
+									}}}
 								multiline
 								rows={3}
 							/>
@@ -280,7 +304,12 @@ const ShortsForm = ({loading, setFormData, createShorts, steps, setSteps, select
 									fullWidth
 									error={!!errors.briefing}
 									helperText={errors.briefing?.message}
-									sx={{mb: 2}}
+									sx={{mb: 2,
+										'& .MuiOutlinedInput-root': {
+											'&.Mui-focused': {
+												backgroundColor: 'white'
+											}
+										}}}
 									multiline
 									rows={3}
 								/>
@@ -305,7 +334,12 @@ const ShortsForm = ({loading, setFormData, createShorts, steps, setSteps, select
 									fullWidth
 									error={!!errors.briefingTextStyle}
 									helperText={errors.briefingTextStyle?.message}
-									sx={{mb: 2}}
+									sx={{mb: 2,
+										'& .MuiOutlinedInput-root': {
+											'&.Mui-focused': {
+												backgroundColor: 'white'
+											}
+										}}}
 									multiline
 									rows={3}
 								/>
@@ -337,7 +371,12 @@ const ShortsForm = ({loading, setFormData, createShorts, steps, setSteps, select
 									fullWidth
 									error={!!errors.designation}
 									helperText={errors.designation?.message}
-									sx={{mb: 2}}
+									sx={{mb: 2,
+										'& .MuiOutlinedInput-root': {
+											'&.Mui-focused': {
+												backgroundColor: 'white'
+											}
+										}}}
 									multiline
 									rows={3}
 								/>
@@ -362,7 +401,12 @@ const ShortsForm = ({loading, setFormData, createShorts, steps, setSteps, select
 									fullWidth
 									error={!!errors.designationTextStyle}
 									helperText={errors.designationTextStyle?.message}
-									sx={{mb: 2}}
+									sx={{mb: 2,
+										'& .MuiOutlinedInput-root': {
+											'&.Mui-focused': {
+												backgroundColor: 'white'
+											}
+										}}}
 									multiline
 									rows={3}
 								/>

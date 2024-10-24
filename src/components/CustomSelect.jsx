@@ -8,35 +8,35 @@ const CustomSelect = forwardRef(({ options = [], label, onChange, value, disable
 
   useEffect(() => {
     if (value !== undefined) {
-      setSelectedValue(value); 
+      setSelectedValue(value);
     }
   }, [value]);
 
   const handleSelectChange = (event) => {
     const newValue = event.target.value;
-    setSelectedValue(newValue); 
-    if (onChange) onChange(newValue); 
+    setSelectedValue(newValue);
+    if (onChange) onChange(newValue);
   };
 
   return (
-    <FormControl 
-      variant="outlined" 
+    <FormControl
+      variant="outlined"
       fullWidth
-      disabled={disabled} 
+      disabled={disabled}
       ref={ref}
       sx={{
         bgcolor: `${colors.orange} !important`,
         borderRadius: '8px',
-        '& .MuiInputLabel-root': { 
-          bgcolor: `${colors.orange} !important`, 
+        '& .MuiInputLabel-root': {
+          bgcolor: `${colors.orange} !important`,
           color: `${colors.whitePermanet} !important`,
-          pl: 1, 
-          pr: 1 
+          pl: 1,
+          pr: 1
         },
-        '& .MuiInputLabel-shrink': { 
-          bgcolor: 'transparent !important', 
+        '& .MuiInputLabel-shrink': {
+          bgcolor: 'transparent !important',
           color: `transparent !important`,
-          pl: 1, 
+          pl: 1,
           pr: 1,
           fontWeight: '400 !important',
           fontSize: '20px !important',
@@ -45,10 +45,10 @@ const CustomSelect = forwardRef(({ options = [], label, onChange, value, disable
     >
       <InputLabel
         id="custom-select-label"
-        sx={{ 
+        sx={{
           color: `${colors.whitePermanet} !important`,
-          bgcolor: `${colors.orange} !important`, 
-          pl: 1, 
+          bgcolor: `${colors.orange} !important`,
+          pl: 1,
           pr: 1,
         }}
       >
@@ -56,6 +56,7 @@ const CustomSelect = forwardRef(({ options = [], label, onChange, value, disable
       </InputLabel>
 
       <Select
+        variant={'filled'}
         labelId="custom-select-label"
         id="custom-select"
         value={selectedValue}
@@ -65,39 +66,54 @@ const CustomSelect = forwardRef(({ options = [], label, onChange, value, disable
         displayEmpty
         sx={{
           padding: '0px !important',
-          minHeight: '40px !important', 
+          minHeight: '40px !important',
           alignItems: 'center',
           color: `${colors.whitePermanet} !important`,
           backgroundColor: `${colors.orange} !important`,
           borderRadius: '8px !important',
+          borderBottom: 'none',
           '& .MuiSelect-select': {
-            padding: '9px 14px !important', 
+            padding: '9px 14px !important',
             display: 'flex',
             alignItems: 'center',
             backgroundColor: `${colors.orange} !important`,
             color: `${colors.whitePermanet} !important`,
             borderRadius: '8px !important',
             minHeight: '40px !important',
+            borderBottom: 'none',
           },
           '& .MuiSelect-icon': { color: colors.whitePermanet },
-          '& .MuiOutlinedInput-notchedOutline': { 
-            borderColor: `${colors.whitePermanet} !important`, 
+          '& .MuiOutlinedInput-notchedOutline': {
+            borderColor: `${colors.whitePermanet} !important`,
             borderRadius: '8px !important',
           },
-          '&:hover .MuiOutlinedInput-notchedOutline': { 
+          '&:hover .MuiOutlinedInput-notchedOutline': {
             borderColor: `${colors.whitePermanet} !important`,
           },
-          '&.Mui-focused .MuiOutlinedInput-notchedOutline': { 
-            borderColor: `${colors.whitePermanet} !important`, 
+          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            borderColor: `${colors.whitePermanet} !important`,
+            borderBottom: 'none'
           },
           '&.Mui-focused .MuiSelect-select': {
             backgroundColor: `${colors.orange} !important`,
             color: `${colors.whitePermanet} !important`,
+            borderBottom: 'none',
+            '&::before': {
+              borderBottom: 'none'
+            }
           },
           '&.Mui-active .MuiSelect-select': {
             backgroundColor: `${colors.orange} !important`,
             color: `${colors.whitePermanet} !important`,
+            borderBottom: 'none'
           },
+          '&::before': {
+            borderBottom: 'none'
+          },
+          '&::after': {
+            borderBottom: 'none'
+          },
+          '&:hover:not(.Mui-disabled):before': { borderBottom: 'none' },
         }}
       >
         {options.map((option) => (

@@ -52,30 +52,16 @@ const AdsForm = ({createBenefits, setFormData, loading, setSteps, steps, formDat
 		},
 	});
 
-	// const ads = [
-	// 	{name: "Facebook", value: 'facebook'},
-	// 	{name: "Google", value: 'google'},
-	// 	{name: "Instagram", value: 'instagram'},
-	// 	{name: "LinkedIn", value: 'linkedin'},
-	// 	{name: "X", value: 'x'},
-	// 	{name: "Pinterest", value: 'pinterest'}
-	// ]
-	// 	.map((p) => <MenuItem
-	// 	key={p.name}
-	// 	value={p.value}
-	// >{p.name}</MenuItem>);
-
 	const ads = [
-		{ label: "Facebook", value: 'facebook' },
-		{ label: "Google", value: 'google' },
-		{ label: "Instagram", value: 'instagram' },
-		{ label: "LinkedIn", value: 'linkedin' },
-		{ label: "X", value: 'x' },
-		{ label: "Pinterest", value: 'pinterest' }
+		{label: "Facebook", value: 'facebook'},
+		{label: "Google", value: 'google'},
+		{label: "Instagram", value: 'instagram'},
+		{label: "LinkedIn", value: 'linkedin'},
+		{label: "X", value: 'x'},
+		{label: "Pinterest", value: 'pinterest'}
 	];
 
 	const onSubmit = async (data) => {
-		console.log({data});
 		setFormData(data);
 		setSteps(null);
 		setTimeout(() => setSteps(steps + 1), 350);
@@ -85,19 +71,19 @@ const AdsForm = ({createBenefits, setFormData, loading, setSteps, steps, formDat
 	const previousStepHandler = () => {
 		reset();
 		setFormData(null);
-				setSteps(null);
+		setSteps(null);
 		setTimeout(() => setSteps(steps -= 1), 400);
 	};
 
 	const options = [
-		{ value: 'gpt', label: 'Chat GPT' },
-		{ value: 'claude', label: 'Claude' },
+		{value: 'gpt', label: 'Chat GPT'},
+		{value: 'claude', label: 'Claude'},
 	];
 
 	const variants = [
-		{ value: '', label: 'Own Topic' },
-		{ value: 'offer', label: 'Offer' },
-		{ value: 'lm', label: 'Lead Magnet' },
+		{value: '', label: 'Own Topic'},
+		{value: 'offer', label: 'Offer'},
+		{value: 'lm', label: 'Lead Magnet'},
 	];
 
 	return (
@@ -132,21 +118,13 @@ const AdsForm = ({createBenefits, setFormData, loading, setSteps, steps, formDat
 								{...field}
 								disabled={loading}
 								options={options}
-								label="Choose Model"
+								label='Choose Model'
 								onChange={(value) => field.onChange(value)}
 								sx={{
 									error: !!errors.model,
 									width: '200px',
 								}}
 							/>
-							// <Select
-							// 	disabled={loading}
-							// 	{...field}
-							// 	error={!!errors.model}
-							// >
-							// 	<MenuItem value={'gpt'}>Chat GPT</MenuItem>
-							// 	<MenuItem value={'claude'}>Claude</MenuItem>
-							// </Select>
 						)}
 					/>
 					{errors.model && <Typography color='error'>{errors.model.message}</Typography>}
@@ -178,17 +156,11 @@ const AdsForm = ({createBenefits, setFormData, loading, setSteps, steps, formDat
 								name='ad'
 								control={control}
 								render={({field}) => (
-									// <Select disabled={loading || !!ad} {...field}>
-									// 	<MenuItem value={``}>
-									// 		<em>None</em>
-									// 	</MenuItem>
-									// 	{ads}
-									// </Select>
 									<CustomSelect
 										{...field}
 										disabled={loading || !!ad}
 										options={ads}
-										label="Choose Ads"
+										label='Choose Ads'
 										onChange={(value) => field.onChange(value)}
 									/>
 								)}
@@ -212,66 +184,86 @@ const AdsForm = ({createBenefits, setFormData, loading, setSteps, steps, formDat
 									{...field}
 									variant='outlined'
 									fullWidth
-									sx={{mb: 1}}
+									sx={{
+										mb: 1,
+										'& .MuiOutlinedInput-root': {
+											'&.Mui-focused': {
+												backgroundColor: 'white'
+											}
+										}
+									}}
 								/>
 							)}
 						/>
 					</Box>
 				</Box>
 			</Box>
-				<Box
-					sx={{
-						marginBottom: '1rem',
-						marginTop: '1rem',
-						display: 'flex',
-						alignItems: 'center',
-						gap: '1rem'
-					}}
-				>
-					<Box sx={{flex: '1 1'}}>
-						<Typography
-							variant='subtitle1'
-							gutterBottom
-						>
-							Enter the Title*
-						</Typography>
-						<Controller
-							name='title'
-							control={control}
-							render={({field}) => (
-								<TextField
-									disabled={loading}
-									{...field}
-									variant='outlined'
-									fullWidth
-									error={!!errors.title}
-									helperText={errors.title?.message}
-									sx={{mb: 1}}
-								/>
-							)}
-						/>
-					</Box>
-			<Box>
-			<Typography
-				variant={'subtitle1'}
+			<Box
 				sx={{
-					color: colors.white,
+					marginBottom: '1rem',
+					marginTop: '1rem',
+					display: 'flex',
+					alignItems: 'center',
+					gap: '1rem'
 				}}
-			>Variant:</Typography>
-			<Select
-				sx={{width: '25rem'}}
-				value={variant}
-				onChange={(event) => setVariant(event.target.value)}
-				disabled={loading}
-				displayEmpty
 			>
-				<MenuItem
-					value={``}
-				>Own Topic</MenuItem>
-				<MenuItem value={'offer'}>Offer</MenuItem>
-				<MenuItem value={'lm'}>Lead Magnet</MenuItem>
-			</Select>
-			</Box>
+				<Box sx={{flex: '1 1'}}>
+					<Typography
+						variant='subtitle1'
+						gutterBottom
+					>
+						Enter the Title*
+					</Typography>
+					<Controller
+						name='title'
+						control={control}
+						render={({field}) => (
+							<TextField
+								disabled={loading}
+								{...field}
+								variant='outlined'
+								fullWidth
+								error={!!errors.title}
+								helperText={errors.title?.message}
+								sx={{
+									mb: 1,
+									'& .MuiOutlinedInput-root': {
+										'&.Mui-focused': {
+											backgroundColor: 'white'
+										}
+									}
+								}}
+							/>
+						)}
+					/>
+				</Box>
+				<Box sx={{flex: '1 1'}}>
+					<Typography
+						variant={'subtitle1'}
+						sx={{
+							color: colors.white,
+						}}
+					>Variant:</Typography>
+					<CustomSelect
+						disabled={loading}
+						options={variants}
+						value={variant}
+						onChange={(event) => setVariant(event)}
+					/>
+					{/*<Select*/}
+					{/*	sx={{width: '25rem'}}*/}
+					{/*	value={variant}*/}
+					{/*	onChange={(event) => setVariant(event.target.value)}*/}
+					{/*	disabled={loading}*/}
+					{/*	displayEmpty*/}
+					{/*>*/}
+					{/*	<MenuItem*/}
+					{/*		value={``}*/}
+					{/*	>Own Topic</MenuItem>*/}
+					{/*	<MenuItem value={'offer'}>Offer</MenuItem>*/}
+					{/*	<MenuItem value={'lm'}>Lead Magnet</MenuItem>*/}
+					{/*</Select>*/}
+				</Box>
 			</Box>
 			{variant === 'offer' && <Box>
 				<AdsOfferSelector
@@ -308,7 +300,14 @@ const AdsForm = ({createBenefits, setFormData, loading, setSteps, steps, formDat
 							rows={3}
 							error={!!errors.additionalInfo}
 							helperText={errors.additionalInfo?.message}
-							sx={{mb: 2}}
+							sx={{
+								mb: 2,
+								'& .MuiOutlinedInput-root': {
+									'&.Mui-focused': {
+										backgroundColor: 'white'
+									}
+								}
+							}}
 						/>
 					)}
 				/>
@@ -334,7 +333,14 @@ const AdsForm = ({createBenefits, setFormData, loading, setSteps, steps, formDat
 							rows={3}
 							error={!!errors.content}
 							helperText={errors.content?.message}
-							sx={{mb: 2}}
+							sx={{
+								mb: 2,
+								'& .MuiOutlinedInput-root': {
+									'&.Mui-focused': {
+										backgroundColor: 'white'
+									}
+								}
+							}}
 						/>
 					)}
 				/>
@@ -358,7 +364,14 @@ const AdsForm = ({createBenefits, setFormData, loading, setSteps, steps, formDat
 							rows={3}
 							error={!!errors.propose}
 							helperText={errors.propose?.message}
-							sx={{mb: 2}}
+							sx={{
+								mb: 2,
+								'& .MuiOutlinedInput-root': {
+									'&.Mui-focused': {
+										backgroundColor: 'white'
+									}
+								}
+							}}
 						/>
 					)}
 				/>
@@ -374,6 +387,13 @@ const AdsForm = ({createBenefits, setFormData, loading, setSteps, steps, formDat
 					control={control}
 					render={({field}) => (
 						<TextField
+							sx={{
+								'& .MuiOutlinedInput-root': {
+									'&.Mui-focused': {
+										backgroundColor: 'white'
+									}
+								}
+							}}
 							disabled={loading}
 							{...field}
 							variant='outlined'
