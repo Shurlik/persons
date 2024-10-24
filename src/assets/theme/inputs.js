@@ -7,6 +7,14 @@ export const inputOutlinedStyles = {
 			backgroundColor: colors.whiteGrey,
 			padding: '16px',
 			borderRadius: '8px',
+			'&.Mui-focused': {
+				// backgroundColor: 'white'
+			},
+			// '& .MuiOutlinedInput-root': {
+			// 	'&.Mui-focused': {
+			// 		backgroundColor: 'white'
+			// 	}
+			// },
 			'& .MuiOutlinedInput-notchedOutline': {
 				borderColor: colors.darkGrey42,
 			},
@@ -15,6 +23,7 @@ export const inputOutlinedStyles = {
 			},
 			'&.Mui-focused .MuiOutlinedInput-notchedOutline': {
 				borderColor: colors.orange50,
+				// backgroundColor: colors.whitePermanet,
 			},
 			'& .MuiInputBase-input::placeholder': {
 				color: colors.darkGrayMain, // Принудительно применяем тёмный цвет

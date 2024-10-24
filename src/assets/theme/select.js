@@ -23,7 +23,12 @@ export const customSelect = {
 				borderBottomWidth: 0,
 				backgroundColor: colors.whiteGrey,
 			},
+			'&.Mui-disabled .MuiOutlinedInput-notchedOutline': {
+				borderBottom: '0'
+			},
+
 			'&:before': { borderBottom: 'none' },
+			'&:disabled': { borderBottom: 'none' },
 			'&:after': { borderBottom: 'none' },
 			'&:hover:not(.Mui-disabled):before': { borderBottom: 'none' },
 		},
@@ -31,8 +36,12 @@ export const customSelect = {
 			color: colors.orange,
 		},
 		root: {
+			'&.Mui-disabled:before': {
+				borderBottom: 'none !important'
+			},
 			'& .MuiOutlinedInput-notchedOutline': {
 				border: 'none',
+
 			},
 			'&:hover .MuiOutlinedInput-notchedOutline': {
 				// border: 'none',
