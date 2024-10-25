@@ -3,28 +3,27 @@ import {useLocation} from "react-router-dom";
 import * as yup from "yup";
 import {Controller, useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
-import {Box, Button, FormControl, TextField, Typography} from "@mui/material";
+import {Box, Button, FormControl, Typography} from "@mui/material";
 import {toast} from "react-toastify";
 import PageHeader from "../PageHeader";
 import useSWR from "swr";
 import {getArticles} from "../../services/airtable";
 import CustomSelect from "../CustomSelect";
+import {getShortsTemplates} from "../../services/shorts";
+import {getRandomIntRange} from "../../utils/helpers";
 
 const ShortsForm = ({loading, setFormData, createShorts, steps, setSteps, selectedValues, person}) => {
 	const location = useLocation();
 	const articleId = location?.state?.articleId;
 	const [showOptions, setShowOptions] = useState(false);
+	const [promptsSelected, setPromptSelected] = useState(false);
 
 	const {data = [], error, isLoading, mutate} = useSWR(articleId ? null : '/cos/articles', () => getArticles());
 
-	// const articles = !articleId ?
-	// 	!isLoading
-	// 		? data?.articles.map((p) => <MenuItem
-	// 			key={p?.id}
-	// 			value={p?.id}
-	// 		>{p?.fields?.['Blog Title']}</MenuItem>)
-	// 		: <MenuItem value={null}><Loader/></MenuItem>
-	// 	: null;
+	const {
+		data: shortsTemplates = [],
+	} = useSWR(articleId ? null : '/cos/shorts-templates', getShortsTemplates);
+
 
 	const articles = !isLoading
 		? [
@@ -37,29 +36,15 @@ const ShortsForm = ({loading, setFormData, createShorts, steps, setSteps, select
 		: [{label: 'Loading...', value: ''}];
 
 	const schema = yup.object().shape({
-		textStyle: yup.string().required('Required'),
-		briefing: yup.string().required('Required'),
-		briefingTextStyle: yup.string().required('Required'),
-		designation: yup.string().required('Required'),
-		designationTextStyle: yup.string().required('Required'),
-		personAction: yup.string().required('Required'),
 		model: yup.string().required('AI model is required'),
 	});
-
-	const actionsList = ['Comment', 'Like and subscribe', 'Get the Lead magnet', 'Learn about an offer'];
 
 	const {control, reset, handleSubmit, formState: {errors}} = useForm({
 		resolver: yupResolver(schema),
 		defaultValues: {
-			textStyle: '',
-			briefingTextStyle: '',
-			designation: '',
-			designationTextStyle: '',
-			briefing: '',
 			article: articleId || '',
-			personAction: '',
-			personActionDetails: '',
 			model: 'gpt',
+			postType: [],
 		},
 	});
 
@@ -69,12 +54,30 @@ const ShortsForm = ({loading, setFormData, createShorts, steps, setSteps, select
 			toast.warning('Please provide details about Action');
 			return;
 		}
+
+		if (!data.article) {
+			toast.warning('Please select Article for creation');
+			return;
+		}
+
+		if (!data.postType.length) {
+			const tmplt = [];
+			while (tmplt.length < 10) {
+				const randomNumber = getRandomIntRange(1, shortsTemplates.length - 1);
+				if (!tmplt.includes(shortsTemplates[randomNumber].id)) {
+					tmplt.push(shortsTemplates[randomNumber].id);
+				}
+			}
+			data.postType = tmplt;
+		}
+
 		try {
 			if (!showOptions) {
 				data.personActionDetails = '';
 			}
 			const starterString = person ? `Name: ${person?.fields?.Name};\nAge: ${person?.fields?.Age};\nGender: ${person?.fields?.Gender};\nPlace of residence: ${person?.fields['Place of residence']};\nJob title: ${person?.fields['Job title']};\n` : "";
 			data.personData = selectedValues.reduce((acc, curr) => acc + `${curr}: ${person?.fields[curr]};\n`, starterString);
+
 			setSteps(null);
 			setTimeout(() => setSteps(steps += 1), 350);
 			setFormData(data);
@@ -83,13 +86,6 @@ const ShortsForm = ({loading, setFormData, createShorts, steps, setSteps, select
 			console.log('error: ', e);
 		}
 	};
-
-
-	const actions = actionsList.map((p) => ({
-		label: p,
-		value: p
-	}));
-
 	const previousStepHandler = () => {
 		reset();
 		setSteps(null);
@@ -100,6 +96,19 @@ const ShortsForm = ({loading, setFormData, createShorts, steps, setSteps, select
 		{value: 'gpt', label: 'Chat GPT'},
 		{value: 'claude', label: 'Claude'},
 	];
+
+	const shortsPromptsOptions = !isLoading
+		? [
+			{label: 'None', value: ''},
+			...shortsTemplates.map((p) => ({
+				label: p?.SocialPromptName,
+				value: p?.id
+			}))
+		]
+		: [{label: 'Loading...', value: ''}];
+
+	const randomHandler = () => {
+	};
 
 	return (
 		<Box
@@ -172,252 +181,41 @@ const ShortsForm = ({loading, setFormData, createShorts, steps, setSteps, select
 				</Box>}
 			</Box>
 			<Box sx={{width: '100%', marginTop: '1rem'}}>
-				<Box
-					sx={{
-						display: 'flex',
-						gap: '1rem',
-					}}
-				>
-					<Box
-						sx={{
-							width: '20rem'
-						}}
-					>
-						<Typography
-							variant='subtitle1'
-							gutterBottom
-						>
-							Select Action for Persona*
-						</Typography>
-						<FormControl
-							fullWidth
-							variant='outlined'
-							sx={{mb: 2}}
-						>
-							<Controller
-								name='personAction'
-								control={control}
-								render={({field: {onChange, value, ...rest}}) => (
-									<CustomSelect
-										disabled={loading}
-										options={actions}
-										value={value}
-										onChange={(event) => {
-											const selectedValue = event;
-											onChange(selectedValue);
-											selectedValue === 'Get the Lead magnet' || selectedValue === 'Learn about an offer'
-												? setShowOptions(true)
-												: setShowOptions(false);
-										}}
-										sx={{
-											error: !!errors.personAction
-										}}
-									/>
-								)}
-							/>
-							{errors.personAction && <Typography color='error'>{errors.personAction.message}</Typography>}
-						</FormControl>
-					</Box>
-					{showOptions && <
-						Box
-						sx={{flex: '1 1'}}
-					>
-						<Typography
-							variant='subtitle1'
-							gutterBottom
-						>
-							Please share details about Action*
-						</Typography>
-						<Controller
-							name='personActionDetails'
-							control={control}
-							render={({field}) => (
-								<TextField
-									disabled={loading}
-									{...field}
-									variant='outlined'
-									fullWidth
-									sx={{
-										mb: 2,
-										'& .MuiOutlinedInput-root': {
-											'&.Mui-focused': {
-												backgroundColor: 'white'
-											}
-										}
-									}}
-								/>
-							)}
-						/>
-					</Box>}
-				</Box>
-				<Box sx={{flex: '1 1'}}>
+				<Box>
 					<Typography
 						variant='subtitle1'
 						gutterBottom
 					>
-						What text style are you prefer?*
+						Select Templates for Shorts or use random templates
 					</Typography>
 					<Controller
-						name='textStyle'
+						name='postType'
 						control={control}
+						// defaultValue={[]}
 						render={({field}) => (
-							<TextField
-								disabled={loading}
-								{...field}
-								variant='outlined'
-								fullWidth
-								error={!!errors.textStyle}
-								helperText={errors.textStyle?.message}
-								sx={{mb: 2,
-									'& .MuiOutlinedInput-root': {
-										'&.Mui-focused': {
-											backgroundColor: 'white'
-										}
-									}}}
-								multiline
-								rows={3}
-							/>
+							<FormControl fullWidth>
+								<CustomSelect
+									{...field}
+									disabled={loading}
+									label={'Prompts...'}
+									options={shortsPromptsOptions}
+									onChange={(value) => {
+										setPromptSelected(!!value.length);
+										field.onChange(value);
+									}}
+									sx={{
+										error: !!errors.postType,
+									}}
+									multiple
+								/>
+							</FormControl>
 						)}
 					/>
-				</Box>
-				<Box
-					sx={{
-						display: 'flex',
-						gap: '1rem',
-					}}
-				>
-					<Box sx={{flex: '3 1'}}>
-						<Typography
-							variant='subtitle1'
-							gutterBottom
-						>
-							The Briefing*
-						</Typography>
-						<Controller
-							name='briefing'
-							control={control}
-							render={({field}) => (
-								<TextField
-									disabled={loading}
-									{...field}
-									variant='outlined'
-									fullWidth
-									error={!!errors.briefing}
-									helperText={errors.briefing?.message}
-									sx={{mb: 2,
-										'& .MuiOutlinedInput-root': {
-											'&.Mui-focused': {
-												backgroundColor: 'white'
-											}
-										}}}
-									multiline
-									rows={3}
-								/>
-							)}
-						/>
-					</Box>
-					<Box sx={{flex: '4 1'}}>
-						<Typography
-							variant='subtitle1'
-							gutterBottom
-						>
-							Briefing's text style*
-						</Typography>
-						<Controller
-							name='briefingTextStyle'
-							control={control}
-							render={({field}) => (
-								<TextField
-									disabled={loading}
-									{...field}
-									variant='outlined'
-									fullWidth
-									error={!!errors.briefingTextStyle}
-									helperText={errors.briefingTextStyle?.message}
-									sx={{mb: 2,
-										'& .MuiOutlinedInput-root': {
-											'&.Mui-focused': {
-												backgroundColor: 'white'
-											}
-										}}}
-									multiline
-									rows={3}
-								/>
-							)}
-						/>
-					</Box>
-				</Box>
-				<Box
-					sx={{
-						display: 'flex',
-						gap: '1rem',
-					}}
-				>
-					<Box sx={{flex: '3 1'}}>
-						<Typography
-							variant='subtitle1'
-							gutterBottom
-						>
-							The Designation*
-						</Typography>
-						<Controller
-							name='designation'
-							control={control}
-							render={({field}) => (
-								<TextField
-									disabled={loading}
-									{...field}
-									variant='outlined'
-									fullWidth
-									error={!!errors.designation}
-									helperText={errors.designation?.message}
-									sx={{mb: 2,
-										'& .MuiOutlinedInput-root': {
-											'&.Mui-focused': {
-												backgroundColor: 'white'
-											}
-										}}}
-									multiline
-									rows={3}
-								/>
-							)}
-						/>
-					</Box>
-					<Box sx={{flex: '4 1'}}>
-						<Typography
-							variant='subtitle1'
-							gutterBottom
-						>
-							Designation's text style*
-						</Typography>
-						<Controller
-							name='designationTextStyle'
-							control={control}
-							render={({field}) => (
-								<TextField
-									disabled={loading}
-									{...field}
-									variant='outlined'
-									fullWidth
-									error={!!errors.designationTextStyle}
-									helperText={errors.designationTextStyle?.message}
-									sx={{mb: 2,
-										'& .MuiOutlinedInput-root': {
-											'&.Mui-focused': {
-												backgroundColor: 'white'
-											}
-										}}}
-									multiline
-									rows={3}
-								/>
-							)}
-						/>
-					</Box>
 				</Box>
 			</Box>
 			<Box
 				sx={{
-					padding: '3rem 0',
+					padding: '5rem 0 0',
 					display: 'flex',
 					flexDirection: 'column',
 					gap: '2rem'
@@ -430,7 +228,7 @@ const ShortsForm = ({loading, setFormData, createShorts, steps, setSteps, select
 					fullWidth
 					disabled={loading}
 				>
-					Submit
+					{`Submit${promptsSelected ? '' : " with 10 randoms"}`}
 				</Button>
 				<Button
 					disabled={loading}

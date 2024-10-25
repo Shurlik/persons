@@ -21,7 +21,8 @@ export default {
 			boxShadow: 'none',
 			'&:hover': {
 				backgroundColor: colors.mainGreen,
-				color: colors.black, // Цвет при наведении
+				color: colors.black,
+				boxShadow: 'none'// Цвет при наведении
 			},
 		},
 		outlinedPrimary: {
@@ -34,6 +35,7 @@ export default {
 				backgroundColor: colors.silverLight,
 				color: colors.black,
 				border: `1px solid ${colors.silver}`,
+				boxShadow: 'none'
 			},
 		},
 		outlinedSecondary: {

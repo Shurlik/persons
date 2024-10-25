@@ -83,6 +83,15 @@ export async function getShorts() {
 	}
 }
 
+export async function getShortsTemplates() {
+	try {
+		const response = await api.get(`/cos/shorts-templates`);
+		return response.data;
+	} catch (e) {
+		console.log('error: ', e);
+	}
+}
+
 export async function addShorts(data) {
 	try {
 		const response = await api.post(`/shorts`, {...data});

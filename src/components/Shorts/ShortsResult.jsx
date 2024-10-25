@@ -5,6 +5,7 @@ import ToggleEdit from "../services/ToggleEdit";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import {addShorts} from "../../services/shorts";
+import Loader from "../Loader";
 
 const ShortsResult = ({result, setResult, loading, formData, setLoading, steps, setSteps}) => {
 	const resultBoxRef = useRef(null);
@@ -40,6 +41,10 @@ const ShortsResult = ({result, setResult, loading, formData, setLoading, steps, 
 		setTimeout(() => setSteps(steps - 1), 400);
 	};
 
+	if (!result){
+		return <Loader />
+	}
+
 	return (
 		<Container sx={{position: 'relative'}}>
 			<OutputsTextField
@@ -50,39 +55,37 @@ const ShortsResult = ({result, setResult, loading, formData, setLoading, steps, 
 				loading={loading}
 				onChange={(event) => setResult(event.target.value)}
 			/>
-			<ToggleEdit
-				isEdit={edit}
-				onClick={() => setEdit(old => !old)}
-			/>
-			<Box
-				sx={{
-					marginTop: '3rem',
-					display: 'flex',
-					flexDirection: 'column',
-					gap: '2rem'
-				}}
-			>
-				<Button
-					onClick={saveHandler}
-					variant='contained'
-					color='primary'
-					fullWidth
+			{!loading && <>
+				<Box
+					sx={{
+						marginTop: '3rem',
+						display: 'flex',
+						flexDirection: 'column',
+						gap: '2rem'
+					}}
 				>
-					Submit
-				</Button>
-				<Button
-					onClick={previousStepHandler}
-					variant='outlined'
-					color='primary'
-					fullWidth
-				>
-					Return
-				</Button>
-			</Box>
-			<ToggleEdit
-				isEdit={edit}
-				onClick={() => setEdit(old => !old)}
-			/>;
+					<Button
+						onClick={saveHandler}
+						variant='contained'
+						color='primary'
+						fullWidth
+					>
+						Submit
+					</Button>
+					<Button
+						onClick={previousStepHandler}
+						variant='outlined'
+						color='primary'
+						fullWidth
+					>
+						Return
+					</Button>
+				</Box>
+				<ToggleEdit
+					isEdit={edit}
+					onClick={() => setEdit(old => !old)}
+				/>;
+			</>}
 		</Container>
 	)
 		;

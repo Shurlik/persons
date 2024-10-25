@@ -19,3 +19,9 @@ export function smoothOutput(text, onData) {
 }
 
 export const paginationModel = {page: 0, pageSize: 10};
+
+export const getRandomIntRange = (min, max) => {
+	min = Math.ceil(min);
+	max = Math.floor(max);
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+}
