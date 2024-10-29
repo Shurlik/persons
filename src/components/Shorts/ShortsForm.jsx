@@ -11,12 +11,13 @@ import {getArticles} from "../../services/airtable";
 import CustomSelect from "../CustomSelect";
 import {getShortsTemplates} from "../../services/shorts";
 import {getRandomIntRange} from "../../utils/helpers";
+import CustomTextField from "../CustomTextField";
 
 const ShortsForm = ({loading, setFormData, createShorts, steps, setSteps, selectedValues, person}) => {
 	const location = useLocation();
 	const articleId = location?.state?.articleId;
 	const [showOptions, setShowOptions] = useState(false);
-	const [promptsSelected, setPromptSelected] = useState(false);
+	const [noArticleSelected, setNoArticleSelected] = useState(true);
 
 	const {data = [], error, isLoading, mutate} = useSWR(articleId ? null : '/cos/articles', () => getArticles());
 
@@ -44,37 +45,30 @@ const ShortsForm = ({loading, setFormData, createShorts, steps, setSteps, select
 		defaultValues: {
 			article: articleId || '',
 			model: 'gpt',
-			postType: [],
+			topic: "",
+			cta: "",
 		},
 	});
 
 	const onSubmit = async (data) => {
 
-		if (showOptions && !data.personActionDetails) {
-			toast.warning('Please provide details about Action');
+
+		if (noArticleSelected && !data.cta || noArticleSelected && !data.topic) {
+			toast.warning('Please set Topic and/or Call to Action');
 			return;
 		}
 
-		if (!data.article) {
-			toast.warning('Please select Article for creation');
-			return;
-		}
-
-		if (!data.postType.length) {
-			const tmplt = [];
-			while (tmplt.length < 10) {
-				const randomNumber = getRandomIntRange(1, shortsTemplates.length - 1);
-				if (!tmplt.includes(shortsTemplates[randomNumber].id)) {
-					tmplt.push(shortsTemplates[randomNumber].id);
-				}
+		// Select randoms
+		const tmplt = [];
+		while (tmplt.length < 10) {
+			const randomNumber = getRandomIntRange(1, shortsTemplates.length - 1);
+			if (!tmplt.includes(shortsTemplates[randomNumber].id)) {
+				tmplt.push(shortsTemplates[randomNumber].id);
 			}
-			data.postType = tmplt;
 		}
+		data.postType = tmplt;
 
 		try {
-			if (!showOptions) {
-				data.personActionDetails = '';
-			}
 			const starterString = person ? `Name: ${person?.fields?.Name};\nAge: ${person?.fields?.Age};\nGender: ${person?.fields?.Gender};\nPlace of residence: ${person?.fields['Place of residence']};\nJob title: ${person?.fields['Job title']};\n` : "";
 			data.personData = selectedValues.reduce((acc, curr) => acc + `${curr}: ${person?.fields[curr]};\n`, starterString);
 
@@ -130,7 +124,7 @@ const ShortsForm = ({loading, setFormData, createShorts, steps, setSteps, select
 					<Typography
 						variant='subtitle1'
 						gutterBottom
-					>Model*: </Typography>
+					>Model: </Typography>
 					<Controller
 						name='model'
 						control={control}
@@ -149,12 +143,12 @@ const ShortsForm = ({loading, setFormData, createShorts, steps, setSteps, select
 					/>
 					{errors.model && <Typography color='error'>{errors.model.message}</Typography>}
 				</Box>
-				{!articleId && <Box sx={{flex: '1 1'}}>
+				<Box sx={{flex: '1 1'}}>
 					<Typography
 						variant='subtitle1'
 						gutterBottom
 					>
-						Select Article*
+						Select Article
 					</Typography>
 					<FormControl
 						fullWidth
@@ -169,7 +163,14 @@ const ShortsForm = ({loading, setFormData, createShorts, steps, setSteps, select
 									{...field}
 									disabled={loading}
 									options={articles}
-									onChange={(value) => field.onChange(value)}
+									onChange={(value) => {
+										if (value) {
+											setNoArticleSelected(false);
+										} else {
+											setNoArticleSelected(true);
+										}
+										field.onChange(value);
+									}}
 									sx={{
 										error: !!errors.article,
 									}}
@@ -178,41 +179,70 @@ const ShortsForm = ({loading, setFormData, createShorts, steps, setSteps, select
 						/>
 						{errors.article && <Typography color='error'>{errors.article.message}</Typography>}
 					</FormControl>
-				</Box>}
+				</Box>
 			</Box>
-			<Box sx={{width: '100%', marginTop: '1rem'}}>
+			<Box>
 				<Box>
 					<Typography
 						variant='subtitle1'
 						gutterBottom
 					>
-						Select Templates for Shorts or use random templates
+						Topic
 					</Typography>
 					<Controller
-						name='postType'
+						name='topic'
 						control={control}
-						// defaultValue={[]}
+						defaultValue=''
 						render={({field}) => (
-							<FormControl fullWidth>
-								<CustomSelect
-									{...field}
-									disabled={loading}
-									label={'Prompts...'}
-									options={shortsPromptsOptions}
-									onChange={(value) => {
-										setPromptSelected(!!value.length);
-										field.onChange(value);
-									}}
-									sx={{
-										error: !!errors.postType,
-									}}
-									multiple
-								/>
-							</FormControl>
+							<CustomTextField
+								{...{field}}
+								disabled={loading}
+								multiline
+								rows={4}
+							/>
 						)}
 					/>
 				</Box>
+				<Box sx={{marginTop: '1rem'}}>
+					<Typography
+						variant='subtitle1'
+						gutterBottom
+					>
+						Call to Action
+					</Typography>
+					<Controller
+						name='cta'
+						control={control}
+						defaultValue=''
+						render={({field}) => (
+							<CustomTextField
+								{...{field}}
+								disabled={loading}
+							/>
+						)}
+					/>
+				</Box>
+				{noArticleSelected && <Box sx={{marginTop: '1rem'}}>
+					<Typography
+						variant='subtitle1'
+						gutterBottom
+					>
+						Words to exclude from content
+					</Typography>
+					<Controller
+						name='excludedWords'
+						control={control}
+						defaultValue=''
+						render={({field}) => (
+							<CustomTextField
+								{...{field}}
+								disabled={loading}
+							/>
+						)}
+					/>
+				</Box>}
 			</Box>
+
 			<Box
 				sx={{
 					padding: '5rem 0 0',
@@ -228,7 +258,7 @@ const ShortsForm = ({loading, setFormData, createShorts, steps, setSteps, select
 					fullWidth
 					disabled={loading}
 				>
-					{`Submit${promptsSelected ? '' : " with 10 randoms"}`}
+					{`Submit`}
 				</Button>
 				<Button
 					disabled={loading}
