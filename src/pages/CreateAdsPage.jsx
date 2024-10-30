@@ -103,19 +103,6 @@ const CreateAdsPage = () => {
 						options={personsOptions}
 						onChange={handleChange}
 					/>
-					{/*<Select*/}
-					{/*	fullWidth*/}
-					{/*	variant={'outlined'}*/}
-					{/*	labelId='demo-simple-select-standard-label'*/}
-					{/*	value={person}*/}
-					{/*	onChange={handleChange}*/}
-					{/*	label='Person'*/}
-					{/*>*/}
-					{/*	<MenuItem value={''}>*/}
-					{/*		<em>None</em>*/}
-					{/*	</MenuItem>*/}
-					{/*	{persons}*/}
-					{/*</Select>*/}
 				</FormControl>
 				{!!person && <UserFormSelect
 					person={person}

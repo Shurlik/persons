@@ -30,7 +30,15 @@ const FormattedTextDisplay = ({children, custom, ref}) => {
 						variant='h4' {...props}
 						sx={{margin: 0, color: colors.white, fontSize: '1.1rem', fontFamily: 'Inter'}}
 					/>,
+					h4: ({node, ...props}) => <Typography
+						variant='h5' {...props}
+						sx={{margin: 0, color: colors.white, fontSize: '1rem', fontFamily: 'Inter'}}
+					/>,
 					p: ({node, ...props}) => <Typography
+						variant='body1' {...props}
+						sx={{color: custom ? custom : colors.white, margin: 0}}
+					/>,
+					code: ({node, ...props}) => <Typography
 						variant='body1' {...props}
 						sx={{color: custom ? custom : colors.white, margin: 0}}
 					/>,

@@ -10,7 +10,7 @@ import Grid from "@mui/material/Grid2";
 const ADD_DATA = ['Limbic Types', 'Important Values', 'Pain Points', 'Fears', 'Goals and Dreams', 'Materialistic Gains', 'Emotional Win'];
 
 
-const UserFormSelect = ({person, selectedValues, setSelectedValues, setSteps, steps}) => {
+const UserFormSelect = ({person, selectedValues, setSelectedValues, setSteps, steps, full}) => {
 	const [details, setDetails] = useState(null);
 
 
@@ -44,8 +44,13 @@ const UserFormSelect = ({person, selectedValues, setSelectedValues, setSteps, st
 	};
 
 	useEffect(() => {
-		setSelectedValues([]);
+		if (full) {
+			setSelectedValues([...ADD_DATA]);
+		} else {
+			setSelectedValues([]);
+		}
 	}, [person]);
+
 
 	const t1 = ADD_DATA.map(i => <Grid
 		size={6}
@@ -60,6 +65,7 @@ const UserFormSelect = ({person, selectedValues, setSelectedValues, setSteps, st
 				}
 			}}
 			control={<Checkbox
+				disabled={full}
 				label={i}
 				sx={{
 					color: colors.orange,
@@ -107,13 +113,13 @@ const UserFormSelect = ({person, selectedValues, setSelectedValues, setSteps, st
 						<FormControlLabel
 							key={'Select all'}
 							sx={{
-								// marginTop: '1rem',
 								justifyContent: 'center',
 								'& .MuiFormControlLabel-label': {
 									color: colors.mainGreen,
 								}
 							}}
 							control={<Checkbox
+								disabled={full}
 								sx={{
 									color: colors.orange,
 									'&.Mui-checked': {

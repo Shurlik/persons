@@ -55,11 +55,6 @@ const LoginPage = () => {
 			duration: 1,
 			ease: 'power2.in'
 		},)
-			.fromTo(titleRef.current, {opacity: 0}, {
-				opacity: 1,
-				duration: 1,
-				ease: 'power2.in'
-			}, ">-1")
 			.fromTo('#texttest', {}, {duration: 1, text: 'SUPREME AI MARKETING', ease: "none", delimiter: "1"})
 			.fromTo(textRef.current, {opacity: 0}, {
 					opacity: 1,

@@ -1,7 +1,7 @@
 import React from 'react';
 import {TextField} from "@mui/material";
 
-const CustomTextField = ({disabled, field, multiline, rows}) => {
+const CustomTextField = ({disabled, field, multiline, rows, inputProps}) => {
 	return (
 		<TextField
 			sx={{
@@ -15,7 +15,7 @@ const CustomTextField = ({disabled, field, multiline, rows}) => {
 			{...field}
 			fullWidth
 			variant='outlined'
-			{...{multiline, rows}}
+			{...{multiline, rows, inputProps}}
 		/>
 	);
 };
