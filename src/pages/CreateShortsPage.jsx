@@ -1,23 +1,21 @@
 import React, {useState} from 'react';
 import ShortsForm from "../components/Shorts/ShortsForm";
-import {Container, FormControl, MenuItem, Select} from "@mui/material";
+import {Container, FormControl} from "@mui/material";
 import ShortsResult from "../components/Shorts/ShortsResult";
-import {getBenefitsStream} from "../services/ads";
 import {toast} from "react-toastify";
 import {getShortsStream} from "../services/shorts";
 import FullPageLoader from "../components/FullPageLoader";
 import PageHeader from "../components/PageHeader";
 import UserFormSelect from "../components/UserFormSelect";
 import CustomSlide from "../components/CustomSlide";
-import Loader from "../components/Loader";
 import useSWR from "swr";
 import {getAllRecords} from "../services/airtable";
 import CustomSelect from "../components/CustomSelect";
 
 const CreateShortsPage = () => {
-	const [result, setResult] = useState('')
-	const [loading, setLoading] = useState(false)
-	const [formData, setFormData] = useState('')
+	const [result, setResult] = useState('');
+	const [loading, setLoading] = useState(false);
+	const [formData, setFormData] = useState('');
 
 	const {data = [], error, isLoading, mutate} = useSWR('/persons', () => getAllRecords());
 	const [steps, setSteps] = useState(0);
@@ -26,42 +24,40 @@ const CreateShortsPage = () => {
 	const [selectedValues, setSelectedValues] = useState([]);
 
 	const createShorts = async (data) => {
-		setLoading(true)
+		setLoading(true);
 		try {
-			await getShortsStream(data, (chunk) => {
-				setResult((prev) => prev + chunk);
-			});
-			setLoading(false)
-		} catch (e) {
-			toast.error('Something goes wrong')
-			console.log('error: ', e);
-			setLoading(false)
-		}
-		setLoading(false)
-	}
+			for (const key of data.postType) {
+				data.selectedTemplate = key;
+				await getShortsStream(data, (chunk) => {
+					setResult((prev) => prev + chunk);
+				});
+				setResult((prev) => prev + '\n\n================================\n\n');
+			}
 
-	// const handleChange = async (event) => {
-	// 	setPerson(event.target.value);
-	// };
+
+			setLoading(false);
+		} catch (e) {
+			toast.error('Something goes wrong');
+			console.log('error: ', e);
+			setLoading(false);
+		}
+		setLoading(false);
+	};
+
 	const handleChange = (value) => {
 		const selectedPerson = data.find((p) => p.id === value);
 		setPerson(selectedPerson);
 	};
 
-	// const persons = !isLoading ? data.map((p) => <MenuItem
-	// 	key={p?.id}
-	// 	value={p}
-	// >{p?.fields?.Name}</MenuItem>) : <MenuItem value={null}><Loader/></MenuItem>;
-
 	const personsOptions = !isLoading
 		? [
-			{ label: 'None', value: '' },
+			{label: 'None', value: ''},
 			...data.map((p) => ({
 				label: p?.fields?.Name,
 				value: p?.id
 			}))
 		]
-		: [{ label: 'Loading...', value: '' }];
+		: [{label: 'Loading...', value: ''}];
 
 	return (
 		<Container>
@@ -82,24 +78,11 @@ const CreateShortsPage = () => {
 				>
 					<CustomSelect
 						fullWidth
-						label="Person"
+						label='Person'
 						value={person?.id}
 						options={personsOptions}
 						onChange={handleChange}
 					/>
-					{/*<Select*/}
-					{/*	fullWidth*/}
-					{/*	variant={'outlined'}*/}
-					{/*	labelId='demo-simple-select-standard-label'*/}
-					{/*	value={person}*/}
-					{/*	onChange={handleChange}*/}
-					{/*	label='Person'*/}
-					{/*>*/}
-					{/*	<MenuItem value={''}>*/}
-					{/*		<em>None</em>*/}
-					{/*	</MenuItem>*/}
-					{/*	{persons}*/}
-					{/*</Select>*/}
 				</FormControl>
 				{!!person && <UserFormSelect
 					person={person}
@@ -119,7 +102,6 @@ const CreateShortsPage = () => {
 			>
 				<ShortsResult {...{result, setResult, loading, setLoading, formData, steps, setSteps}} />
 			</CustomSlide>
-			{loading && <FullPageLoader position={'absolute'}/>}
 		</Container>
 	);
 };

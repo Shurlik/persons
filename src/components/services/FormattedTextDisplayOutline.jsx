@@ -2,7 +2,6 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import {Box, Typography} from '@mui/material';
 import {colors} from "../../assets/styles/colors";
-import FullPageLoader from "../FullPageLoader";
 
 const FormattedTextDisplay = ({children, custom, ref}) => {
 	return (
@@ -21,15 +20,15 @@ const FormattedTextDisplay = ({children, custom, ref}) => {
 				components={{
 					h1: ({node, ...props}) => <Typography
 						variant='h2' {...props}
-						sx={{margin: 0, color: colors.white, fontSize: '1.7rem', fontFamily: 'Rajdhani'}}
+						sx={{margin: 0, color: colors.white, fontSize: '1.4rem', fontFamily: 'Inter'}}
 					/>,
 					h2: ({node, ...props}) => <Typography
 						variant='h3' {...props}
-						sx={{margin: 0, color: colors.white, fontSize: '1.5rem', fontFamily: 'Rajdhani'}}
+						sx={{margin: 0, color: colors.white, fontSize: '1.2rem', fontFamily: 'Inter', fontWeight: '600'}}
 					/>,
 					h3: ({node, ...props}) => <Typography
 						variant='h4' {...props}
-						sx={{margin: 0, color: colors.white, fontSize: '1.4rem', fontFamily: 'Rajdhani'}}
+						sx={{margin: 0, color: colors.white, fontSize: '1.1rem', fontFamily: 'Inter'}}
 					/>,
 					p: ({node, ...props}) => <Typography
 						variant='body1' {...props}

@@ -1,10 +1,36 @@
 import React from 'react';
-import {Box, Drawer, Typography} from "@mui/material";
-import {colors} from "../assets/styles/colors";
-import FormattedTextDisplayArticle from "./services/FormattedTextDisplayArticle";
-import FormattedTextDisplayOutline from "./services/FormattedTextDisplayOutline";
+import {Accordion, AccordionDetails, AccordionSummary, Box, Drawer, Typography} from "@mui/material";
+import {colors} from "../../assets/styles/colors";
+import useSWR from "swr";
+import {getOffersSteps} from "../../services/offers";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Loader from "../Loader";
 
-const DrawerContentDisplay = ({selected, setSelected}) => {
+
+const DrawerOfferContentDisplay = ({selected, setSelected}) => {
+	const {data = [], error, isLoading, mutate} = useSWR(`/offers/steps`, () => getOffersSteps(selected.id));
+
+	const steps = data.map((s, i) =>
+		<Accordion
+			key={i}
+		>
+			<AccordionSummary
+				expandIcon={<ExpandMoreIcon/>}
+				aria-controls='panel2-content'
+				id='panel2-header'
+			>
+				<Typography variant={'h5'}>Module {i + 1}</Typography>
+			</AccordionSummary>
+			<AccordionDetails>
+				<Typography
+					variant={'subtitle'}
+					sx={{whiteSpace: 'pre-wrap'}}
+				>
+					{s?.content}
+				</Typography>
+			</AccordionDetails>
+		</Accordion>);
+
 	return (
 		<Drawer
 			anchor={'right'}
@@ -59,28 +85,15 @@ const DrawerContentDisplay = ({selected, setSelected}) => {
 							variant={'h2'}
 							sx={{color: colors.mainGreen, flexShrink: 3, flexGrow: 0}}
 						>{selected?.title}</Typography>
-						{!!selected?.image && <Box
-							sx={{
-								flexShrink: 0,
-								// flexGrow: 2,
-								width: '15rem',
-								overflow: 'hidden',
-								borderRadius: '2rem'
-							}}
-						>
-							<Box
-								component={'img'}
-								alt={'img'}
-								src={selected?.image[0]?.url}
-								sx={{width: '100%', height: '100%', objectFit: 'cover',}}
-							/>
-						</Box>}
 					</Box>
-					<FormattedTextDisplayOutline>{selected?.content}</FormattedTextDisplayOutline>
+					{isLoading && <Loader/>}
+					<Box>
+						{steps}
+					</Box>
 				</Box>
 			</Box>
 		</Drawer>
 	);
 };
 
-export default DrawerContentDisplay;
+export default DrawerOfferContentDisplay;

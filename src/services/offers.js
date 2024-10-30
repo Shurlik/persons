@@ -74,9 +74,27 @@ export async function getShortsStream(data, onData) {
 	}
 }
 
-export async function getShorts() {
+export async function getOffers() {
 	try {
-		const response = await api.get(`/shorts`);
+		const response = await api.get(`/offers/items`);
+		return response.data;
+	} catch (e) {
+		console.log('error: ', e);
+	}
+}
+
+export async function getSingleOffer(id) {
+	try {
+		const response = await api.get(`/offers/items/${id}`);
+		return response.data;
+	} catch (e) {
+		console.log('error: ', e);
+	}
+}
+
+export async function getOffersSteps(id) {
+	try {
+		const response = await api.get(`/offers/steps/offer/${id}`);
 		return response.data;
 	} catch (e) {
 		console.log('error: ', e);

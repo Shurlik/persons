@@ -22,7 +22,7 @@ export async function getLeadMagnets() {
 
 export async function getOffers() {
 	try {
-		const response = await api.get(`/ads/offers`);
+		const response = await api.get(`/offers/items`);
 		return response.data;
 	} catch (e) {
 		console.log('error: ', e);

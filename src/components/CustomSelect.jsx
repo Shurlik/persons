@@ -3,8 +3,9 @@ import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import { colors } from '../assets/styles/colors';
 
-const CustomSelect = forwardRef(({ options = [], label, onChange, value, disabled }, ref) => {
+const CustomSelect = forwardRef(({ options = [], label, onChange, value, disabled, multiple }, ref) => {
   const [selectedValue, setSelectedValue] = useState(value || '');
+
 
   useEffect(() => {
     if (value !== undefined) {
@@ -64,6 +65,7 @@ const CustomSelect = forwardRef(({ options = [], label, onChange, value, disable
         IconComponent={ExpandMore}
         label={label}
         displayEmpty
+        multiple={multiple}
         sx={{
           padding: '0px !important',
           minHeight: '40px !important',

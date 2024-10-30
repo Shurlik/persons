@@ -28,6 +28,7 @@ import {
 	PinterestIcon
 } from "../components/Icons";
 import FormatIndentIncreaseIcon from '@mui/icons-material/FormatIndentIncrease';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 
 export default [
@@ -91,6 +92,7 @@ export const funnelItems = [
 			{name: 'Pinterest', link: '/ads/pinterest', icon: <PinterestIcon/>, disabled: false},
 		],
 	},
+	{name: 'Offers', link: '/offers', icon: <LocalOfferIcon sx={{width: '16px', height: '16px'}}/>, disabled: false},
 	{name: 'Lead Magnet', link: '/', icon: <LeadIcon/>, disabled: true},
 	{name: 'E-Mail Sequence', link: '/', icon: <Email/>, disabled: true},
 	{name: 'Landing Pages', link: '/', icon: <LandingIcon/>, disabled: true},

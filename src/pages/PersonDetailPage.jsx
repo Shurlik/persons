@@ -183,7 +183,7 @@ const PersonDetail = () => {
 					<Box
 						component={'img'}
 						alt={'user image'}
-						src={previewUrl ? previewUrl : data?.fields['User Image']?.length > 0 ? data.fields['User Image'][0]?.url : data?.fields['Gender'] === 'Female' ? officeGirl : officeBoy}
+						src={previewUrl ? previewUrl : data?.fields?.['User Image']?.length > 0 ? data.fields['User Image'][0]?.url : data?.fields?.['Gender'] === 'Female' ? officeGirl : officeBoy}
 						sx={{
 							width: '100%',
 							height: '100%',
