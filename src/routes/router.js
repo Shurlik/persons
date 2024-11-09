@@ -19,6 +19,8 @@ import AdsPage from "../pages/AdsPage";
 import CreateAdsPage from "../pages/CreateAdsPage";
 import CreateShortsPage from "../pages/CreateShortsPage";
 import ShortsPage from "../pages/ShortsPage";
+import CreateOffersPage from "../pages/CreateOffersPage";
+import OffersPage from "../pages/OffersPage";
 
 
 const router = createBrowserRouter([
@@ -105,6 +107,14 @@ const router = createBrowserRouter([
 			{
 				path: "/shorts",
 				element: <ShortsPage />
+			},
+			{
+				path: "/offers/create",
+				element: <CreateOffersPage />
+			},
+			{
+				path: "/offers",
+				element: <OffersPage />
 			}
 		]
 	},

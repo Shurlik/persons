@@ -12,12 +12,13 @@ import CustomSlide from "../components/CustomSlide";
 import Loader from "../components/Loader";
 import useSWR from "swr";
 import {getAllRecords} from "../services/airtable";
+import CustomSelect from "../components/CustomSelect";
 
 const CreateAdsPage = () => {
 	const [benefits, setBenefits] = useState('');
 	const [result, setResult] = useState('');
 	const [loading, setLoading] = useState(null);
-	const [formData, setFormData] = useState(null);
+	const [formData, setFormData] = useState();
 
 	const [person, setPerson] = useState('');
 	const [selectedValues, setSelectedValues] = useState([]);
@@ -54,14 +55,29 @@ const CreateAdsPage = () => {
 		setLoading(false);
 	};
 
-	const handleChange = async (event) => {
-		setPerson(event.target.value);
+	// const handleChange = async (event) => {
+	// 	setPerson(event?.target?.value);
+	// };
+
+	const handleChange = (value) => {
+		const selectedPerson = data.find((p) => p.id === value);
+		setPerson(selectedPerson);
 	};
 
 	const persons = !isLoading ? data.map((p) => <MenuItem
 		key={p?.id}
 		value={p}
 	>{p?.fields?.Name}</MenuItem>) : <MenuItem value={null}><Loader/></MenuItem>;
+
+	const personsOptions = !isLoading
+		? [
+			{ label: 'None', value: '' },
+			...data.map((p) => ({
+				label: p?.fields?.Name,
+				value: p?.id
+			}))
+		]
+		: [{ label: 'Loading...', value: '' }];
 
 	return (
 		<Container>
@@ -80,19 +96,13 @@ const CreateAdsPage = () => {
 					}}
 					variant='standard'
 				>
-					<Select
+					<CustomSelect
 						fullWidth
-						variant={'outlined'}
-						labelId='demo-simple-select-standard-label'
-						value={person}
+						label="Person"
+						value={person?.id}
+						options={personsOptions}
 						onChange={handleChange}
-						label='Person'
-					>
-						<MenuItem value={''}>
-							<em>None</em>
-						</MenuItem>
-						{persons}
-					</Select>
+					/>
 				</FormControl>
 				{!!person && <UserFormSelect
 					person={person}

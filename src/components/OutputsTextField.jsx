@@ -5,7 +5,7 @@ import FormattedTextDisplayOutline from "./services/FormattedTextDisplayOutline"
 import {colors} from "../assets/styles/colors";
 import FullPageLoader from "./FullPageLoader";
 
-const OutputsTextField = forwardRef(({value, title, loading, onChange, editable}, ref) => {
+const OutputsTextField = forwardRef(({value, title, loading, onChange, editable, noBorder}, ref) => {
 	return (
 		<Box
 			sx={{width: '100%'}}
@@ -32,12 +32,12 @@ const OutputsTextField = forwardRef(({value, title, loading, onChange, editable}
 				<Box
 					ref={ref}
 					sx={{
-						backgroundColor: colors.white,
+						backgroundColor: colors.black,
 						padding: '24px',
 						borderRadius: '1rem',
 						maxHeight: '50vh',
 						minHeight: '300px',
-						border: `1px solid ${colors.orange50}`,
+						border:noBorder ? 'none' : `1px solid ${colors.orange50}`,
 						overflow: 'auto',
 						position: 'relative'
 					}}

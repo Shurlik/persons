@@ -2,6 +2,7 @@ import React from 'react';
 import {Box, Drawer, Typography} from "@mui/material";
 import {colors} from "../assets/styles/colors";
 import FormattedTextDisplayArticle from "./services/FormattedTextDisplayArticle";
+import FormattedTextDisplayOutline from "./services/FormattedTextDisplayOutline";
 
 const DrawerContentDisplay = ({selected, setSelected}) => {
 	return (
@@ -75,7 +76,7 @@ const DrawerContentDisplay = ({selected, setSelected}) => {
 							/>
 						</Box>}
 					</Box>
-					<FormattedTextDisplayArticle>{selected?.content}</FormattedTextDisplayArticle>
+					<FormattedTextDisplayOutline>{selected?.content}</FormattedTextDisplayOutline>
 				</Box>
 			</Box>
 		</Drawer>

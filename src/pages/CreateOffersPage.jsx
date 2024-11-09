@@ -1,18 +1,21 @@
 import React, {useState} from 'react';
-import ShortsForm from "../components/Shorts/ShortsForm";
 import {Container, FormControl} from "@mui/material";
-import ShortsResult from "../components/Shorts/ShortsResult";
-import {toast} from "react-toastify";
-import {getShortsStream} from "../services/shorts";
-import FullPageLoader from "../components/FullPageLoader";
-import PageHeader from "../components/PageHeader";
-import UserFormSelect from "../components/UserFormSelect";
-import CustomSlide from "../components/CustomSlide";
 import useSWR from "swr";
 import {getAllRecords} from "../services/airtable";
+import PageHeader from "../components/PageHeader";
 import CustomSelect from "../components/CustomSelect";
+import UserFormSelect from "../components/UserFormSelect";
+import CustomSlide from "../components/CustomSlide";
+import OfferForm from "../components/Offers/OfferForm";
+import OfferResult from "../components/Offers/OfferResult";
+import {toast} from "react-toastify";
+import {getOfferStream} from "../services/offers";
+import {useLocation} from "react-router-dom";
 
-const CreateShortsPage = () => {
+const CreateOffersPage = () => {
+	const location = useLocation();
+	const offerId = location?.state?.offerId;
+
 	const [result, setResult] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [formData, setFormData] = useState('');
@@ -23,18 +26,15 @@ const CreateShortsPage = () => {
 	const [person, setPerson] = useState('');
 	const [selectedValues, setSelectedValues] = useState([]);
 
-	const createShorts = async (data) => {
+	const createSteps = async (data) => {
 		setLoading(true);
+		const starterString = person ? `Name: ${person?.fields?.Name};\nAge: ${person?.fields?.Age};\nGender: ${person?.fields?.Gender};\nPlace of residence: ${person?.fields['Place of residence']};\nJob title: ${person?.fields['Job title']};\n` : "";
+		data.personData = selectedValues.reduce((acc, curr) => acc + `${curr}: ${person?.fields[curr]};\n`, starterString);
+
 		try {
-			for (const key of data.postType) {
-				data.selectedTemplate = key;
-				await getShortsStream(data, (chunk) => {
-					setResult((prev) => prev + chunk);
-				});
-				setResult((prev) => prev + '\n\n================================\n\n');
-			}
-
-
+			await getOfferStream(data, (chunk) => {
+				setResult((prev) => prev + chunk);
+			});
 			setLoading(false);
 		} catch (e) {
 			toast.error('Something goes wrong');
@@ -58,6 +58,7 @@ const CreateShortsPage = () => {
 			}))
 		]
 		: [{label: 'Loading...', value: ''}];
+
 
 	return (
 		<Container>
@@ -90,20 +91,21 @@ const CreateShortsPage = () => {
 					setSelectedValues={setSelectedValues}
 					setSteps={setSteps}
 					steps={steps}
+					full
 				/>}
 			</CustomSlide>
 			<CustomSlide
 				condition={steps === 1}
 			>
-				<ShortsForm {...{loading, setLoading, setFormData, createShorts, steps, setSteps, selectedValues, person}}/>
+				<OfferForm {...{setFormData, loading, setSteps, steps, formData, selectedValues, createSteps}}/>
 			</CustomSlide>
 			<CustomSlide
 				condition={steps === 2}
 			>
-				<ShortsResult {...{result, setResult, loading, setLoading, formData, steps, setSteps}} />
+				<OfferResult {...{result, setResult, loading, formData, setLoading, steps, setSteps, offerId}}/>
 			</CustomSlide>
 		</Container>
 	);
 };
 
-export default CreateShortsPage;
+export default CreateOffersPage;

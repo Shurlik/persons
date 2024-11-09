@@ -14,13 +14,15 @@ export default {
 		containedPrimary: {
 			letterSpacing:2,
 			backgroundColor: colors.orange, // Цвет кнопки по умолчанию
-			color: colors.white,
-			padding:'.6rem 1.5rem',
+			color: colors.whitePermanet,
+			padding: '.6rem 1.5rem',
 			fontSize: '1rem',
 			fontWeight: 'bold',
+			boxShadow: 'none',
 			'&:hover': {
 				backgroundColor: colors.mainGreen,
-				color: colors.black, // Цвет при наведении
+				color: colors.black,
+				boxShadow: 'none'// Цвет при наведении
 			},
 		},
 		outlinedPrimary: {
@@ -33,6 +35,7 @@ export default {
 				backgroundColor: colors.silverLight,
 				color: colors.black,
 				border: `1px solid ${colors.silver}`,
+				boxShadow: 'none'
 			},
 		},
 		outlinedSecondary: {

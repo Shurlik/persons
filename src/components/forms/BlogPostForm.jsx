@@ -77,12 +77,12 @@ const BlogPostForm = ({person, selectedValues, setResearch, setSteps, setAirId, 
 		value={item.id}
 	>{item.fieldName}</MenuItem>) : <MenuItem value={null}><Loader/></MenuItem>;
 
-	const menuTemplatePrompts = !isLoading ? data.BlogpostTemplatePrompts.map((item) => <MenuItem
+	const menuTemplatePrompts = !isLoading && Array.isArray(data?.BlogpostTemplatePrompts) ? data.BlogpostTemplatePrompts.map((item) => <MenuItem
 		key={item.fieldName}
 		value={item.id}
 	>{item.fieldName}</MenuItem>) : <MenuItem value={null}><Loader/></MenuItem>;
 
-	const menuReelsHookPrompts = !isLoading ? data.reelsVideoHookPrompt.map((item) => <MenuItem
+	const menuReelsHookPrompts = !isLoading && Array.isArray(data?.reelsVideoHookPrompt) ? data.reelsVideoHookPrompt.map((item) => <MenuItem
 		key={item.fieldName}
 		value={item.id}
 	>{item.fieldName}</MenuItem>) : <MenuItem value={null}><Loader/></MenuItem>;
