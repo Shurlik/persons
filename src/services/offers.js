@@ -3,7 +3,7 @@ import {LINK} from "./variables";
 import {smoothOutput} from "../utils/helpers";
 
 
-export async function getShortsStream(data, onData) {
+export async function getOfferStream(data, onData) {
 	try {
 		let token = authService.getAccessToken();
 		let headers = {
@@ -14,7 +14,7 @@ export async function getShortsStream(data, onData) {
 			headers['Authorization'] = 'Bearer ' + token;
 		}
 
-		let response = await fetch(`${LINK}/shorts/result/stream`, {
+		let response = await fetch(`${LINK}/offers/steps/stream`, {
 			method: 'POST',
 			headers: headers,
 			body: JSON.stringify({...data})
@@ -26,7 +26,7 @@ export async function getShortsStream(data, onData) {
 					token = await authService.refreshToken();
 					if (token) {
 						headers['Authorization'] = 'Bearer ' + token;
-						response = await fetch(`${LINK}/shorts/result/stream`, {
+						response = await fetch(`${LINK}/offers/steps/stream`, {
 							method: 'POST',
 							headers: headers,
 							body: JSON.stringify({...data})
@@ -101,27 +101,44 @@ export async function getOffersSteps(id) {
 	}
 }
 
-export async function getShortsTemplates() {
+
+export async function addOffer(data) {
 	try {
-		const response = await api.get(`/cos/shorts-templates`);
+		const response = await api.post(`/offers/items`, {...data});
+		return response.data;
+	} catch (e) {
+		console.log('error: ', e);
+	}
+}
+export async function updateOffer(id, data) {
+	try {
+		const response = await api.patch(`/offers/items/${id}`, {...data});
 		return response.data;
 	} catch (e) {
 		console.log('error: ', e);
 	}
 }
 
-export async function addShorts(data) {
+export async function addStep(data) {
 	try {
-		const response = await api.post(`/shorts`, {...data});
+		const response = await api.post(`/offers/steps`, {...data});
 		return response.data;
 	} catch (e) {
 		console.log('error: ', e);
 	}
 }
 
-export async function deleteShorts(id) {
+export async function deleteOffer(id) {
 	try {
-		const response = await api.delete(`/shorts/${id}`);
+		const response = await api.delete(`/offers/items/${id}`);
+		return response.data;
+	} catch (e) {
+		console.log('error: ', e);
+	}
+}
+export async function deleteStep(id) {
+	try {
+		const response = await api.delete(`/offers/steps/item/${id}`);
 		return response.data;
 	} catch (e) {
 		console.log('error: ', e);

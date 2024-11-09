@@ -5,10 +5,17 @@ import useSWR from "swr";
 import {getOffersSteps} from "../../services/offers";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Loader from "../Loader";
+import FormattedTextDisplayOutline from "../services/FormattedTextDisplayOutline";
 
 
-const DrawerOfferContentDisplay = ({selected, setSelected}) => {
-	const {data = [], error, isLoading, mutate} = useSWR(`/offers/steps`, () => getOffersSteps(selected.id));
+const DrawerOfferContentDisplay = ({selected, setSelected, isConcept}) => {
+	const {
+		data = [],
+		error,
+		isLoading,
+		mutate
+	} = useSWR(isConcept ? null : `/offers/steps/${selected?.id}`, () => getOffersSteps(selected.id));
+
 
 	const steps = data.map((s, i) =>
 		<Accordion
@@ -19,7 +26,7 @@ const DrawerOfferContentDisplay = ({selected, setSelected}) => {
 				aria-controls='panel2-content'
 				id='panel2-header'
 			>
-				<Typography variant={'h5'}>Module {i + 1}</Typography>
+				<Typography variant={'h5'}>Module {s.steps}: {s?.title}</Typography>
 			</AccordionSummary>
 			<AccordionDetails>
 				<Typography
@@ -30,6 +37,7 @@ const DrawerOfferContentDisplay = ({selected, setSelected}) => {
 				</Typography>
 			</AccordionDetails>
 		</Accordion>);
+
 
 	return (
 		<Drawer
@@ -88,7 +96,7 @@ const DrawerOfferContentDisplay = ({selected, setSelected}) => {
 					</Box>
 					{isLoading && <Loader/>}
 					<Box>
-						{steps}
+						{isConcept ? <FormattedTextDisplayOutline>{selected?.['tailored training concept']}</FormattedTextDisplayOutline> : steps}
 					</Box>
 				</Box>
 			</Box>
